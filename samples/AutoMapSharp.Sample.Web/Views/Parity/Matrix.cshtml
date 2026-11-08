@@ -1,0 +1,51 @@
+@model List<AutoMapSharp.Sample.Web.Models.ParityRow>
+@{
+    ViewData["Title"] = "AutoMapper Parity Matrix";
+    string Badge(string status) => status switch
+    {
+        "Supported" => "bg-success",
+        "Partial" => "bg-warning text-dark",
+        "Planned" => "bg-info text-dark",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item">Parity</li>
+            <li class="breadcrumb-item active" aria-current="page">Parity Matrix</li>
+        </ol>
+    </nav>
+
+    <h1 class="display-6 fw-bold text-primary">AutoMapper Parity Matrix</h1>
+    <p class="lead">Every AutoMapper feature and its status in AutoMapSharp. This page renders <code>docs/automapper-parity-matrix.md</code>.</p>
+
+    <div class="mb-3">
+        @foreach (var group in Model.GroupBy(r => r.Status))
+        {
+            <span class="badge @Badge(group.Key) me-2 p-2" data-testid="status-count">@group.Key: @group.Count()</span>
+        }
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm align-middle">
+            <thead class="table-light">
+                <tr><th>Area</th><th>AutoMapper</th><th>AutoMapSharp</th><th>Status</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    <tr>
+                        <td class="text-muted small">@row.Area</td>
+                        <td><code>@row.AutoMapper</code></td>
+                        <td><code>@row.AutoMapSharp</code></td>
+                        <td><span class="badge @Badge(row.Status)">@row.Status</span></td>
+                        <td class="small">@row.Notes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

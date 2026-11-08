@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <RootNamespace>AutoMapSharp.Cli</RootNamespace>
+    <Title>AutoMapSharp migration tool</Title>
+    <Description>A .NET tool that rewrites AutoMapper code to AutoMapSharp across a whole folder. Run it with --dry-run first to see every change it would make, then run it for real and review the diff. The migration guide covers the few things it cannot convert automatically.</Description>
+    <PackageTags>automapper;migration;mapper;dotnet-tool;cli;automapper-alternative</PackageTags>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>automapsharp-migrate</ToolCommandName>
+    <PackageId>dotnet-automapsharp-migrate</PackageId>
+    <!-- Only ship English Roslyn resources with the tool. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutoMapSharp.MigrationAnalyzer\AutoMapSharp.MigrationAnalyzer.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
+    <RootNamespace>AutoMapSharp.Collections</RootNamespace>
+    <IsPackable>true</IsPackable>
+    <PackageId>AutoMapSharp.Collections</PackageId>
+    <Title>AutoMapSharp collection merging</Title>
+    <Description>Merge collections instead of replacing them. Tell AutoMapSharp how to match items, and it updates existing destination items in place, adds new ones and removes the ones that are gone. Handy for EF Core entities, where change tracking needs the original objects. A replacement for AutoMapper.Collection.</Description>
+    <PackageTags>mapper;mapping;automapper;automapper-collection;collections;merge;efcore</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- XML docs give package users IntelliSense. Public members without comments are allowed for now. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutoMapSharp\AutoMapSharp.csproj" />
+  </ItemGroup>
+
+</Project>

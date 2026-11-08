@@ -1,0 +1,63 @@
+@model List<AutoMapSharp.Sample.Web.Models.CodeFixViewModel>
+@{
+    ViewData["Title"] = "Roslyn Code Fix Providers";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">Phase 7: IDE Code Fixes</li>
+                </ol>
+            </nav>
+            <h1 class="display-6 fw-bold text-success">One-Click Roslyn Code Fixes</h1>
+            <p class="lead text-muted">
+                Resolve compiler diagnostics effortlessly. When an analyzer raises an <code>AMS001</code> warning, the IDE lightbulb provides instant, automated code fixes.
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var fix in Model)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <span class="badge bg-primary me-2">@fix.RuleId</span>
+                        <strong class="fs-5">💡 @fix.Title</strong>
+                        <p class="text-muted small mb-0 mt-1">@fix.TriggerDescription</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <h6 class="text-secondary fw-semibold">Before (Code with Warning)</h6>
+                                <pre class="bg-light p-3 rounded border font-monospace small"><code>@fix.BeforeCode</code></pre>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success fw-semibold">After Lightbulb Fix</h6>
+                                <pre class="bg-light p-3 rounded border border-success font-monospace small"><code>@fix.AfterCode</code></pre>
+                            </div>
+                        </div>
+                        <div class="alert alert-info py-2 px-3 mt-3 mb-0 small">
+                            <i class="bi bi-info-circle-fill me-1"></i> @fix.Explanation
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold">CLI Solution-Wide Quick Fix</h5>
+                    <p class="text-muted mb-2">You can also format and apply all fixes across an entire repository without opening an IDE:</p>
+                    <pre class="bg-white p-3 rounded border font-monospace small"><code>dotnet format analyzers --diagnostics=AMS001</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

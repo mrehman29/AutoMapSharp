@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoMapSharp Showcase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body { background-color: #f8f9fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .navbar-brand { font-weight: 700; color: #0d6efd !important; letter-spacing: -0.5px; }
+        .feature-card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.15s ease-in-out; }
+        .feature-card:hover { transform: translateY(-2px); }
+        .code-snippet { background: #212529; color: #f8f9fa; border-radius: 8px; padding: 14px; font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9rem; overflow-x: auto; }
+        .json-box { background: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 0.88rem; max-height: 400px; overflow-y: auto; }
+        .badge-pill { border-radius: 50rem; padding: 0.4em 0.8em; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand text-primary" asp-controller="Home" asp-action="Index">⚡ AutoMapSharp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Phase 1 & 2 Features</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Orders" asp-action="Index">1. Deep Flattening & Conversions</a></li>
+                            <li><a class="dropdown-item" asp-controller="Orders" asp-action="Update">2. In-Place Entity Update</a></li>
+                            <li><a class="dropdown-item" asp-controller="Orders" asp-action="NullSafe">3. Null-Safe Flattening</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Conventions" asp-action="SnakeCase">4. snake_case to PascalCase</a></li>
+                            <li><a class="dropdown-item" asp-controller="Conventions" asp-action="PrefixSuffix">5. Prefix & Suffix Stripping</a></li>
+                            <li><a class="dropdown-item" asp-controller="Records" asp-action="Index">6. Positional Records (C# 9+)</a></li>
+                            <li><a class="dropdown-item" asp-controller="Dynamic" asp-action="Index">7. Dynamic & Untyped Mapping</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-info" href="#" role="button" data-bs-toggle="dropdown">Phase 3: Fluent API</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="Overview">Overview & Chaining</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="SkipAndConstants">3.2. Skip & Constants</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="MapSource">3.3. MapSource Expressions</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="Conditionals">3.4. Conditionals & Fallbacks</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="ReverseMap">3.5. Bidirectional ReverseMap</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fluent" asp-action="ValueTransformers">3.6. Value Transformers</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" role="button" data-bs-toggle="dropdown">Phase 4: Collections & Cycles</a>
+                        <ul class="dropdown-menu">
+                            <li><h6 class="dropdown-header">Collections Engine</h6></li>
+                            <li><a class="dropdown-item" asp-controller="Collections" asp-action="Standard">4.1. Arrays & Lists</a></li>
+                            <li><a class="dropdown-item" asp-controller="Collections" asp-action="DictionariesAndSets">4.2. Dictionaries & Sets</a></li>
+                            <li><a class="dropdown-item" asp-controller="Collections" asp-action="NullCollections">4.3. Null-Collection Policies</a></li>
+                            <li><a class="dropdown-item" asp-controller="Collections" asp-action="InPlaceUpdate">4.4. In-Place Collection Updates</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Complex Types & Graphs</h6></li>
+                            <li><a class="dropdown-item" asp-controller="ComplexTypes" asp-action="DeepChaining">4.5. 4-Level Deep Chaining</a></li>
+                            <li><a class="dropdown-item" asp-controller="ComplexTypes" asp-action="ConstructUsing">4.6. ConstructUsing Factory</a></li>
+                            <li><a class="dropdown-item" asp-controller="ComplexTypes" asp-action="CircularReferences">4.7. Circular Graph Protection</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown">Phase 5: Advanced Logic</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Resolvers" asp-action="Index">5.1. Custom Property Resolvers (DI)</a></li>
+                            <li><a class="dropdown-item" asp-controller="Resolvers" asp-action="TypeConverters">5.2. Type Converters (ConvertUsing)</a></li>
+                            <li><a class="dropdown-item" asp-controller="Polymorphic" asp-action="Billing">5.3. Polymorphic Subclasses (Include)</a></li>
+                            <li><a class="dropdown-item" asp-controller="Lifecycle" asp-action="Hooks">5.4. Lifecycle Callbacks (Before/After)</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Diagnostics" asp-action="HealthCheck">5.5. Configuration Health Check</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light border border-light rounded px-2" href="#" role="button" data-bs-toggle="dropdown">Phase 6: EF Core Projections</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Projections" asp-action="Index">6.1. ProjectOnto Basic Projection</a></li>
+                            <li><a class="dropdown-item" asp-controller="Projections" asp-action="SqlInspector">6.2. SQL Query Inspector</a></li>
+                            <li><a class="dropdown-item" asp-controller="Projections" asp-action="Filtered">6.3. Parameterized Projections</a></li>
+                            <li><a class="dropdown-item" asp-controller="Projections" asp-action="ExplicitExpansion">6.4. Explicit Expansion (Navigation)</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-warning border border-warning rounded px-2 ms-lg-1" href="#" role="button" data-bs-toggle="dropdown">Phase 7: Migration & Analyzers</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="Analyzers">7.1. Roslyn Analyzers (AMS001-003)</a></li>
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="CodeFixes">7.2. Automated IDE Code Fixes</a></li>
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="AutoMapperScanner">7.3. AutoMapper Code Scanner</a></li>
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="Playground">7.4. Interactive Migration Playground</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-primary border border-primary rounded px-2 ms-lg-1" href="#" role="button" data-bs-toggle="dropdown">Parity</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Matrix">Parity Matrix</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="InlineConfiguration">13.1 Inline Configuration</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="FieldsAndFilters">13.2 Fields &amp; Member Filters</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Conditions">13.3-13.4 Conditions</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="DestinationValues">13.5 UseDestinationValue</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="PerCallOptions">13.6 Per-Call Options</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Constructors">13.7 Constructor Parameters</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="MappingActions">13.8 Mapping Actions</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Converters">13.9-13.10 Value Converters</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Inheritance">13.11 IncludeAllDerived &amp; As</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="OpenGenerics">13.12 Open Generics</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="NamingConventions">13.13 Naming Conventions</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Validation">13.14 Validation</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Tier 2</h6></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Projections">14.1-14.2 Projection Features</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Dictionaries">14.3 Dictionaries &amp; ExpandoObject</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="ExtensionMethods">14.4 Source Extension Methods</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="Attributes">14.5 Attribute Configuration</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="ExecutionPlan">14.6 Execution Plans</a></li>
+                            <li><a class="dropdown-item" asp-controller="Parity" asp-action="CollectionMerge">14.7 Collection Merging</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="Analyzers">13.15 Analyzers</a></li>
+                            <li><a class="dropdown-item" asp-controller="Migration" asp-action="Playground">13.16 Migration Playground</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-success border border-success rounded px-2 ms-lg-1" href="#" role="button" data-bs-toggle="dropdown">Reliability</a>
+                        <ul class="dropdown-menu">
+                            <li><h6 class="dropdown-header">Code review fixes</h6></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="NullableValues">Nullable Values &amp; Structs</a></li>
+                            <li><a class="dropdown-item" asp-controller="Projections" asp-action="SafeParameters">Safe Parameterized Projections</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="RecordsNested">Records with Nested Types</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="ReverseUnflatten">ReverseMap Unflattening</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="EnumByName">Enum Mapping by Name</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="CollectionShapes">Every Collection Shape</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="SharedReferences">Shared References</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reliability" asp-action="ScopedResolver">Scoped Services in Resolvers</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-info border border-info rounded px-2 ms-lg-1" href="#" role="button" data-bs-toggle="dropdown">Phase 8: Benchmarks & Release</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Benchmarks" asp-action="Results">8.1. Benchmark Status</a></li>
+                            <li><a class="dropdown-item" asp-controller="Benchmarks" asp-action="NativeAot">8.2. Source Generator &amp; Native AOT</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="About" asp-action="RuntimeMatrix">8.3. Target Framework Matrix</a></li>
+                            <li><a class="dropdown-item" asp-controller="About" asp-action="Pipeline">8.4. CI/CD & Verification Pipeline</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2">MIT Licensed</span>
+                    <span class="badge bg-primary">v1.0.0-preview.1</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        @RenderBody()
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-white border-top text-center text-muted">
+        <div class="container">
+            <small>AutoMapSharp — Open Source Cleanroom Object-to-Object Mapper for .NET</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

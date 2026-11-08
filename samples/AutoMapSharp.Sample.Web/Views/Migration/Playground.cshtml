@@ -1,0 +1,100 @@
+@model AutoMapSharp.Sample.Web.Models.MigrationPlaygroundViewModel
+@{
+    ViewData["Title"] = "Interactive Migration Playground";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="row mb-3">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">Phase 7: Migration Playground</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold text-primary">Interactive Migration Workbench</h1>
+                    <p class="lead text-muted mb-0">
+                        Paste legacy AutoMapper syntax on the left and see the instantaneous Roslyn-powered transformation to AutoMapSharp on the right.
+                    </p>
+                </div>
+                <div>
+                    <span class="badge bg-success py-2 px-3 fs-6">
+                        <i class="bi bi-magic me-1"></i> @Model.TotalReplacements Transformations Applied
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" asp-action="Playground">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-dark text-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold"><i class="bi bi-file-earmark-code me-1"></i> Legacy AutoMapper C# Code</span>
+                        <button type="submit" class="btn btn-warning btn-sm fw-bold">
+                            <i class="bi bi-arrow-repeat me-1"></i> Run Automated Migration
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea asp-for="OriginalCode" rows="20" class="form-control font-monospace border-0 p-3 small" style="resize: vertical; font-size: 0.88rem;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-primary text-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold"><i class="bi bi-check-circle-fill me-1"></i> Migrated AutoMapSharp C# Code</span>
+                        <span class="badge bg-light text-primary">Cleanroom MIT</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea readonly rows="20" class="form-control font-monospace border-0 p-3 small bg-light" style="resize: vertical; font-size: 0.88rem;">@Model.MigratedCode</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0">Applied AST Syntax Transformations (@Model.ChangesApplied.Count)</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.ChangesApplied.Count == 0)
+                    {
+                        <div class="p-3 text-muted">No transformations needed.</div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 140px;">Rule</th>
+                                        <th style="width: 100px;">Line</th>
+                                        <th>Syntax Mutation Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var change in Model.ChangesApplied)
+                                    {
+                                        <tr>
+                                            <td><span class="badge bg-primary font-monospace">@change.RuleId</span></td>
+                                            <td><span class="badge bg-secondary font-monospace">Line @change.LineNumber</span></td>
+                                            <td class="font-monospace small">@change.Description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

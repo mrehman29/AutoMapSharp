@@ -1,0 +1,125 @@
+@{
+    ViewData["Title"] = "Phase 3.5: Bidirectional ReverseMap";
+    string direction = ViewBag.Direction as string ?? "forward";
+    var sourceEntity = ViewBag.SourceEntity as AutoMapSharp.Sample.Web.Models.ReverseEmployeeEntity;
+    var mappedDto = ViewBag.MappedDto as AutoMapSharp.Sample.Web.Models.ReverseEmployeeDto;
+    var sourceDto = ViewBag.SourceDto as AutoMapSharp.Sample.Web.Models.ReverseEmployeeDto;
+    var mappedEntity = ViewBag.MappedEntity as AutoMapSharp.Sample.Web.Models.ReverseEmployeeEntity;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Overview">Fluent API</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ReverseMap</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-success text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Task 3.5: Bidirectional Mapping (`ReverseMap`)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Configure both mapping directions in a single declaration using <code>.ReverseMap()</code>. AutoMapSharp automatically inverts properties and member redirections.
+            </p>
+
+            <div class="d-flex align-items-center mb-4 p-3 bg-light rounded border">
+                <span class="me-3 fw-bold">Active Direction:</span>
+                <div class="btn-group" role="group">
+                    <a asp-action="ReverseMap" asp-route-direction="forward" class="btn @(direction == "forward" ? "btn-primary" : "btn-outline-primary")">
+                        <i class="bi bi-arrow-right me-1"></i>Forward: Entity &rarr; DTO
+                    </a>
+                    <a asp-action="ReverseMap" asp-route-direction="reverse" class="btn @(direction == "reverse" ? "btn-success" : "btn-outline-success")">
+                        <i class="bi bi-arrow-left me-1"></i>Reverse: DTO &rarr; Entity
+                    </a>
+                </div>
+            </div>
+
+            @if (direction == "forward")
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-primary h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-database me-2"></i>Source: ReverseEmployeeEntity</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr><th class="w-40">Id</th><td>@sourceEntity?.Id</td></tr>
+                                        <tr><th>FullName</th><td><strong>@sourceEntity?.FullName</strong></td></tr>
+                                        <tr><th>Department</th><td>@sourceEntity?.Department</td></tr>
+                                        <tr class="table-warning"><th>ConfidentialCode</th><td><code>@sourceEntity?.ConfidentialCode</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-success h-100">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="bi bi-file-earmark-check me-2"></i>Target: ReverseEmployeeDto</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr><th class="w-40">Id</th><td>@mappedDto?.Id</td></tr>
+                                        <tr class="table-info"><th>DisplayName</th><td><strong class="text-primary">@mappedDto?.DisplayName</strong> <small class="text-muted d-block">Mapped from FullName</small></td></tr>
+                                        <tr><th>Department</th><td>@mappedDto?.Department</td></tr>
+                                        <tr class="table-secondary"><th>ConfidentialCode</th><td><span class="badge bg-secondary">Skipped</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-success h-100">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="bi bi-file-earmark me-2"></i>Source: ReverseEmployeeDto</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr><th class="w-40">Id</th><td>@sourceDto?.Id</td></tr>
+                                        <tr><th>DisplayName</th><td><strong>@sourceDto?.DisplayName</strong></td></tr>
+                                        <tr><th>Department</th><td>@sourceDto?.Department</td></tr>
+                                        <tr class="table-secondary"><th>ConfidentialCode</th><td><span class="badge bg-secondary">null</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-primary h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-arrow-return-left me-2"></i>Target: Inverted ReverseEmployeeEntity</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr><th class="w-40">Id</th><td>@mappedEntity?.Id</td></tr>
+                                        <tr class="table-info"><th>FullName</th><td><strong class="text-success">@mappedEntity?.FullName</strong> <small class="text-muted d-block">Automatically reversed from DisplayName</small></td></tr>
+                                        <tr><th>Department</th><td>@mappedEntity?.Department</td></tr>
+                                        <tr class="table-primary"><th>ConfidentialCode</th><td><span class="badge bg-primary">@mappedEntity?.ConfidentialCode</span> <small class="text-muted d-block">Assigned via reverse override: <code>.UseValue("REVERSE-RESTORED")</code></small></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="mt-4">
+                <a asp-action="Conditionals" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: Conditionals</a>
+                <a asp-action="ValueTransformers" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Value Transformers</a>
+            </div>
+        </div>
+    </div>
+</div>

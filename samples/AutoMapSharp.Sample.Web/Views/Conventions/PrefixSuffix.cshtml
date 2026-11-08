@@ -1,0 +1,73 @@
+@using System.Text.Json
+@model AutoMapSharp.Sample.Web.Models.ComparisonViewModel<AutoMapSharp.Sample.Web.Models.LegacyProduct, AutoMapSharp.Sample.Web.Models.ProductViewModel>
+@{
+    ViewData["Title"] = Model.FeatureTitle;
+    var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold text-dark">@Model.FeatureTitle</h2>
+        <p class="text-muted">@Model.FeatureDescription</p>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Dashboard</a>
+</div>
+
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-dark text-white fw-semibold">
+        AutoMapSharp Module Configuration
+    </div>
+    <div class="card-body p-0">
+        <pre class="code-snippet m-0"><code>@Model.MappingRuleCode</code></pre>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Legacy Object with Prefixes & Suffixes -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-secondary text-white fw-bold">
+                1. Legacy Entity (with m_ and Model)
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>m_Title</code> <small class="text-muted">(Prefix: m_)</small>: <span class="fw-bold">@Model.Source.m_Title</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>CategoryModel</code> <small class="text-muted">(Suffix: Model)</small>: <span class="fw-bold">@Model.Source.CategoryModel</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>m_Price</code> <small class="text-muted">(Prefix: m_)</small>: <span>$@Model.Source.m_Price</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Raw JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Source, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Clean Mapped ViewModel -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-success border-2">
+            <div class="card-header bg-success text-white fw-bold">
+                2. Clean ViewModel (Cleaned Names)
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Title:</strong> <span class="badge bg-success">@Model.Destination.Title</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Category:</strong> <span class="badge bg-success">@Model.Destination.Category</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Price:</strong> <span class="fw-bold text-success">$@Model.Destination.Price</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Result JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Destination, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+</div>

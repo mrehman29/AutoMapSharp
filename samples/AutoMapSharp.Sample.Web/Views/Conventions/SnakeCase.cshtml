@@ -1,0 +1,79 @@
+@using System.Text.Json
+@model AutoMapSharp.Sample.Web.Models.ComparisonViewModel<AutoMapSharp.Sample.Web.Models.ExternalWebhookUser, AutoMapSharp.Sample.Web.Models.InternalUserViewModel>
+@{
+    ViewData["Title"] = Model.FeatureTitle;
+    var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold text-dark">@Model.FeatureTitle</h2>
+        <p class="text-muted">@Model.FeatureDescription</p>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Dashboard</a>
+</div>
+
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-dark text-white fw-semibold">
+        AutoMapSharp Module Configuration
+    </div>
+    <div class="card-body p-0">
+        <pre class="code-snippet m-0"><code>@Model.MappingRuleCode</code></pre>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Source snake_case Payload -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+                1. External Webhook Payload (snake_case)
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>first_name</code>: <span class="fw-bold">@Model.Source.first_name</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>last_name</code>: <span class="fw-bold">@Model.Source.last_name</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>user_age</code>: <span class="badge bg-secondary">@Model.Source.user_age</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <code>email_address</code>: <span>@Model.Source.email_address</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Raw JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Source, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Mapped PascalCase Model -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-primary border-2">
+            <div class="card-header bg-primary text-white fw-bold">
+                2. Internal ViewModel (PascalCase)
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>FirstName:</strong> <span class="badge bg-success">@Model.Destination.FirstName</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>LastName:</strong> <span class="badge bg-success">@Model.Destination.LastName</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>UserAge:</strong> <span class="badge bg-primary">@Model.Destination.UserAge</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>EmailAddress:</strong> <span>@Model.Destination.EmailAddress</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Mapped Result JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Destination, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+</div>

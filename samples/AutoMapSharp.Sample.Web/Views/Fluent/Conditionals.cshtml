@@ -1,0 +1,113 @@
+@model AutoMapSharp.Sample.Web.Models.ConditionResultViewModel
+@{
+    ViewData["Title"] = "Phase 3.4: Conditionals & Fallbacks";
+    var formModel = ViewBag.FormModel as AutoMapSharp.Sample.Web.Models.ConditionFormModel ?? new();
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Overview">Fluent API</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Conditionals & Fallbacks</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-question-diamond me-2"></i>Task 3.4: Conditionals & Fallbacks (`If`, `Fallback`)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Conditionally map properties with <code>.If(predicate)</code> and supply default substitutes for null source properties using <code>.Fallback(defaultValue)</code>.
+            </p>
+
+            <div class="alert alert-info">
+                <strong>AutoMapper Replacement:</strong> Replaces <code>opt.Condition()</code> with <code>opt.If()</code>, and replaces <code>opt.NullSubstitute()</code> with <code>opt.Fallback()</code>.
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-sliders me-2"></i>Interactive Input Form</h5>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="Conditionals" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">Member Age</label>
+                                    <input type="number" name="Age" class="form-control" value="@formModel.Age" required />
+                                    <small class="text-muted">Must be &ge; 18 to qualify for VIP discount.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Annual Spend ($)</label>
+                                    <input type="number" step="0.01" name="AnnualSpend" class="form-control" value="@formModel.AnnualSpend" required />
+                                    <small class="text-muted">Must be &ge; $1,000 for <code>Gold Premium Member</code> status.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Biography (Leave empty to test Fallback)</label>
+                                    <textarea name="Bio" class="form-control" rows="3" placeholder="Leave blank to trigger fallback...">@formModel.Bio</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-arrow-repeat me-1"></i>Apply & Map</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-check-circle me-2"></i>Live Mapping Result (ConditionResultViewModel)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="w-40">Age</th>
+                                        <td>@Model.Age</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Annual Spend</th>
+                                        <td>$@Model.AnnualSpend.ToString("N2")</td>
+                                    </tr>
+                                    <tr class="@(Model.MemberStatus.Contains("Gold") ? "table-success" : "table-warning")">
+                                        <th>MemberStatus</th>
+                                        <td>
+                                            @if (Model.MemberStatus.Contains("Gold"))
+                                            {
+                                                <span class="badge bg-success fs-6"><i class="bi bi-star-fill me-1"></i>@Model.MemberStatus</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary fs-6">@Model.MemberStatus</span>
+                                            }
+                                            <div class="small text-muted mt-1">
+                                                <code>opt.If(src => src.AnnualSpend &gt;= 1000m).UseValue("Gold Premium Member")</code>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <th>Biography</th>
+                                        <td>
+                                            <div class="p-2 bg-light border rounded">
+                                                @Model.Bio
+                                            </div>
+                                            <div class="small text-muted mt-1">
+                                                <code>opt.Fallback("Default bio: Passionate shopper.")</code>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="MapSource" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: MapSource</a>
+                <a asp-action="ReverseMap" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: ReverseMap Showcase</a>
+            </div>
+        </div>
+    </div>
+</div>

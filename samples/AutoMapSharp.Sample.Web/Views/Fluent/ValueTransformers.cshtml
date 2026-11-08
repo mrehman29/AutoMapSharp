@@ -1,0 +1,81 @@
+@model AutoMapSharp.Sample.Web.Models.CleanTextViewModel
+@{
+    ViewData["Title"] = "Phase 3.6: Value Transformers";
+    var dirty = ViewBag.DirtyEntity as AutoMapSharp.Sample.Web.Models.DirtyTextEntity;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Overview">Fluent API</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Value Transformers</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-info text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-magic me-2"></i>Task 3.6: Global & Type-Level Value Transformers</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Apply global sanitization, trimming, and normalization rules across all mapped properties of a specific type using <code>ValueTransformers.Add&lt;T&gt;(...)</code>.
+            </p>
+
+            <div class="alert alert-info">
+                <strong>AutoMapper Replacement:</strong> Replaces AutoMapper's <code>ValueTransformers.Add&lt;string&gt;(v => v.Trim())</code> configured within profile constructors.
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-warning h-100">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="bi bi-file-earmark-x me-2"></i>Raw Input with Excess Whitespace & Tabs</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="fw-bold">Title (Raw)</label>
+                                <pre class="bg-light p-2 border rounded"><code>[@dirty?.Title]</code></pre>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold">Description (Raw with tabs and newlines)</label>
+                                <pre class="bg-light p-2 border rounded"><code>[@dirty?.Description]</code></pre>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold">Tags (Raw)</label>
+                                <pre class="bg-light p-2 border rounded"><code>[@dirty?.Tags]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-check2-all me-2"></i>Clean Sanitized Output (ValueTransformers Applied)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="fw-bold text-success">Title (Trimmed)</label>
+                                <pre class="bg-light p-2 border border-success rounded"><code>[@Model.Title]</code></pre>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold text-success">Description (Trimmed)</label>
+                                <pre class="bg-light p-2 border border-success rounded"><code>[@Model.Description]</code></pre>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fw-bold text-success">Tags (Trimmed)</label>
+                                <pre class="bg-light p-2 border border-success rounded"><code>[@Model.Tags]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="ReverseMap" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: ReverseMap</a>
+                <a asp-action="Overview" class="btn btn-primary"><i class="bi bi-house me-1"></i>Back to Overview</a>
+            </div>
+        </div>
+    </div>
+</div>

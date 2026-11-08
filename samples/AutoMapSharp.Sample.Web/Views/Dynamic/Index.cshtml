@@ -1,0 +1,69 @@
+@using System.Text.Json
+@model AutoMapSharp.Sample.Web.Models.ComparisonViewModel<object, AutoMapSharp.Sample.Web.Models.WebCustomerRecord>
+@{
+    ViewData["Title"] = Model.FeatureTitle;
+    var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold text-dark">@Model.FeatureTitle</h2>
+        <p class="text-muted">@Model.FeatureDescription</p>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Dashboard</a>
+</div>
+
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-dark text-white fw-semibold">
+        AutoMapSharp Untyped Mapping Invocations
+    </div>
+    <div class="card-body p-0">
+        <pre class="code-snippet m-0"><code>object untypedSource = GetDynamicSource();
+
+// Overload 1: Untyped source mapping
+var record = _mapper.Map&lt;WebCustomerRecord&gt;(untypedSource);
+
+// Overload 2: Dynamic runtime reflection mapping
+object result = _mapper.Map(untypedSource, typeof(WebCustomerSource), typeof(WebCustomerRecord));</code></pre>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Untyped Source Object -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-secondary text-white fw-bold">
+                1. Untyped Source (Cast to System.Object)
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Source instance passed as <code>object untypedSource</code> with no compile-time generic source type known.</p>
+                <h6 class="fw-semibold text-muted">Source JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Source, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Mapped Strongly-Typed Destination -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-dark border-2">
+            <div class="card-header bg-dark text-white fw-bold">
+                2. Resolved & Mapped Result
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Id:</strong> <span>@Model.Destination.Id</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>FullName:</strong> <span class="badge bg-success">@Model.Destination.FullName</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Tier:</strong> <span class="badge bg-primary">@Model.Destination.Tier</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Result JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Destination, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+</div>

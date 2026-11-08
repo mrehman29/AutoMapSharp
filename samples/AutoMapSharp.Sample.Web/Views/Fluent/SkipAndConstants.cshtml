@@ -1,0 +1,126 @@
+@model AutoMapSharp.Sample.Web.Models.UserProfileViewModel
+@{
+    ViewData["Title"] = "Phase 3.2: Property Skipping & Constants";
+    var source = ViewBag.SourceEntity as AutoMapSharp.Sample.Web.Models.UserProfileEntity;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Overview">Fluent API</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Skip & Constants</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-shield-x me-2"></i>Task 3.2: Property Skipping & Constant Values (`Skip`, `UseValue`)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Omit sensitive domain properties using <code>.ForProperty(dest => dest.Prop, opt => opt.Skip())</code> and inject immutable constant badges using <code>.UseValue(constant)</code>.
+            </p>
+
+            <div class="alert alert-info">
+                <strong>AutoMapper Replacement:</strong> Replaces legacy <code>opt.Ignore()</code> with <code>opt.Skip()</code>, and uses <code>opt.UseValue("constant")</code> to assign static constants without lambda execution overhead.
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-danger h-100">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="bi bi-database me-2"></i>Source Entity (UserProfileEntity)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="w-40">User ID</th>
+                                        <td>@source?.Id</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Username</th>
+                                        <td>@source?.Username</td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <th>PasswordHash <span class="badge bg-danger">SENSITIVE</span></th>
+                                        <td><code class="text-danger">@source?.PasswordHash</code></td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <th>InternalSecurityNotes <span class="badge bg-danger">INTERNAL</span></th>
+                                        <td><code class="text-danger">@source?.InternalSecurityNotes</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>First / Last Name</th>
+                                        <td>@source?.FirstName @source?.LastName</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-file-earmark-check me-2"></i>AutoMapSharp Mapped ViewModel (UserProfileViewModel)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="w-40">User ID</th>
+                                        <td>@Model.Id</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Username</th>
+                                        <td>@Model.Username</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <th>PasswordHash</th>
+                                        <td>
+                                            @if (Model.PasswordHash == null)
+                                            {
+                                                <span class="badge bg-secondary"><i class="bi bi-shield-check me-1"></i>Skipped (null)</span>
+                                            }
+                                            else
+                                            {
+                                                <code>@Model.PasswordHash</code>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <th>InternalSecurityNotes</th>
+                                        <td>
+                                            @if (Model.InternalSecurityNotes == null)
+                                            {
+                                                <span class="badge bg-secondary"><i class="bi bi-shield-check me-1"></i>Skipped (null)</span>
+                                            }
+                                            else
+                                            {
+                                                <code>@Model.InternalSecurityNotes</code>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <th>TenantBadge</th>
+                                        <td>
+                                            <span class="badge bg-primary fs-6"><i class="bi bi-tag-fill me-1"></i>@Model.TenantBadge</span>
+                                            <small class="text-muted d-block mt-1">Populated via <code>.UseValue("CORP-GLOBAL")</code></small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="Overview" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Back to Overview</a>
+                <a asp-action="MapSource" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: MapSource Showcase</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <!-- Shipped inside the AutoMapSharp package (analyzers/dotnet/cs), not as its own package. -->
+    <IsPackable>false</IsPackable>
+    <RootNamespace>AutoMapSharp.Analyzers</RootNamespace>
+    <Description>Compile-time Roslyn diagnostic analyzers and code fixes for AutoMapSharp.</Description>
+    <PackageTags>mapping;mapper;roslyn;analyzers;diagnostics</PackageTags>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);RS1038;RS1036;RS2008</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Member name matching shared with the analyzer, so both agree on what is mapped. -->
+    <Compile Include="..\Shared\MemberNameMatching.cs" Link="Shared\MemberNameMatching.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,109 @@
+@model AutoMapSharp.Sample.Web.Models.WebOrgEnterpriseViewModel
+@{
+    ViewData["Title"] = "Phase 4.5: Deep Hierarchy & Sub-Mapper Chaining";
+    var source = ViewBag.SourceHierarchy as AutoMapSharp.Sample.Web.Models.WebOrgEnterprise;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Complex Types: Deep Chaining</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-diagram-3 me-2"></i>Task 4.5: Nested Complex Objects & Sub-Mapper Chaining</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                AutoMapSharp recursively identifies nested complex member types, locates their registered <code>DefineMap</code> rules, and chains them seamlessly through 4+ levels of domain hierarchies.
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Source Entity Tree -->
+                <div class="col-lg-6">
+                    <div class="card border-secondary h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-hdd-network me-2"></i>Source Domain Entity (4 Levels)</h5>
+                            <span class="badge bg-secondary">Domain Model</span>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-light">
+                                    <strong>🏢 Enterprise:</strong> <code>@source?.Name</code>
+                                </li>
+                                <li class="list-group-item ms-3 border-start border-3 border-primary">
+                                    <strong>📂 Division:</strong> <code>@source?.Division?.Name</code>
+                                </li>
+                                <li class="list-group-item ms-5 border-start border-3 border-info">
+                                    <strong>👥 Department:</strong> <code>@source?.Division?.Department?.Name</code>
+                                </li>
+                                <li class="list-group-item ms-5 ps-4 border-start border-3 border-success">
+                                    <strong>👤 Manager:</strong> <code>@source?.Division?.Department?.Manager?.Name</code>
+                                    <br /><small class="text-muted">Title: @source?.Division?.Department?.Manager?.Title</small>
+                                    <br /><small class="text-muted">Email: @source?.Division?.Department?.Manager?.Email</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination ViewModel Tree -->
+                <div class="col-lg-6">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-window-stack me-2"></i>Mapped ViewModel Tree</h5>
+                            <span class="badge bg-light text-primary">WebOrgEnterpriseViewModel</span>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-light">
+                                    <span class="badge bg-primary me-2">L1</span>
+                                    <strong>Enterprise:</strong> <span class="text-primary fw-bold">@Model.Name</span>
+                                </li>
+                                <li class="list-group-item ms-3 border-start border-3 border-primary">
+                                    <span class="badge bg-info text-dark me-2">L2</span>
+                                    <strong>Division:</strong> <span class="fw-semibold">@Model.Division?.Name</span>
+                                </li>
+                                <li class="list-group-item ms-5 border-start border-3 border-info">
+                                    <span class="badge bg-warning text-dark me-2">L3</span>
+                                    <strong>Department:</strong> <span class="fw-semibold">@Model.Division?.Department?.Name</span>
+                                </li>
+                                <li class="list-group-item ms-5 ps-4 border-start border-3 border-success">
+                                    <span class="badge bg-success me-2">L4</span>
+                                    <strong>Manager:</strong> <span class="text-success fw-bold">@Model.Division?.Department?.Manager?.Name</span>
+                                    <div class="mt-1">
+                                        <span class="badge bg-light text-dark border">@Model.Division?.Department?.Manager?.Title</span>
+                                        <a href="mailto:@Model.Division?.Department?.Manager?.Email" class="badge bg-light text-primary border text-decoration-none">
+                                            <i class="bi bi-envelope me-1"></i>@Model.Division?.Department?.Manager?.Email
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Module Configuration</h5>
+                <pre class="code-snippet"><code>// Registered in Phase4WebModule
+DefineMap&lt;WebOrgManager, WebOrgManagerViewModel&gt;();
+DefineMap&lt;WebOrgDepartment, WebOrgDepartmentViewModel&gt;();
+DefineMap&lt;WebOrgDivision, WebOrgDivisionViewModel&gt;();
+DefineMap&lt;WebOrgEnterprise, WebOrgEnterpriseViewModel&gt;();
+
+// Single call to Map executes the entire chain recursively:
+var viewModel = mapper.Map&lt;WebOrgEnterprise, WebOrgEnterpriseViewModel&gt;(source);</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Collections" asp-action="InPlaceUpdate" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: In-Place Collection Updates</a>
+                <a asp-action="ConstructUsing" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: ConstructUsing Factory</a>
+            </div>
+        </div>
+    </div>
+</div>

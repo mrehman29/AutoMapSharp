@@ -1,0 +1,571 @@
+@{
+    ViewData["Title"] = "Feature Showcase Dashboard";
+}
+
+<div class="p-4 p-md-5 mb-4 rounded text-white bg-dark shadow-sm">
+    <div class="col-md-9 px-0">
+        <h1 class="display-5 fw-bold">⚡ AutoMapSharp Interactive Showcase</h1>
+        <p class="lead my-3">
+            A standalone demonstration of <strong>AutoMapSharp</strong> object-to-object mapping capabilities. Explore real-world hardcoded domain entities mapped into ViewModels across all Phase 1 and Phase 2 features.
+        </p>
+        <a asp-controller="Orders" asp-action="Index" class="btn btn-primary btn-lg fw-semibold">Launch Featured Demo &raquo;</a>
+    </div>
+</div>
+
+<div class="alert alert-info shadow-sm mb-4" role="alert">
+    <h5 class="alert-heading fw-bold">Preview status</h5>
+    <p class="mb-2">
+        AutoMapSharp fixes every issue found in a code review, runs on a compiled engine, and covers most
+        AutoMapper features. See the <strong>Reliability</strong> menu for the fixes and the <strong>Parity</strong> menu,
+        including the Parity Matrix, for AutoMapper features. Maps emitted by the source generator also run under Native AOT.
+    </p>
+    <p class="mb-0 small">
+        The full list of findings and fixes is in <code>KNOWN_ISSUES.md</code> in the repository.
+    </p>
+</div>
+
+<h3 class="fw-bold mb-4">Phase 1 & Phase 2 Feature Demos</h3>
+
+<div class="row g-4">
+    <!-- 1. Deep Flattening & Conversions -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Phase 2: Conventions</span>
+                <h5 class="card-title fw-bold">Deep Flattening & Conversions</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps complex nested paths (<code>Customer.Address.City</code>) into flat properties, invokes getter methods, and converts Enums, Guids, and Dates automatically.
+                </p>
+                <a asp-controller="Orders" asp-action="Index" class="btn btn-outline-primary btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. In-Place Entity Updates -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Phase 1: Core Engine</span>
+                <h5 class="card-title fw-bold">In-Place Existing Instance Update</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Updates existing tracked database entities without re-instantiation, preserving EF Core entity references and mapping directly into <code>private set</code> properties.
+                </p>
+                <a asp-controller="Orders" asp-action="Update" class="btn btn-outline-success btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Null-Safe Flattening -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Phase 2: Reliability</span>
+                <h5 class="card-title fw-bold">Null-Safe Short-Circuiting</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps object graphs where intermediate objects are null (<code>Customer = null</code>). Guarantees safe evaluation with zero <code>NullReferenceException</code>s.
+                </p>
+                <a asp-controller="Orders" asp-action="NullSafe" class="btn btn-outline-info btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Cross-Casing Convention -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Phase 2: Conventions</span>
+                <h5 class="card-title fw-bold">snake_case to PascalCase</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps external API/webhook payloads using <code>snake_case</code> (e.g. <code>first_name</code>, <code>user_age</code>) directly into internal <code>PascalCase</code> ViewModels.
+                </p>
+                <a asp-controller="Conventions" asp-action="SnakeCase" class="btn btn-outline-warning text-dark btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Prefix & Suffix Stripping -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-secondary mb-2 align-self-start">Phase 2: Conventions</span>
+                <h5 class="card-title fw-bold">Prefix & Suffix Stripping</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Strips Hungarian field prefixes (e.g. <code>m_Title</code>, <code>m_Price</code>) and architectural suffixes (<code>CategoryModel</code>) into clean DTO names.
+                </p>
+                <a asp-controller="Conventions" asp-action="PrefixSuffix" class="btn btn-outline-secondary btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Positional Records -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-danger mb-2 align-self-start">Phase 2: Modern C#</span>
+                <h5 class="card-title fw-bold">C# 9+ Positional Records</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps classes into immutable positional records without parameterless constructors by matching primary constructor parameters by name.
+                </p>
+                <a asp-controller="Records" asp-action="Index" class="btn btn-outline-danger btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Dynamic & Untyped Mapping -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-dark mb-2 align-self-start">Phase 1: Dynamic Engine</span>
+                <h5 class="card-title fw-bold">Untyped & Reflection Mapping</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Demonstrates <code>_mapper.Map&lt;T&gt;(object)</code> and <code>_mapper.Map(object, Type, Type)</code> for MediatR, CQRS handlers, and dynamic scenarios.
+                </p>
+                <a asp-controller="Dynamic" asp-action="Index" class="btn btn-outline-dark btn-sm mt-3">View Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 3: Fluent Configuration API & Customization</h3>
+
+<div class="row g-4">
+    <!-- Phase 3.1: Overview -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 3.1: Fluent Builder</span>
+                <h5 class="card-title fw-bold">Fluent API Overview</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Discover how <code>DefineMap&lt;TSrc, TDest&gt;()</code> provides chained member configuration, replacing AutoMapper's <code>Profile</code> and <code>CreateMap</code>.
+                </p>
+                <a asp-controller="Fluent" asp-action="Overview" class="btn btn-outline-primary btn-sm mt-3">View Architecture &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 3.2: Skip & Constants -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-danger border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-danger mb-2 align-self-start">Task 3.2: Security</span>
+                <h5 class="card-title fw-bold">Skip & Constant Values</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Omit sensitive hashes and security stamps with <code>.Skip()</code> and populate static tenant badges using <code>.UseValue()</code>.
+                </p>
+                <a asp-controller="Fluent" asp-action="SkipAndConstants" class="btn btn-outline-danger btn-sm mt-3">View Security Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 3.3: MapSource -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 3.3: Expressions</span>
+                <h5 class="card-title fw-bold">MapSource Expressions</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Redirect destination properties to custom computed expressions (e.g. <code>DisplayName = First + " " + Last</code> and full postal address strings).
+                </p>
+                <a asp-controller="Fluent" asp-action="MapSource" class="btn btn-outline-info btn-sm mt-3">View Expression Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 3.4: Conditionals & Fallbacks -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 3.4: Control Flow</span>
+                <h5 class="card-title fw-bold">Conditionals & Fallbacks</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Interactive live workbench testing <code>.If(predicate)</code> conditions and default null substitutions with <code>.Fallback()</code>.
+                </p>
+                <a asp-controller="Fluent" asp-action="Conditionals" class="btn btn-outline-warning text-dark btn-sm mt-3">Test Form Live &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 3.5: Bidirectional ReverseMap -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 3.5: Bidirectional</span>
+                <h5 class="card-title fw-bold">Bidirectional ReverseMap</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Interactive two-way toggle flipping between Entity &rarr; DTO and DTO &rarr; Entity to demonstrate symmetric property and redirection inversion.
+                </p>
+                <a asp-controller="Fluent" asp-action="ReverseMap" class="btn btn-outline-success btn-sm mt-3">Toggle Directions &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 3.6: Value Transformers -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-secondary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-secondary mb-2 align-self-start">Task 3.6: Sanitization</span>
+                <h5 class="card-title fw-bold">Global Value Transformers</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Sanitizes raw dirty strings across all properties in a module using <code>ValueTransformers.Add&lt;string&gt;()</code>.
+                </p>
+                <a asp-controller="Fluent" asp-action="ValueTransformers" class="btn btn-outline-secondary btn-sm mt-3">View Sanitizer Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 4: Collections, Immutability & Circular References</h3>
+
+<div class="row g-4">
+    <!-- Phase 4.1: Standard Collections -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 4.1: Collections</span>
+                <h5 class="card-title fw-bold">Arrays, Lists & Enumerables</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps collections with pre-sized allocations, item type inference, and element-level sub-mapping.
+                </p>
+                <a asp-controller="Collections" asp-action="Standard" class="btn btn-outline-primary btn-sm mt-3">View Collections &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.2: Dictionaries & Sets -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 4.2: Sets & Dictionaries</span>
+                <h5 class="card-title fw-bold">Dictionaries & HashSets</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Demonstrates key-value transformation into <code>Dictionary&lt;K, V&gt;</code> and deduplicated uniqueness in <code>HashSet&lt;T&gt;</code>.
+                </p>
+                <a asp-controller="Collections" asp-action="DictionariesAndSets" class="btn btn-outline-info btn-sm mt-3">View Key-Value Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.3: Null Collections -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 4.3: Null Policies</span>
+                <h5 class="card-title fw-bold">Null-Collection Policies</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Compare empty collection generation (default) vs preserved nulls via <code>AllowNullCollections(true)</code>.
+                </p>
+                <a asp-controller="Collections" asp-action="NullCollections" class="btn btn-outline-warning text-dark btn-sm mt-3">View Null Policies &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.4: In-Place Collection Updates -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 4.4: In-Place Collections</span>
+                <h5 class="card-title fw-bold">In-Place Collection Updates</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Updates existing tracked entity collection instances without re-allocating new lists, ideal for ORM navigation properties.
+                </p>
+                <a asp-controller="Collections" asp-action="InPlaceUpdate" class="btn btn-outline-success btn-sm mt-3">View Update Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.5: Deep Chaining -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-danger border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-danger mb-2 align-self-start">Task 4.5: Deep Hierarchy</span>
+                <h5 class="card-title fw-bold">4-Level Deep Chaining</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps complex enterprise hierarchies across 4 levels (Enterprise &rarr; Division &rarr; Department &rarr; Manager) recursively.
+                </p>
+                <a asp-controller="ComplexTypes" asp-action="DeepChaining" class="btn btn-outline-danger btn-sm mt-3">View Hierarchy &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.6: ConstructUsing -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-dark border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-dark mb-2 align-self-start">Task 4.6: Immutability</span>
+                <h5 class="card-title fw-bold">ConstructUsing Factory</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Instantiates immutable types without parameterless constructors using custom factory expressions <code>.ConstructUsing(src =&gt; ...)</code>.
+                </p>
+                <a asp-controller="ComplexTypes" asp-action="ConstructUsing" class="btn btn-outline-dark btn-sm mt-3">View Factory Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 4.7: Circular References -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-secondary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-secondary mb-2 align-self-start">Task 4.7: Graph Safety</span>
+                <h5 class="card-title fw-bold">Circular Graph Protection</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Safely maps bidirectional self-referencing cycles with <code>PreserveReferences()</code> and depth limit protection with <code>MaxDepth()</code>.
+                </p>
+                <a asp-controller="ComplexTypes" asp-action="CircularReferences" class="btn btn-outline-secondary btn-sm mt-3">View Cycle Safety &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 5: Advanced Logic, Resolvers, Polymorphism & Diagnostics</h3>
+
+<div class="row g-4">
+    <!-- Phase 5.1: Custom Property Resolvers -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 5.1: DI Resolvers</span>
+                <h5 class="card-title fw-bold">Custom Property Resolvers</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Calculates complex taxes dynamically by resolving <code>IPropertyResolver</code> from the DI container with access to <code>ITaxRateService</code>.
+                </p>
+                <a asp-controller="Resolvers" asp-action="Index" class="btn btn-outline-primary btn-sm mt-3">View Tax Resolver &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 5.2: Type Converters -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 5.2: Converters</span>
+                <h5 class="card-title fw-bold">Type-Level Converters</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Completely takes over type transformation using <code>ConvertUsing</code>, parsing raw JSON payloads into structured ViewModels.
+                </p>
+                <a asp-controller="Resolvers" asp-action="TypeConverters" class="btn btn-outline-info btn-sm mt-3">View JSON Converter &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 5.3: Polymorphic Mapping -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 5.3: Polymorphism</span>
+                <h5 class="card-title fw-bold">Polymorphic Subclasses</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Maps polymorphic lists of <code>WebPayment</code> into specialized <code>CreditCard</code>, <code>Crypto</code>, and <code>BankWire</code> DTO cards using <code>Include</code>.
+                </p>
+                <a asp-controller="Polymorphic" asp-action="Billing" class="btn btn-outline-warning text-dark btn-sm mt-3">View Billing Demo &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 5.4: Lifecycle Callbacks -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 5.4: Lifecycle</span>
+                <h5 class="card-title fw-bold">Lifecycle Callbacks</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Demonstrates pre-mapping audit trail logging and post-mapping security token masking with <code>BeforeMap</code> and <code>AfterMap</code>.
+                </p>
+                <a asp-controller="Lifecycle" asp-action="Hooks" class="btn btn-outline-success btn-sm mt-3">View Lifecycle Hooks &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 5.5: Health Check -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 feature-card p-3 border-start border-danger border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-danger mb-2 align-self-start">Task 5.5: Diagnostics</span>
+                <h5 class="card-title fw-bold">Configuration Health Check</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Live interactive configuration verification dashboard executing <code>ValidateConfiguration()</code> to confirm zero unmapped property defects.
+                </p>
+                <a asp-controller="Diagnostics" asp-action="HealthCheck" class="btn btn-outline-danger btn-sm mt-3">Run Health Check &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 6: ORM Integration & Entity Framework Core Projections</h3>
+
+<div class="row g-4">
+    <!-- Phase 6.1: Basic Projections -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 6.1: SQL Projections</span>
+                <h5 class="card-title fw-bold">ProjectOnto Projections</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Projects EF Core <code>DbSet&lt;T&gt;</code> into minimal SQL <code>SELECT</code> queries using <code>.ProjectOnto&lt;TDto&gt;()</code>.
+                </p>
+                <a asp-controller="Projections" asp-action="Index" class="btn btn-outline-primary btn-sm mt-3">View Projections &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 6.2: SQL Inspector -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 6.2: SQL Optimization</span>
+                <h5 class="card-title fw-bold">SQL Query Inspector</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Side-by-side SQL generation comparison between naive in-memory mapping and optimized <code>ProjectOnto</code> queries.
+                </p>
+                <a asp-controller="Projections" asp-action="SqlInspector" class="btn btn-outline-success btn-sm mt-3">Compare SQL &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 6.3: Parameterized Projections -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 6.3: Parameters</span>
+                <h5 class="card-title fw-bold">Parameterized Projections</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Passes dynamic runtime parameters into <code>ProjectOnto</code>, translating into parameterized SQL queries with query plan caching.
+                </p>
+                <a asp-controller="Projections" asp-action="Filtered" class="btn btn-outline-warning text-dark btn-sm mt-3">Filter Orders &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 6.4: Explicit Expansion -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 6.4: Navigation Expansion</span>
+                <h5 class="card-title fw-bold">Explicit Expansion</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Dynamically toggles related entity and collection JOINs in generated SQL queries with <code>opt.ExplicitExpansion()</code>.
+                </p>
+                <a asp-controller="Projections" asp-action="ExplicitExpansion" class="btn btn-outline-info btn-sm mt-3">Toggle Expansion &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 7: Roslyn Analyzers, Diagnostics & Automated Migration Tooling</h3>
+
+<div class="row g-4">
+    <!-- Phase 7.1: Analyzers -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 7.1: Compile-Time Safety</span>
+                <h5 class="card-title fw-bold">Roslyn Analyzers</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Compile-time diagnostics for unmapped destination properties (<code>AMS001</code>), type incompatibilities (<code>AMS002</code>), and circular cycles (<code>AMS003</code>).
+                </p>
+                <a asp-controller="Migration" asp-action="Analyzers" class="btn btn-outline-primary btn-sm mt-3">View Analyzers &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 7.2: Code Fixes -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 7.2: IDE Lightbulbs</span>
+                <h5 class="card-title fw-bold">One-Click Code Fixes</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Interactive before & after diffs demonstrating how Visual Studio and Rider lightbulbs automatically generate <code>.Skip()</code> or <code>.MapSource()</code>.
+                </p>
+                <a asp-controller="Migration" asp-action="CodeFixes" class="btn btn-outline-success btn-sm mt-3">View Code Fixes &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 7.3: AutoMapper Scanner -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 7.3: Diagnostics</span>
+                <h5 class="card-title fw-bold">AutoMapper Scanner</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Paste existing AutoMapper code to detect legacy namespaces, profiles, and methods with accurate line numbers and remediation steps.
+                </p>
+                <a asp-controller="Migration" asp-action="AutoMapperScanner" class="btn btn-outline-warning text-dark btn-sm mt-3">Scan Code &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 7.4: Migration Playground -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 7.4: Real-Time Migrator</span>
+                <h5 class="card-title fw-bold">Migration Workbench</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Interactive side-by-side migration workbench: input legacy AutoMapper code, click "Migrate", and see transformed AutoMapSharp code in real time.
+                </p>
+                <a asp-controller="Migration" asp-action="Playground" class="btn btn-outline-info btn-sm mt-3">Open Workbench &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold my-4">Phase 8: Benchmarks, Source Generator & Release</h3>
+
+<div class="row g-4">
+    <!-- Phase 8.1: Benchmarks -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-primary border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-primary mb-2 align-self-start">Task 8.1: BenchmarkDotNet</span>
+                <h5 class="card-title fw-bold">Performance Results</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Current measured performance. The earlier comparison numbers were withdrawn, and a real BenchmarkDotNet run against AutoMapper 16.3.0 is planned.
+                </p>
+                <a asp-controller="Benchmarks" asp-action="Results" class="btn btn-outline-primary btn-sm mt-3">View Benchmark Status &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 8.2: Native AOT -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-success border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-success mb-2 align-self-start">Task 8.2: Cloud Native</span>
+                <h5 class="card-title fw-bold">Source Generator &amp; Native AOT</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Which maps in this app run generated code, and why the others do not. Generated maps run under Native AOT.
+                </p>
+                <a asp-controller="Benchmarks" asp-action="NativeAot" class="btn btn-outline-success btn-sm mt-3">View Generated Maps &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 8.3: Runtime Matrix -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-info border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-info text-dark mb-2 align-self-start">Task 8.3: TFM Support</span>
+                <h5 class="card-title fw-bold">Runtime Matrix</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Live process diagnostics, active CLR version, target framework matrix (<code>netstandard2.0</code>, <code>net8.0</code>, <code>net9.0</code>), and license metadata.
+                </p>
+                <a asp-controller="About" asp-action="RuntimeMatrix" class="btn btn-outline-info btn-sm mt-3">View Runtime Matrix &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 8.4: CI/CD Pipeline -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100 feature-card p-3 border-start border-warning border-4">
+            <div class="card-body d-flex flex-column">
+                <span class="badge bg-warning text-dark mb-2 align-self-start">Task 8.4: CI/CD Pipeline</span>
+                <h5 class="card-title fw-bold">Packaging & Pipeline</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    Automated GitHub Actions multi-OS matrix, 8-stage verification pipeline, and continuous local NuGet package consumer testing.
+                </p>
+                <a asp-controller="About" asp-action="Pipeline" class="btn btn-outline-warning text-dark btn-sm mt-3">View CI/CD Architecture &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>

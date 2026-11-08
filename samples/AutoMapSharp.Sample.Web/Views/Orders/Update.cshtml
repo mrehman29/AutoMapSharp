@@ -1,0 +1,108 @@
+@using System.Text.Json
+@model AutoMapSharp.Sample.Web.Models.ComparisonViewModel<AutoMapSharp.Sample.Web.Models.UpdateOrderViewModel, AutoMapSharp.Sample.Web.Models.Order>
+@{
+    ViewData["Title"] = Model.FeatureTitle;
+    var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold text-dark">@Model.FeatureTitle</h2>
+        <p class="text-muted">@Model.FeatureDescription</p>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Dashboard</a>
+</div>
+
+@if (Model.ReferenceEqual.HasValue)
+{
+    <div class="alert alert-success d-flex align-items-center mb-4 shadow-sm" role="alert">
+        <div class="me-3 fs-3">✅</div>
+        <div>
+            <h5 class="alert-heading fw-bold mb-1">In-Place Mutated Successfully!</h5>
+            <p class="mb-0">
+                <strong>Reference Equality Check:</strong> 
+                <code>ReferenceEquals(originalEntity, mappedResult) == @Model.ReferenceEqual.Value.ToString().ToUpper()</code>.
+                The existing tracked EF Core entity was modified in memory without allocating a new object reference.
+            </p>
+        </div>
+    </div>
+}
+
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-dark text-white fw-semibold">
+        AutoMapSharp In-Place Mapping Code
+    </div>
+    <div class="card-body p-0">
+        <pre class="code-snippet m-0"><code>var updated = _mapper.Map(request, existingOrder); // Modifies existingOrder in-place</code></pre>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Update Form -->
+    <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-success text-white fw-bold">
+                1. Submit Update Payload (DTO)
+            </div>
+            <div class="card-body">
+                <form asp-action="ApplyUpdate" method="post">
+                    <input type="hidden" name="OrderId" value="@Model.Source.OrderId" />
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Order Id (Tracked)</label>
+                        <input type="text" class="form-control" value="@Model.Source.OrderId" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">New Total Amount ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="TotalAmount" value="@Model.Source.TotalAmount" required />
+                        <small class="text-muted">Will map into <code>private set</code> property on Order entity.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">New Order Status</label>
+                        <select class="form-select" name="Status">
+                            <option value="Pending" selected="@(Model.Source.Status == AutoMapSharp.Sample.Web.Models.OrderStatus.Pending)">Pending</option>
+                            <option value="Processing" selected="@(Model.Source.Status == AutoMapSharp.Sample.Web.Models.OrderStatus.Processing)">Processing</option>
+                            <option value="Completed" selected="@(Model.Source.Status == AutoMapSharp.Sample.Web.Models.OrderStatus.Completed)">Completed</option>
+                            <option value="Cancelled" selected="@(Model.Source.Status == AutoMapSharp.Sample.Web.Models.OrderStatus.Cancelled)">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 fw-bold">⚡ Apply In-Place Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Result Entity -->
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold">2. Tracked Entity State (In-Memory Order)</span>
+                @if (Model.ReferenceEqual == true)
+                {
+                    <span class="badge bg-light text-success fw-bold">Reference Preserved</span>
+                }
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Order Id:</strong> <span>@Model.Destination.Id</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Customer Name:</strong> <span>@Model.Destination.Customer?.Name</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Current Status:</strong> <span class="badge bg-primary">@Model.Destination.Status</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Total Amount (private set):</strong> <span class="fw-bold text-success fs-5">$@Model.Destination.TotalAmount</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Entity JSON Representation:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Destination, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+</div>

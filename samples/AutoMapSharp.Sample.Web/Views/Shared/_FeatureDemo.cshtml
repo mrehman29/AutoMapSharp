@@ -1,0 +1,85 @@
+@model AutoMapSharp.Sample.Web.Models.FeatureDemoViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item">Reliability &amp; Parity</li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <h1 class="display-6 fw-bold text-primary">@Model.Title</h1>
+    <p class="lead">@Model.Summary</p>
+
+    @if (!string.IsNullOrEmpty(Model.FixedIn))
+    {
+        <div class="alert alert-success">@Model.FixedIn</div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.FormAction) && Model.FormFields.Count > 0)
+    {
+        <form method="get" action="@Model.FormAction" class="card bg-light p-3 mb-4 border">
+            <div class="row g-3 align-items-end">
+                @foreach (var field in Model.FormFields)
+                {
+                    <div class="col-md">
+                        <label class="form-label fw-bold" for="@field.Name">@field.Label</label>
+                        <input class="form-control" id="@field.Name" name="@field.Name" value="@field.Value" />
+                    </div>
+                }
+                <div class="col-md-auto"><button type="submit" class="btn btn-primary">Map it</button></div>
+            </div>
+        </form>
+    }
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white fw-bold">Source object</div>
+                <div class="card-body"><pre class="mb-0 small" data-testid="source-json">@Model.SourceJson</pre></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100 border-success">
+                <div class="card-header bg-white fw-bold text-success">Mapped result</div>
+                <div class="card-body"><pre class="mb-0 small" data-testid="result-json">@Model.ResultJson</pre></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white fw-bold">AutoMapSharp module code that produced this result</div>
+                <div class="card-body"><pre class="mb-0 small"><code>@Model.ModuleSnippet</code></pre></div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white fw-bold">AutoMapper equivalent</div>
+                <div class="card-body"><pre class="mb-0 small"><code>@Model.AutoMapperSnippet</code></pre></div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Notes.Count > 0)
+    {
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white fw-bold">Notes</div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    @foreach (var note in Model.Notes)
+                    {
+                        <li>@note</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    <p class="text-muted small">Documentation: <code>@Model.DocPath</code></p>
+</div>

@@ -1,0 +1,76 @@
+name: Publish to NuGet
+
+# Runs when a version tag such as v1.0.0-preview.1 is pushed, or by hand from the Actions tab.
+on:
+  push:
+    tags: [ "v*" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build, test and publish packages
+    runs-on: ubuntu-latest
+    # Optional: add required reviewers to the "nuget" environment in the repo settings to approve each release.
+    environment: nuget
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET SDKs (8.0 and 9.0)
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          8.0.x
+          9.0.x
+
+    - name: Check the tag matches the version in Directory.Build.props
+      if: startsWith(github.ref, 'refs/tags/v')
+      shell: bash
+      run: |
+        version=$(grep -oPm1 '(?<=<Version>)[^<]+' Directory.Build.props)
+        tag="${GITHUB_REF_NAME#v}"
+        if [ "$version" != "$tag" ]; then
+          echo "Tag v$tag does not match <Version>$version</Version> in Directory.Build.props."
+          exit 1
+        fi
+        echo "Publishing version $version"
+
+    - name: Restore
+      run: dotnet restore AutoMapSharp.Core.slnf
+
+    - name: Build
+      run: dotnet build AutoMapSharp.Core.slnf -c Release --no-restore
+
+    - name: Unit tests
+      run: dotnet test tests/AutoMapSharp.Tests/AutoMapSharp.Tests.csproj -c Release --no-build
+
+    # Packs every package into artifacts/packages and tests them the way a consumer would use them.
+    - name: Pack and test the packages
+      shell: bash
+      run: ./scripts/pack-and-test.sh
+
+    - name: Keep the packages as a build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: artifacts/packages/*
+
+    # Symbol packages (.snupkg) next to each .nupkg are pushed automatically.
+    - name: Push to nuget.org
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      shell: bash
+      run: |
+        if [ -z "$NUGET_API_KEY" ]; then
+          echo "The NUGET_API_KEY secret is not set. Add it under Settings > Secrets and variables > Actions."
+          exit 1
+        fi
+        for package in artifacts/packages/*.nupkg; do
+          dotnet nuget push "$package" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        done

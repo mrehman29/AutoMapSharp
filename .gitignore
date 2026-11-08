@@ -39,6 +39,19 @@ ScaffoldingReadMe.txt
 # dotenv environment variables file
 .env
 
+# Secrets: NuGet API keys and other local-only settings. Never commit these.
+*.env
+.env.*
+!*.env.example
+!.env.example
+*.pfx
+*.p12
+*.snk
+*.key
+*.pem
+secrets.json
+appsettings.*.local.json
+
 # Others
 ~$*
 *~
@@ -55,3 +68,16 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# macOS CLI cache
+.local/
+Library/
+artifacts/
+
+# Internal planning notes. Kept locally, not published.
+BuildPlans/

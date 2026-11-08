@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
+    <RootNamespace>AutoMapSharp</RootNamespace>
+    <IsPackable>true</IsPackable>
+    <PackageId>AutoMapSharp</PackageId>
+    <Title>AutoMapSharp</Title>
+    <Description>A free, MIT-licensed object mapper for .NET with an API that will feel familiar if you have used AutoMapper. Map objects with conventions, flattening, ReverseMap, resolvers and converters, project to EF Core queries with ProjectOnto, and validate your configuration at startup. Maps are compiled once for speed, and a built-in source generator produces typed code for eligible maps, including Native AOT support. Moving from AutoMapper? The migration guide maps every API side by side.</Description>
+    <PackageTags>mapper;object-mapper;mapping;automapper;automapper-alternative;dto;projection;efcore;source-generator;aot</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- XML docs give package users IntelliSense. Public members without comments are allowed for now. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AutoMapSharp.Generators\AutoMapSharp.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
+    <ProjectReference Include="..\AutoMapSharp.Analyzers\AutoMapSharp.Analyzers.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\AutoMapSharp.Generators\bin\$(Configuration)\netstandard2.0\AutoMapSharp.Generators.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+    <None Include="..\AutoMapSharp.Analyzers\bin\$(Configuration)\netstandard2.0\AutoMapSharp.Analyzers.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AutoMapSharp.Collections" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Member name matching shared with the analyzer, so both agree on what is mapped. -->
+    <Compile Include="..\Shared\MemberNameMatching.cs" Link="Shared\MemberNameMatching.cs" />
+  </ItemGroup>
+
+</Project>

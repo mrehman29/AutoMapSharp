@@ -1,0 +1,106 @@
+@model AutoMapSharp.Sample.Web.Models.WebAuditedViewModel
+@{
+    ViewData["Title"] = "Phase 5.4: Lifecycle Hooks (BeforeMap & AfterMap)";
+    var source = ViewBag.SourceEntity as AutoMapSharp.Sample.Web.Models.WebAuditedEntity;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lifecycle: BeforeMap & AfterMap</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-clock-history me-2"></i>Task 5.4: Mapping Lifecycle Hooks (BeforeMap & AfterMap)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                <code>BeforeMap</code> and <code>AfterMap</code> provide dedicated execution hooks to initialize audit structures, mask confidential data, stamp execution timestamps, and calculate derived post-mapping checksums.
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Source Entity -->
+                <div class="col-md-6">
+                    <div class="card border-secondary h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="bi bi-shield-slash me-2"></i>Source Entity (Raw Unsanitized)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Entity ID:</th>
+                                    <td><code>#@source?.EntityId</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Entity Name:</th>
+                                    <td><strong>@source?.EntityName</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Raw Security Code:</th>
+                                    <td><code class="text-danger">@source?.ConfidentialCode</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination ViewModel -->
+                <div class="col-md-6">
+                    <div class="card border-success h-100 shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Lifecycle Processed ViewModel</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Entity ID:</th>
+                                    <td><code>#@Model.EntityId</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Entity Name:</th>
+                                    <td><strong>@Model.EntityName</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Masked Code:</th>
+                                    <td><span class="badge bg-secondary">@Model.MaskedSecurityCode</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Timestamp (UTC):</th>
+                                    <td><span class="badge bg-info text-dark">@Model.MappedTimestampUtc.ToString("u")</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Audit Trail:</th>
+                                    <td><small class="text-success fw-bold">@Model.AuditTrail</small></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Lifecycle Callback Registration</h5>
+                <pre class="code-snippet"><code>DefineMap&lt;WebAuditedEntity, WebAuditedViewModel&gt;()
+    .BeforeMap((src, dest, ctx) =&gt;
+    {
+        dest.AuditTrail = $"[AUDIT-START: Initiated mapping for {src.EntityName}]";
+    })
+    .AfterMap((src, dest, ctx) =&gt;
+    {
+        dest.AuditTrail += " -&gt; [AUDIT-FINISH: Completed]";
+        dest.MaskedSecurityCode = "SEC-***-REDACTED";
+        dest.MappedTimestampUtc = DateTime.UtcNow;
+    });</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Polymorphic" asp-action="Billing" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: Polymorphic Billing</a>
+                <a asp-controller="Diagnostics" asp-action="HealthCheck" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Configuration Health Check</a>
+            </div>
+        </div>
+    </div>
+</div>
