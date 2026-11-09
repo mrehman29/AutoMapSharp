@@ -1,0 +1,75 @@
+@model AutoMapSharp.Sample.Web.Models.NativeAotStatusViewModel
+@{
+    ViewData["Title"] = "Source Generator & Native AOT";
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Native AOT</li>
+        </ol>
+    </nav>
+
+    <h1 class="display-6 fw-bold text-primary">Source Generator &amp; Native AOT</h1>
+
+    <div class="alert alert-success mt-3" role="alert">
+        <strong>Supported for generated maps.</strong>
+        Maps emitted by the source generator run as a Native AOT binary. CI publishes a native binary and runs it on every build.
+        In this app, @Model.GeneratedCount of @Model.Plans.Count maps run generated code.
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3"><h5 class="fw-bold mb-0">This process, live</h5></div>
+                <div class="card-body">
+                    <table class="table table-sm mb-0">
+                        <tr><th>.NET runtime</th><td>@Model.DotNetVersion</td></tr>
+                        <tr><th>Architecture</th><td>@Model.Architecture</td></tr>
+                        <tr><th>Operating system</th><td>@Model.OperatingSystem</td></tr>
+                        <tr><th>Dynamic code supported</th><td>@Model.IsDynamicCodeSupported</td></tr>
+                        <tr><th>Dynamic code compiled</th><td>@Model.IsDynamicCodeCompiled</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3"><h5 class="fw-bold mb-0">What runs under Native AOT</h5></div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        @foreach (var blocker in Model.Blockers)
+                        {
+                            <li>@blocker</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-white py-3"><h5 class="fw-bold mb-0">How each map in this app runs</h5><small class="text-muted">From <code>engine.DescribePlans()</code></small></div>
+        <div class="card-body p-0">
+            <table class="table table-sm mb-0">
+                <thead class="table-light"><tr><th>Map</th><th>Plan</th><th>Why not generated</th></tr></thead>
+                <tbody>
+                    @foreach (var plan in Model.Plans)
+                    {
+                        <tr>
+                            <td><code>@plan.Map</code></td>
+                            <td><span class="badge @(plan.Kind == "Generated" ? "bg-success" : "bg-secondary")">@plan.Kind</span></td>
+                            <td class="small text-muted">@plan.Reason</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p class="text-muted small mt-4">
+        Maps that are not generated run on compiled expression trees, which work on every platform except Native AOT.
+        See <code>docs/features/native-aot-and-trimming.md</code>.
+    </p>
+</div>

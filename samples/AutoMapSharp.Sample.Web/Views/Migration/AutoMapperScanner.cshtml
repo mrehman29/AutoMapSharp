@@ -1,0 +1,85 @@
+@model AutoMapSharp.Sample.Web.Models.MigrationScannerViewModel
+@{
+    ViewData["Title"] = "AutoMapper Code Scanner";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">Phase 7: AutoMapper Scanner</li>
+                </ol>
+            </nav>
+            <h1 class="display-6 fw-bold text-warning">AutoMapper Migration Scanner</h1>
+            <p class="lead text-muted">
+                Paste legacy AutoMapper code below to simulate the <code>AutoMapSharp.MigrationAnalyzer</code>. The scanner detects legacy namespaces, base classes, and configuration methods.
+            </p>
+        </div>
+    </div>
+
+    <form method="post" asp-action="AutoMapperScanner">
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <strong class="fs-6">Legacy AutoMapper C# Code</strong>
+                        <button type="submit" class="btn btn-warning btn-sm fw-semibold">
+                            <i class="bi bi-search me-1"></i> Scan Code
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea asp-for="InputCode" rows="14" class="form-control font-monospace border-0 p-3 small" style="resize: vertical;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.HasRun)
+            {
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="card-title mb-0 fw-bold">
+                                Scan Results: @Model.DetectedDiagnostics.Count Detected Issue(s)
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            @if (Model.DetectedDiagnostics.Count == 0)
+                            {
+                                <div class="p-4 text-center text-success">
+                                    <i class="bi bi-check-circle-fill fs-2"></i>
+                                    <p class="mt-2 mb-0 fw-semibold">No legacy AutoMapper constructs detected! Code is clean.</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="width: 140px;">Rule ID</th>
+                                                <th style="width: 100px;">Line</th>
+                                                <th>Description / Recommended Migration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var diag in Model.DetectedDiagnostics)
+                                            {
+                                                <tr>
+                                                    <td><span class="badge bg-warning text-dark font-monospace">@diag.RuleId</span></td>
+                                                    <td><span class="badge bg-secondary font-monospace">Line @diag.LineNumber</span></td>
+                                                    <td class="font-monospace small">@diag.Description</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</div>

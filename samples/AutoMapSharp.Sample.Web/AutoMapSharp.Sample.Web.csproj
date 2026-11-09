@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapSharp" Version="1.0.0-preview.1" />
+    <PackageReference Include="AutoMapSharp.Extensions.DependencyInjection" Version="1.0.0-preview.1" />
+    <PackageReference Include="AutoMapSharp.MigrationAnalyzer" Version="1.0.0-preview.1" />
+    <PackageReference Include="AutoMapSharp.Collections" Version="1.0.0-preview.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Module sources are embedded so demo pages show the exact code that produced each result. -->
+    <EmbeddedResource Include="Modules\*.cs" LogicalName="Snippets.%(Filename)%(Extension)" />
+    <!-- The Parity Matrix page renders the same file as the docs. -->
+    <EmbeddedResource Include="..\..\docs\automapper-parity-matrix.md" LogicalName="Docs.automapper-parity-matrix.md" />
+  </ItemGroup>
+
+</Project>

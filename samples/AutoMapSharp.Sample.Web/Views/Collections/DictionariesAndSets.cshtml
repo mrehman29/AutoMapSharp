@@ -1,0 +1,85 @@
+@model AutoMapSharp.Sample.Web.Models.WebMultiItemOrderViewModel
+@{
+    ViewData["Title"] = "Phase 4.2: Dictionaries & Sets";
+    var source = ViewBag.SourceOrder as AutoMapSharp.Sample.Web.Models.WebMultiItemOrder;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Standard">Collections</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dictionaries & Sets</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-tags-fill me-2"></i>Task 4.2: ReadOnly Collections, Sets & Dictionaries</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                AutoMapSharp maps sets (<code>ISet&lt;T&gt;</code>, <code>HashSet&lt;T&gt;</code>) deduplicating duplicate elements, and dictionaries (<code>IDictionary&lt;TKey, TValue&gt;</code>) mapping keys and values independently.
+            </p>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-info h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="bi bi-tag-fill me-2"></i>Mapped Unique Tags (HashSet&lt;string&gt;)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small">
+                                The source order contained duplicated tag <code>"Aerospace"</code>. AutoMapSharp mapped it into a <code>HashSet&lt;string&gt;</code>, automatically deduplicating it:
+                            </p>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                @if (Model.Tags != null)
+                                {
+                                    @foreach (var tag in Model.Tags)
+                                    {
+                                        <span class="badge bg-primary p-2 fs-6"><i class="bi bi-check-circle-fill me-1"></i>@tag</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-file-earmark-code me-2"></i>Mapped Specifications (Dictionary&lt;string, string&gt;)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Specification Key</th>
+                                        <th>Configured Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Specs != null)
+                                    {
+                                        @foreach (var kvp in Model.Specs)
+                                        {
+                                            <tr>
+                                                <th><code>@kvp.Key</code></th>
+                                                <td><span class="badge bg-secondary">@kvp.Value</span></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="Standard" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: Standard</a>
+                <a asp-action="NullCollections" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Null Collections</a>
+            </div>
+        </div>
+    </div>
+</div>

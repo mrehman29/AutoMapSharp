@@ -1,0 +1,72 @@
+name: AutoMapSharp Continuous Integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDKs (8.0 & 9.0)
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          8.0.x
+          9.0.x
+
+    # The sample app and the NuGet consumer tests depend on locally packed packages,
+    # so they are excluded here and restored by scripts/pack-and-test.sh after packing.
+    - name: Restore Dependencies
+      run: dotnet restore AutoMapSharp.Core.slnf
+
+    - name: Compile Solution (Warnings As Errors)
+      run: dotnet build AutoMapSharp.Core.slnf -c Release --no-restore
+
+    - name: Execute Core Unit Tests
+      run: dotnet test tests/AutoMapSharp.Tests/AutoMapSharp.Tests.csproj -c Release --no-build --verbosity normal
+
+    # The same suite again with plans run by the expression interpreter, the path used where dynamic code
+    # is not available, such as Native AOT. Both paths must behave the same.
+    - name: Execute Core Unit Tests (expression interpreter)
+      env:
+        AUTOMAPSHARP_PREFER_INTERPRETATION: "1"
+      run: dotnet test tests/AutoMapSharp.Tests/AutoMapSharp.Tests.csproj -c Release --no-build --verbosity normal
+
+    # The same suite with the source generator's code ignored, so every map runs on the compiled engine.
+    # Comparing both runs proves generated code behaves exactly like compiled plans.
+    - name: Execute Core Unit Tests (generated code disabled)
+      env:
+        AUTOMAPSHARP_DISABLE_GENERATED: "1"
+      run: dotnet test tests/AutoMapSharp.Tests/AutoMapSharp.Tests.csproj -c Release --no-build --verbosity normal
+
+    - name: Run Packaging and Integration Consumer Tests
+      shell: bash
+      run: ./scripts/pack-and-test.sh
+
+    - name: Install Native AOT prerequisites
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+    # Publishes a real native binary and runs it. The test fails if any of its maps is not generated code.
+    - name: Publish and run Native AOT binary
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        dotnet publish tests/AutoMapSharp.Tests.NativeAot/AutoMapSharp.Tests.NativeAot.csproj -c Release -f net8.0 -r linux-x64 -o artifacts/aot
+        ./artifacts/aot/AutoMapSharp.Tests.NativeAot
+
+    - name: Benchmark gate (AutoMapSharp within 4x of hand-written code)
+      if: matrix.os == 'ubuntu-latest'
+      shell: bash
+      run: ./scripts/check-benchmarks.sh

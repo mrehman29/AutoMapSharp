@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/AutoMapSharp.Benchmarks/AutoMapSharp.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/AutoMapSharp.Sample.Web/AutoMapSharp.Sample.Web.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AutoMapSharp.Analyzers/AutoMapSharp.Analyzers.csproj" />
+    <Project Path="src/AutoMapSharp.Cli/AutoMapSharp.Cli.csproj" />
+    <Project Path="src/AutoMapSharp.Collections/AutoMapSharp.Collections.csproj" />
+    <Project Path="src/AutoMapSharp.Extensions.DependencyInjection/AutoMapSharp.Extensions.DependencyInjection.csproj" />
+    <Project Path="src/AutoMapSharp.Generators/AutoMapSharp.Generators.csproj" />
+    <Project Path="src/AutoMapSharp.MigrationAnalyzer/AutoMapSharp.MigrationAnalyzer.csproj" />
+    <Project Path="src/AutoMapSharp/AutoMapSharp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AutoMapSharp.IntegrationTests.NugetConsumer/AutoMapSharp.IntegrationTests.NugetConsumer.csproj" />
+    <Project Path="tests/AutoMapSharp.Tests/AutoMapSharp.Tests.csproj" />
+    <Project Path="tests/AutoMapSharp.Tests.NativeAot/AutoMapSharp.Tests.NativeAot.csproj" />
+  </Folder>
+</Solution>

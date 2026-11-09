@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Phase 6.2: SQL Query Inspector";
+    string naiveSql = ViewBag.NaiveSql as string ?? string.Empty;
+    string projectedSql = ViewBag.ProjectedSql as string ?? string.Empty;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Projections: SQL Inspector</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-search me-2"></i>Task 6.2: SQL Query Inspector (In-Memory vs ProjectOnto)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Compare the generated SQL queries side-by-side: Notice how <code>ProjectOnto</code> eliminates unused column fetches and selects only the precise fields required by the destination ViewModel.
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Naive In-Memory Query -->
+                <div class="col-lg-6">
+                    <div class="card border-danger h-100 shadow-sm">
+                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-x-circle me-2"></i>Naive In-Memory Query</h5>
+                            <span class="badge bg-light text-danger">Heavy Overhead</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="small text-muted mb-2">Fetches entire relational graph into client memory:</p>
+                            <pre class="code-snippet mb-3" style="max-height: 120px;"><code>dbContext.Orders
+    .Include(o =&gt; o.Customer).ThenInclude(c =&gt; c.Address)
+    .Include(o =&gt; o.Items)
+    .Include(o =&gt; o.AuditLogs)
+    .ToList();</code></pre>
+                            <h6>Generated SQL Query:</h6>
+                            <pre class="code-snippet text-warning" style="max-height: 300px; font-size: 0.82rem;"><code>@naiveSql</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optimized ProjectOnto Query -->
+                <div class="col-lg-6">
+                    <div class="card border-success h-100 shadow-sm">
+                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-check-circle me-2"></i>Optimized ProjectOnto Query</h5>
+                            <span class="badge bg-light text-success">SQL-Level Projection</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="small text-muted mb-2">Queries only mapped columns; zero tracking overhead:</p>
+                            <pre class="code-snippet mb-3" style="max-height: 120px;"><code>dbContext.Orders
+    .ProjectOnto&lt;OrderProjectionDto&gt;(mapEngine)
+    .ToList();</code></pre>
+                            <h6>Generated SQL Query:</h6>
+                            <pre class="code-snippet text-info" style="max-height: 300px; font-size: 0.82rem;"><code>@projectedSql</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: ProjectOnto Overview</a>
+                <a asp-action="Filtered" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Parameterized Projections</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+@model AutoMapSharp.Sample.Web.Models.WebOrderTaxViewModel
+@{
+    ViewData["Title"] = "Phase 5.1: Custom Property Resolvers";
+    var source = ViewBag.SourceOrder as AutoMapSharp.Sample.Web.Models.WebOrderTaxSource;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Resolvers: Injected Tax Resolver</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-cpu me-2"></i>Task 5.1: Custom Property Resolvers (IPropertyResolver with DI)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                <code>IPropertyResolver&lt;TSource, TDestination, TMember&gt;</code> enables complex property computations with full dependency injection access to application services (e.g. <code>ITaxRateService</code>).
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Source Entity -->
+                <div class="col-md-6">
+                    <div class="card border-secondary h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Source Order Entity</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Order ID:</th>
+                                    <td><code>#@source?.OrderId</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Customer:</th>
+                                    <td><strong>@source?.CustomerName</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Subtotal:</th>
+                                    <td class="fw-bold fs-5 text-secondary">$@source?.Subtotal.ToString("N2")</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Shipping State:</th>
+                                    <td><span class="badge bg-warning text-dark fs-6">@source?.ShippingState</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination ViewModel -->
+                <div class="col-md-6">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-calculator me-2"></i>DI-Resolved Invoice ViewModel</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Order ID:</th>
+                                    <td><code>#@Model.OrderId</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Customer:</th>
+                                    <td><strong>@Model.CustomerName</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Subtotal:</th>
+                                    <td>$@Model.Subtotal.ToString("N2")</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Tax Rate:</th>
+                                    <td><span class="badge bg-info text-dark">@Model.TaxRatePercent%</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Calculated Tax:</th>
+                                    <td class="text-danger fw-bold">$@Model.CalculatedTax.ToString("N2") <small class="text-muted">(Via WebTaxResolver)</small></td>
+                                </tr>
+                                <tr class="table-success">
+                                    <th class="fw-bold fs-5">Total Amount:</th>
+                                    <td class="text-success fw-bold fs-5">$@Model.TotalAmount.ToString("N2")</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Resolver Configuration & DI</h5>
+                <pre class="code-snippet"><code>// In Mapping Module:
+DefineMap&lt;WebOrderTaxSource, WebOrderTaxViewModel&gt;()
+    .ForProperty(d =&gt; d.CalculatedTax, opt =&gt; opt.MapWith&lt;WebTaxResolver&gt;());
+
+// In WebTaxResolver:
+public class WebTaxResolver : IPropertyResolver&lt;WebOrderTaxSource, WebOrderTaxViewModel, decimal&gt;
+{
+    private readonly ITaxRateService _taxService;
+    public WebTaxResolver(ITaxRateService taxService) =&gt; _taxService = taxService;
+
+    public decimal Resolve(WebOrderTaxSource src, WebOrderTaxViewModel dest, ResolutionContext ctx)
+    {
+        return Math.Round(src.Subtotal * _taxService.GetStateTaxRate(src.ShippingState), 2);
+    }
+}</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="ComplexTypes" asp-action="CircularReferences" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: Circular References</a>
+                <a asp-action="TypeConverters" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Type-Level Converters</a>
+            </div>
+        </div>
+    </div>
+</div>

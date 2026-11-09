@@ -1,0 +1,107 @@
+@model AutoMapSharp.Sample.Web.Models.WebImmutableProduct
+@{
+    ViewData["Title"] = "Phase 4.6: Constructor Instantiation (ConstructUsing)";
+    var source = ViewBag.SourceProduct as AutoMapSharp.Sample.Web.Models.WebProductSource;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Complex Types: ConstructUsing</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-tools me-2"></i>Task 4.6: Constructor Instantiation via ConstructUsing</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                When destination types are strictly immutable without parameterless constructors or require custom constructor factory logic, <code>ConstructUsing(src => ...)</code> allows custom instantiation.
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Source -->
+                <div class="col-md-6">
+                    <div class="card border-secondary h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="bi bi-file-earmark-code me-2"></i>Source Entity (WebProductSource)</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Sku:</th>
+                                    <td><code>@source?.Sku</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Cost:</th>
+                                    <td class="fw-bold">$@source?.Cost.ToString("N2")</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">IsEnterprise:</th>
+                                    <td>
+                                        @if (source?.IsEnterprise == true)
+                                        {
+                                            <span class="badge bg-success">True (Tier 1 Priority)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">False (Standard Tier)</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Immutable Product -->
+                <div class="col-md-6">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-shield-lock me-2"></i>Constructed Immutable DTO</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">SkuCode:</th>
+                                    <td><strong class="text-primary">@Model.SkuCode</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">RetailPrice:</th>
+                                    <td>
+                                        <span class="fw-bold text-success fs-5">$@Model.RetailPrice.ToString("N2")</span>
+                                        <small class="text-muted ms-2">(Cost $249.99 * 1.3 markup)</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">TierTag:</th>
+                                    <td>
+                                        <span class="badge bg-info text-dark fs-6">@Model.TierTag</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Factory Configuration</h5>
+                <pre class="code-snippet"><code>DefineMap&lt;WebProductSource, WebImmutableProduct&gt;()
+    .ConstructUsing(src =&gt; new WebImmutableProduct(
+        skuCode: src.Sku,
+        retailPrice: Math.Round(src.Cost * 1.3m, 2),
+        tierTag: src.IsEnterprise ? "Enterprise Tier" : "Standard Tier"
+    ));</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="DeepChaining" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: Deep Chaining</a>
+                <a asp-action="CircularReferences" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Circular References & Recursion Protection</a>
+            </div>
+        </div>
+    </div>
+</div>

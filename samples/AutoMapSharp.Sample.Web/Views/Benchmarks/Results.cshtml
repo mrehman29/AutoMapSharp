@@ -1,0 +1,66 @@
+@model AutoMapSharp.Sample.Web.Models.BenchmarkStatusViewModel
+@{
+    ViewData["Title"] = "Benchmark Status";
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Benchmarks</li>
+        </ol>
+    </nav>
+
+    <h1 class="display-6 fw-bold text-primary">Benchmark Status</h1>
+
+    <div class="alert alert-warning mt-3" role="alert">
+        <strong>Earlier numbers withdrawn.</strong> @Model.Status
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Current measurements</h5>
+            <small class="text-muted">@Model.Method</small>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Measured</th>
+                            <th>Previously claimed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Measurements)
+                        {
+                            <tr>
+                                <td>@item.Scenario</td>
+                                <td class="fw-bold">@item.Measured</td>
+                                <td class="text-muted text-decoration-line-through">@item.PreviouslyClaimed</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">What comes next</h5>
+        </div>
+        <div class="card-body">
+            <ul class="mb-0">
+                @foreach (var step in Model.NextSteps)
+                {
+                    <li>@step</li>
+                }
+            </ul>
+            <p class="text-muted small mt-3 mb-0">
+                See <code>docs/benchmarks/performance-report.md</code> and <code>KNOWN_ISSUES.md</code> in the repository.
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+@model AutoMapSharp.Sample.Web.Models.WebMultiItemOrderViewModel
+@{
+    ViewData["Title"] = "Phase 4.4: In-Place Collection Update";
+    bool referencePreserved = ViewBag.ReferencePreserved is bool b && b;
+    var source = ViewBag.SourceOrder as AutoMapSharp.Sample.Web.Models.WebMultiItemOrder;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Standard">Collections</a></li>
+            <li class="breadcrumb-item active" aria-current="page">In-Place Update</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-success text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-arrow-repeat me-2"></i>Task 4.4: Existing Collection Updates (In-Place vs Replacement)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                When mapping onto an existing destination entity, AutoMapSharp updates instantiated collections in-place using <code>.Clear()</code> and <code>.Add(...)</code> to preserve instance identity for ORM change tracking.
+            </p>
+
+            <div class="alert @(referencePreserved ? "alert-success" : "alert-danger") d-flex align-items-center">
+                <i class="bi @(referencePreserved ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger") fs-3 me-3"></i>
+                <div>
+                    <strong>Collection Reference Preservation Status:</strong>
+                    @if (referencePreserved)
+                    {
+                        <span class="badge bg-success fs-6 ms-2">Reference Equality Preserved (ReferenceEquals == true)</span>
+                        <div class="small mt-1 text-muted">
+                            The destination collection list instance was NOT reassigned. Its existing reference was cleared and repopulated, preventing EF Core navigation detachment exceptions.
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger fs-6 ms-2">Reference Was Replaced!</span>
+                    }
+                </div>
+            </div>
+
+            <div class="card border-0 bg-light mt-4">
+                <div class="card-body">
+                    <h5 class="card-title text-primary"><i class="bi bi-card-checklist me-2"></i>Updated Destination Items (Preserved Collection Instance)</h5>
+                    <table class="table table-bordered bg-white mb-0 mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Product Name</th>
+                                <th class="text-end">Unit Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Line Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Items != null)
+                            {
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td><strong>@item.ProductName</strong></td>
+                                        <td class="text-end">$@item.UnitPrice.ToString("N2")</td>
+                                        <td class="text-center"><span class="badge bg-secondary">@item.Quantity</span></td>
+                                        <td class="text-end fw-bold text-success">$@item.LineTotal.ToString("N2")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="NullCollections" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: Null Collections</a>
+                <a asp-controller="ComplexTypes" asp-action="DeepChaining" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Deep Hierarchy Chaining</a>
+            </div>
+        </div>
+    </div>
+</div>

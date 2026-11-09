@@ -1,0 +1,110 @@
+@{
+    ViewData["Title"] = "Phase 4.3: Null Collection Handling";
+    var source = ViewBag.SourceOrder as AutoMapSharp.Sample.Web.Models.WebMultiItemOrder;
+    var defaultResult = ViewBag.DefaultResult as AutoMapSharp.Sample.Web.Models.WebMultiItemOrderViewModel;
+    var nullResult = ViewBag.NullResult as AutoMapSharp.Sample.Web.Models.WebMultiItemOrderViewModel;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Standard">Collections</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Null Collections</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-slash-circle me-2"></i>Task 4.3: Null Collection Handling Policies (`AllowNullCollections`)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Compare default null-collection safety (returning empty collections) versus explicit opt-in to <code>null</code>.
+            </p>
+
+            <div class="alert alert-secondary">
+                <strong>Source Entity State:</strong> <code>order.Items = null; order.Tags = null; order.Specs = null;</code>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Default Policy (AllowNullCollections = false)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small">
+                                Best practice for modern .NET applications. Returns non-null empty collections to prevent downstream <code>NullReferenceException</code>:
+                            </p>
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr class="table-success">
+                                        <th class="w-40">Items</th>
+                                        <td>
+                                            <span class="badge bg-success"><i class="bi bi-check2 me-1"></i>Empty List (Count: @defaultResult?.Items?.Count)</span>
+                                            <small class="text-muted d-block mt-1">Safe to iterate with <code>foreach</code></small>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <th>Tags</th>
+                                        <td>
+                                            <span class="badge bg-success"><i class="bi bi-check2 me-1"></i>Empty HashSet (Count: @defaultResult?.Tags?.Count)</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <th>Specs</th>
+                                        <td>
+                                            <span class="badge bg-success"><i class="bi bi-check2 me-1"></i>Empty Dictionary (Count: @defaultResult?.Specs?.Count)</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-warning h-100">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Opt-In Policy (AllowNullCollections = true)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small">
+                                Explicitly preserves raw <code>null</code> values for legacy consumers and external APIs:
+                            </p>
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr class="table-warning">
+                                        <th class="w-40">Items</th>
+                                        <td>
+                                            <span class="badge bg-secondary">null</span>
+                                            <small class="text-muted d-block mt-1">Directly matches source null reference</small>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <th>Tags</th>
+                                        <td>
+                                            <span class="badge bg-secondary">null</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <th>Specs</th>
+                                        <td>
+                                            <span class="badge bg-secondary">null</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="DictionariesAndSets" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: Dictionaries & Sets</a>
+                <a asp-action="InPlaceUpdate" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: In-Place Update</a>
+            </div>
+        </div>
+    </div>
+</div>

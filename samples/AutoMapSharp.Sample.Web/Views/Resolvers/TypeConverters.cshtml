@@ -1,0 +1,99 @@
+@model AutoMapSharp.Sample.Web.Models.WebParsedJsonViewModel
+@{
+    ViewData["Title"] = "Phase 5.2: Type-Level Custom Converters";
+    var raw = ViewBag.RawSource as AutoMapSharp.Sample.Web.Models.WebRawJsonSource;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Resolvers: Type Converters</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Task 5.2: Type-Level Converters (ConvertUsing)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                <code>ConvertUsing</code> completely overrides member-by-member reflection, taking total ownership of converting one type to another (e.g. converting raw JSON strings into structured ViewModels).
+            </p>
+
+            <div class="row g-4 mt-2">
+                <!-- Source Raw String -->
+                <div class="col-md-6">
+                    <div class="card border-secondary h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="bi bi-code-square me-2"></i>Raw Input Document (WebRawJsonSource)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Document ID:</strong> <code>@raw?.DocumentId</code></p>
+                            <label class="form-label fw-bold">Raw JSON String:</label>
+                            <pre class="json-box">@raw?.JsonPayload</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Parsed ViewModel -->
+                <div class="col-md-6">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-diagram-2 me-2"></i>Parsed Cluster ViewModel</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-40 bg-light">Document ID:</th>
+                                    <td><code>@Model.DocumentId</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Cluster Name:</th>
+                                    <td><strong class="text-primary">@Model.ClusterName</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Node Count:</th>
+                                    <td><span class="badge bg-secondary fs-6">@Model.NodeCount Nodes</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Region:</th>
+                                    <td><span class="badge bg-info text-dark">@Model.Region</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">High Availability:</th>
+                                    <td>
+                                        @if (Model.HighAvailability)
+                                        {
+                                            <span class="badge bg-success">Active HA (Multi-AZ)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Disabled</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Type Converter Configuration</h5>
+                <pre class="code-snippet"><code>DefineMap&lt;WebRawJsonSource, WebParsedJsonViewModel&gt;()
+    .ConvertUsing((src, ctx) =&gt;
+    {
+        // Total takeover of type conversion:
+        return JsonSerializer.Deserialize&lt;WebParsedJsonViewModel&gt;(src.JsonPayload)!;
+    });</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: Property Resolvers</a>
+                <a asp-controller="Polymorphic" asp-action="Billing" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Polymorphic Subclass Mapping</a>
+            </div>
+        </div>
+    </div>
+</div>

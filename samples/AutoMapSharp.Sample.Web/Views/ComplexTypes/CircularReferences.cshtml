@@ -1,0 +1,128 @@
+@model AutoMapSharp.Sample.Web.Models.WebCircularEmployeeViewModel
+@{
+    ViewData["Title"] = "Phase 4.7: Circular References & Recursion Protection";
+    bool identityPreserved = ViewBag.IdentityPreserved == true;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Complex Types: Circular References</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-arrow-repeat me-2"></i>Task 4.7: Circular References & Recursion Protection</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                AutoMapSharp detects cyclical references in object graphs (such as bidirectional parent-child or manager-subordinate relationships) and tracks already-mapped object identities to prevent infinite loops and <code>StackOverflowException</code>s.
+            </p>
+
+            <!-- Verification Alert -->
+            <div class="alert @(identityPreserved ? "alert-success" : "alert-warning") d-flex align-items-center mb-4" role="alert">
+                <i class="bi @(identityPreserved ? "bi-check-circle-fill" : "bi-exclamation-triangle-fill") fs-3 me-3"></i>
+                <div>
+                    <strong>Object Identity Preservation Check:</strong>
+                    <br />
+                    <code>ReferenceEquals(lead.Manager, director) == @identityPreserved.ToString().ToLower()</code>
+                    @if (identityPreserved)
+                    {
+                        <span class="ms-2 badge bg-success">Passed: Same in-memory instance reused</span>
+                    }
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Director Node -->
+                <div class="col-md-6">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Root Node: Director</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tr>
+                                    <th class="w-35 bg-light">Employee ID:</th>
+                                    <td><code>#@Model.Id</code></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Name:</th>
+                                    <td><strong class="text-primary fs-5">@Model.Name</strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Role:</th>
+                                    <td><span class="badge bg-dark">@Model.Role</span></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Direct Reports:</th>
+                                    <td><span class="badge bg-primary">@Model.Subordinates.Count Direct Subordinate(s)</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subordinate Lead Node -->
+                <div class="col-md-6">
+                    <div class="card border-info h-100 shadow-sm">
+                        <div class="card-header bg-info text-dark">
+                            <h5 class="mb-0"><i class="bi bi-people me-2"></i>Direct Report: Team Lead</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.Subordinates.Count > 0)
+                            {
+                                var lead = Model.Subordinates[0];
+                                <table class="table table-bordered mb-0">
+                                    <tr>
+                                        <th class="w-35 bg-light">Employee ID:</th>
+                                        <td><code>#@lead.Id</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Name:</th>
+                                        <td><strong>@lead.Name</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Role:</th>
+                                        <td><span class="badge bg-secondary">@lead.Role</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Manager Reference:</th>
+                                        <td>
+                                            @if (lead.Manager != null)
+                                            {
+                                                <span class="text-success fw-bold">
+                                                    <i class="bi bi-arrow-up-circle me-1"></i>@lead.Manager.Name (ID: #@lead.Manager.Id)
+                                                </span>
+                                                <span class="badge bg-success ms-2">Cyclical Link Resolved</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">Null</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Snippet -->
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Reference Preservation Configuration</h5>
+                <pre class="code-snippet"><code>DefineMap&lt;WebCircularEmployee, WebCircularEmployeeViewModel&gt;()
+    .PreserveReferences()
+    .MaxDepth(10);</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="ConstructUsing" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: ConstructUsing Factory</a>
+                <a asp-controller="Collections" asp-action="Standard" class="btn btn-outline-primary"><i class="bi bi-arrow-right me-1"></i>Explore Collections</a>
+            </div>
+        </div>
+    </div>
+</div>

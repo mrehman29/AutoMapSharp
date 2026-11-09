@@ -1,0 +1,99 @@
+@model AutoMapSharp.Sample.Web.Models.RuntimeMatrixViewModel
+@{
+    ViewData["Title"] = "Runtime Environment & TFM Matrix";
+}
+
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">Phase 8: Runtime Matrix</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold text-primary">Runtime Matrix & Package Metadata</h1>
+                    <p class="lead text-muted mb-0">
+                        Diagnostics for the active execution environment and multi-target framework support.
+                    </p>
+                </div>
+                <div>
+                    <span class="badge bg-success py-2 px-3 fs-6">MIT Licensed Cleanroom</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Runtime Details -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Active Process & Assembly Metadata</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold text-muted" style="width: 250px;">AutoMapSharp Package Version</td>
+                            <td><span class="badge bg-primary font-monospace">@Model.AutoMapSharpVersion</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">License Type</td>
+                            <td><span class="badge bg-success">@Model.LicenseType</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">Active Host Framework</td>
+                            <td class="font-monospace">@Model.CurrentFramework</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">CLR Engine Version</td>
+                            <td class="font-monospace">@Model.ClrVersion</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">Operating System</td>
+                            <td class="font-monospace">@Model.OsDescription</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">Process Architecture</td>
+                            <td><span class="badge bg-secondary font-monospace">@Model.ProcessArchitecture</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported TFM Matrix -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Multi-Target Framework Compatibility Matrix</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>TFM Identifier</th>
+                            <th>Target Name</th>
+                            <th>Lifecycle Status</th>
+                            <th>Supported Platforms & Runtimes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tfm in Model.SupportedFrameworks)
+                        {
+                            <tr>
+                                <td><span class="badge bg-dark font-monospace">@tfm.Tfm</span></td>
+                                <td class="fw-semibold">@tfm.Name</td>
+                                <td><span class="badge bg-info text-dark">@tfm.Status</span></td>
+                                <td class="small text-muted">@tfm.Compatibility</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

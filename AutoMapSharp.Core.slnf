@@ -1,0 +1,17 @@
+{
+  "solution": {
+    "path": "AutoMapSharp.sln",
+    "projects": [
+      "src\\AutoMapSharp\\AutoMapSharp.csproj",
+      "src\\AutoMapSharp.Generators\\AutoMapSharp.Generators.csproj",
+      "src\\AutoMapSharp.Analyzers\\AutoMapSharp.Analyzers.csproj",
+      "src\\AutoMapSharp.MigrationAnalyzer\\AutoMapSharp.MigrationAnalyzer.csproj",
+      "src\\AutoMapSharp.Extensions.DependencyInjection\\AutoMapSharp.Extensions.DependencyInjection.csproj",
+      "src\\AutoMapSharp.Collections\\AutoMapSharp.Collections.csproj",
+      "src\\AutoMapSharp.Cli\\AutoMapSharp.Cli.csproj",
+      "tests\\AutoMapSharp.Tests\\AutoMapSharp.Tests.csproj",
+      "tests\\AutoMapSharp.Tests.NativeAot\\AutoMapSharp.Tests.NativeAot.csproj",
+      "benchmarks\\AutoMapSharp.Benchmarks\\AutoMapSharp.Benchmarks.csproj"
+    ]
+  }
+}

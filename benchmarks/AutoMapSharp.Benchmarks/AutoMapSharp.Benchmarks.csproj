@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <RootNamespace>AutoMapSharp.Benchmarks</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <!-- Comparison baselines. AutoMapper 15+ is commercially licensed; see README in this folder. -->
+    <PackageReference Include="AutoMapper" Version="16.3.0" />
+    <PackageReference Include="Mapster" Version="10.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AutoMapSharp\AutoMapSharp.csproj" />
+    <!-- Eligible benchmark maps run on generated code. Set AUTOMAPSHARP_DISABLE_GENERATED=1 to measure the compiled engine. -->
+    <ProjectReference Include="..\..\src\AutoMapSharp.Generators\AutoMapSharp.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

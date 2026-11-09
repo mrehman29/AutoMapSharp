@@ -1,0 +1,98 @@
+@{
+    ViewData["Title"] = "Phase 3.1: Fluent Configuration Overview";
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Fluent API Overview</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-diagram-3-fill me-2"></i>Task 3.1: Fluent Mapping Definition Builder</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                AutoMapSharp provides a fluent, strongly typed builder syntax within <code>MappingModule</code> subclasses using <code>DefineMap&lt;TSource, TDestination&gt;()</code>.
+            </p>
+            <p>
+                Every configuration method chains cleanly, configuring property skipping, source redirections, runtime conditionals, fallbacks, and bidirectional reverse mapping with zero boilerplate.
+            </p>
+
+            <div class="card bg-light border-0 my-4">
+                <div class="card-body">
+                    <h5 class="card-title text-secondary"><i class="bi bi-code-slash me-2"></i>Example Fluent Mapping Module Definition</h5>
+                    <pre class="bg-dark text-light p-3 rounded"><code>public class UserProfileModule : MappingModule
+{
+    public UserProfileModule()
+    {
+        // Global string sanitization across module
+        ValueTransformers.Add&lt;string&gt;(s => s != null ? s.Trim() : string.Empty);
+
+        DefineMap&lt;UserProfileEntity, UserProfileViewModel&gt;()
+            // Task 3.2: Skip sensitive fields
+            .ForProperty(d => d.PasswordHash, opt => opt.Skip())
+            .ForProperty(d => d.InternalSecurityNotes, opt => opt.Skip())
+
+            // Task 3.2: Assign static constants
+            .ForProperty(d => d.TenantBadge, opt => opt.UseValue("CORP-GLOBAL"))
+
+            // Task 3.3: Custom source expressions
+            .ForProperty(d => d.DisplayName, opt => opt.MapSource(s => s.FirstName + " " + s.LastName))
+            .ForProperty(d => d.FullAddress, opt => opt.MapSource(s => s.Street + ", " + s.City + " " + s.PostalCode))
+
+            // Task 3.4: Conditional mappings and fallbacks
+            .ForProperty(d => d.EligibleForDiscount, opt => opt.If(s => s.Age >= 18))
+            .ForProperty(d => d.Bio, opt => opt.Fallback("No public biography provided."))
+
+            // Task 3.5: Bidirectional mapping
+            .ReverseMap();
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h5 class="mt-4 mb-3">Explore Phase 3 Live Demonstrations</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a asp-action="SkipAndConstants" class="btn btn-outline-primary w-100 p-3 text-start">
+                        <i class="bi bi-shield-x fs-4 d-block mb-2"></i>
+                        <strong>Task 3.2: Skip & Constants</strong>
+                        <div class="small text-muted mt-1">Omit sensitive hashes and set static tenant badges.</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="MapSource" class="btn btn-outline-primary w-100 p-3 text-start">
+                        <i class="bi bi-shuffle fs-4 d-block mb-2"></i>
+                        <strong>Task 3.3: MapSource</strong>
+                        <div class="small text-muted mt-1">Synthesize calculated addresses and names.</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="Conditionals" class="btn btn-outline-primary w-100 p-3 text-start">
+                        <i class="bi bi-question-diamond fs-4 d-block mb-2"></i>
+                        <strong>Task 3.4: Conditionals & Fallbacks</strong>
+                        <div class="small text-muted mt-1">Interactive runtime predicates and null fallbacks.</div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="ReverseMap" class="btn btn-outline-success w-100 p-3 text-start">
+                        <i class="bi bi-arrow-left-right fs-4 d-block mb-2"></i>
+                        <strong>Task 3.5: Bidirectional ReverseMap</strong>
+                        <div class="small text-muted mt-1">Interactive toggle between Entity &rarr; DTO and DTO &rarr; Entity.</div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="ValueTransformers" class="btn btn-outline-info w-100 p-3 text-start">
+                        <i class="bi bi-magic fs-4 d-block mb-2"></i>
+                        <strong>Task 3.6: Value Transformers</strong>
+                        <div class="small text-muted mt-1">Global string trimming and whitespace sanitization.</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+@using System.Text.Json
+@model AutoMapSharp.Sample.Web.Models.ComparisonViewModel<AutoMapSharp.Sample.Web.Models.Order, AutoMapSharp.Sample.Web.Models.OrderSummaryViewModel>
+@{
+    ViewData["Title"] = Model.FeatureTitle;
+    var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold text-dark">@Model.FeatureTitle</h2>
+        <p class="text-muted">@Model.FeatureDescription</p>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Dashboard</a>
+</div>
+
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-header bg-dark text-white fw-semibold">
+        AutoMapSharp Configuration Code
+    </div>
+    <div class="card-body p-0">
+        <pre class="code-snippet m-0"><code>@Model.MappingRuleCode</code></pre>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Source Entity -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold">1. Source Object (Domain Entity)</span>
+                <span class="badge bg-light text-dark">Type: Order</span>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Order Id:</strong> <span>@Model.Source.Id</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Customer Name:</strong> <span>@Model.Source.Customer?.Name</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Nested Address City:</strong> <span>@Model.Source.Customer?.Address?.City</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Getter Method <code>GetSpecialInstructions()</code>:</strong> <span>@Model.Source.GetSpecialInstructions()</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Enum Status:</strong> <span class="badge bg-primary">OrderStatus.@Model.Source.Status</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Tracking Guid:</strong> <span class="text-break font-monospace small">@Model.Source.TrackingCode</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Order Date (DateTime):</strong> <span>@Model.Source.OrderDate.ToString("u")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Total Amount (private set):</strong> <span class="fw-bold text-success">$@Model.Source.TotalAmount</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Raw JSON Inspection:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Source, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Mapped ViewModel -->
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-primary border-2">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold">2. AutoMapSharp Mapped ViewModel</span>
+                <span class="badge bg-light text-primary">Type: OrderSummaryViewModel</span>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Id:</strong> <span class="text-primary fw-bold">@Model.Destination.Id</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>CustomerName <small class="text-muted">(Flattened)</small>:</strong>
+                        <span class="badge bg-success">@Model.Destination.CustomerName</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>CustomerAddressCity <small class="text-muted">(Deep 3-tier)</small>:</strong>
+                        <span class="badge bg-success">@Model.Destination.CustomerAddressCity</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>SpecialInstructions <small class="text-muted">(Getter method)</small>:</strong>
+                        <span class="text-primary">@Model.Destination.SpecialInstructions</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Status <small class="text-muted">(Enum converted to String)</small>:</strong>
+                        <span class="badge bg-info text-dark">"@Model.Destination.Status"</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>TrackingCode <small class="text-muted">(Guid to String)</small>:</strong>
+                        <span class="text-break font-monospace small">"@Model.Destination.TrackingCode"</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>OrderDate <small class="text-muted">(DateTimeOffset)</small>:</strong>
+                        <span>@Model.Destination.OrderDate.ToString("o")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>TotalAmount <small class="text-muted">(Private setter mapped)</small>:</strong>
+                        <span class="fw-bold text-success">$@Model.Destination.TotalAmount</span>
+                    </li>
+                </ul>
+                <h6 class="fw-semibold text-muted">Mapped Result JSON:</h6>
+                <pre class="json-box">@JsonSerializer.Serialize(Model.Destination, jsonOptions)</pre>
+            </div>
+        </div>
+    </div>
+</div>

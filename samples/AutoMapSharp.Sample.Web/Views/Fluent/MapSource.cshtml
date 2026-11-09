@@ -1,0 +1,103 @@
+@model AutoMapSharp.Sample.Web.Models.UserProfileViewModel
+@{
+    ViewData["Title"] = "Phase 3.3: MapSource Redirection";
+    var source = ViewBag.SourceEntity as AutoMapSharp.Sample.Web.Models.UserProfileEntity;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Overview">Fluent API</a></li>
+            <li class="breadcrumb-item active" aria-current="page">MapSource</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-shuffle me-2"></i>Task 3.3: Custom Source Property Redirection (`MapSource`)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                Redirect destination properties to custom computed expressions or divergent source properties using <code>.ForProperty(dest => dest.Prop, opt => opt.MapSource(src => ...))</code>.
+            </p>
+
+            <div class="alert alert-info">
+                <strong>AutoMapper Replacement:</strong> Replaces <code>opt.MapFrom(src => ...)</code> with <code>opt.MapSource(src => ...)</code>, supporting C# lambda expressions and compile-time code generation.
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-primary h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-database me-2"></i>Raw Source Entity Fields</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="w-40">FirstName</th>
+                                        <td><code>@source?.FirstName</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>LastName</th>
+                                        <td><code>@source?.LastName</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Street</th>
+                                        <td><code>@source?.Street</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>City</th>
+                                        <td><code>@source?.City</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>PostalCode</th>
+                                        <td><code>@source?.PostalCode</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>Synthesized Mapped ViewModel</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr class="table-info">
+                                        <th class="w-40">DisplayName</th>
+                                        <td>
+                                            <strong class="text-primary fs-5">@Model.DisplayName</strong>
+                                            <div class="small text-muted mt-1">
+                                                <code>opt.MapSource(s => s.FirstName + " " + s.LastName)</code>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <th>FullAddress</th>
+                                        <td>
+                                            <span class="badge bg-secondary p-2 fs-6">@Model.FullAddress</span>
+                                            <div class="small text-muted mt-1">
+                                                <code>opt.MapSource(s => s.Street + ", " + s.City + " " + s.PostalCode)</code>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="SkipAndConstants" class="btn btn-secondary me-2"><i class="bi bi-arrow-left me-1"></i>Previous: Skip & Constants</a>
+                <a asp-action="Conditionals" class="btn btn-primary"><i class="bi bi-arrow-right me-1"></i>Next: Conditionals & Fallbacks</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+@model AutoMapSharp.Validation.ConfigurationValidationResult
+@{
+    ViewData["Title"] = "Phase 5.5: Configuration Health Check";
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Diagnostics: Health Check</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0"><i class="bi bi-heart-pulse me-2"></i>Task 5.5: Configuration Validation Dashboard (AssertConfigurationIsValid)</h4>
+        </div>
+        <div class="card-body">
+            <p class="lead">
+                <code>ValidateConfiguration()</code> inspects all registered mapping modules, verifying that every destination member is accounted for by convention, custom expression, resolver, or explicit skip.
+            </p>
+
+            @if (Model.IsValid)
+            {
+                <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill fs-3 me-3"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">Configuration Status: Complete & Healthy</h5>
+                        <p class="mb-0">All registered mapping modules and type pairs have 100% destination property coverage with zero unmapped member defects.</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">Configuration Status: @Model.Errors.Count Validation Error(s)</h5>
+                        <p class="mb-0">Unmapped destination members detected. In strict mode, <code>AssertConfigurationIsValid()</code> would throw.</p>
+                    </div>
+                </div>
+
+                <div class="card border-danger mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="bi bi-bug me-2"></i>Unmapped Members Detected</h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var error in Model.Errors)
+                        {
+                            <div class="mb-3">
+                                <h6>Mapping: <code>@error.SourceType.Name</code> &rarr; <code>@error.DestinationType.Name</code></h6>
+                                <ul>
+                                    @foreach (var prop in error.UnmappedProperties)
+                                    {
+                                        <li><span class="text-danger fw-bold">@prop</span></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="card border-secondary shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-terminal me-2"></i>Generated Validation Report</h5>
+                </div>
+                <div class="card-body">
+                    <pre class="code-snippet mb-0"><code>@Model.GenerateReport()</code></pre>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="fw-bold"><i class="bi bi-code-slash me-2"></i>Unit Test Best Practice</h5>
+                <pre class="code-snippet"><code>[Fact]
+public void AutoMapSharp_Configuration_IsValid()
+{
+    var engine = new MapEngine(new MappingModule[]
+    {
+        new OrderWebModule(),
+        new Phase5WebModule()
+    });
+
+    // Throws AutoMapSharpConfigurationException if unmapped members exist:
+    engine.AssertConfigurationIsValid();
+}</code></pre>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Lifecycle" asp-action="Hooks" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Previous: Lifecycle Hooks</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-house me-1"></i>Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
