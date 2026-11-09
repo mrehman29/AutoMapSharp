@@ -59,13 +59,6 @@ internal static class CollectionPlanner
     /// <summary>
     /// Builds an expression that maps the enumerable <paramref name="source"/> into a collection of type <paramref name="destinationType"/>.
     /// </summary>
-    /// <param name="source">The source collection. It may be null at run time.</param>
-    /// <param name="destinationType">The destination collection type.</param>
-    /// <param name="existing">The destination's current collection, refilled in place when it is mutable, or null.</param>
-    /// <param name="context">The resolution context expression.</param>
-    /// <param name="allowNull">When true a null source gives null, otherwise an empty collection.</param>
-    /// <param name="elementConverter">Builds the conversion of one source element to one destination element.</param>
-    /// <param name="mergeLookup">Finds the equality comparison for an element pair, used to merge into an existing collection instead of refilling it.</param>
     public static Expression Build(
         Expression source,
         Type destinationType,
@@ -90,7 +83,6 @@ internal static class CollectionPlanner
         Expression typedSource = source;
         if (!typeof(IEnumerable<>).MakeGenericType(sourceElement).IsAssignableFrom(source.Type))
         {
-            // A non-generic IEnumerable source: read its elements as object.
             typedSource = Expression.Call(typeof(Enumerable).GetMethod(nameof(Enumerable.Cast))!.MakeGenericMethod(typeof(object)), Expression.Convert(source, typeof(IEnumerable)));
             sourceElement = typeof(object);
         }
@@ -103,7 +95,7 @@ internal static class CollectionPlanner
         var sourceVariable = Expression.Variable(typeof(IEnumerable<>).MakeGenericType(sourceElement), "items");
         var emptySource = Expression.Call(typeof(Enumerable).GetMethod(nameof(Enumerable.Empty))!.MakeGenericMethod(sourceElement));
 
-        // Refill a mutable existing collection in place, which keeps its identity, for example an EF Core navigation collection.
+        // Refill in place so EF Core navigation collections keep their identity.
         Expression whenSource = create(sourceVariable);
         Expression whenNull = allowNull ? Expression.Constant(null, destinationType) : create(emptySource);
 
@@ -112,7 +104,6 @@ internal static class CollectionPlanner
         var merge = canFillExisting ? mergeLookup?.Invoke(sourceElement, destinationElement) : null;
         if (merge is { } m)
         {
-            // AutoMapSharp.Collections: match items with EqualityComparison, update matches in place, add and remove the rest.
             var tryMerge = helper.GetMethod(nameof(CollectionRuntime.TryMergeExisting))!.MakeGenericMethod(sourceElement, destinationElement);
             Expression Merge(Expression items) => Expression.Call(tryMerge, Expression.Convert(existing!, typeof(object)), items,
                 Expression.Constant(m.Comparison), converterConstant, Expression.Constant(m.MapOnto), context);
@@ -160,9 +151,6 @@ internal static class CollectionPlanner
         return false;
     }
 
-    /// <summary>
-    /// Returns a function that, given an <c>IEnumerable&lt;TSource&gt;</c> expression, creates the destination collection.
-    /// </summary>
     private static Func<Expression, Expression> BuildCreate(Type destinationType, Type sourceElement, Type destinationElement, ConstantExpression converterConstant, Expression context)
     {
         var helper = typeof(CollectionRuntime);
@@ -171,20 +159,17 @@ internal static class CollectionPlanner
         Expression ToList(Expression items) =>
             Expression.Call(helper.GetMethod(nameof(CollectionRuntime.ToList))!.MakeGenericMethod(sourceElement, destinationElement), items, converterConstant, context);
 
-        // Arrays.
         if (destinationType.IsArray)
         {
             return items => Expression.Call(helper.GetMethod(nameof(CollectionRuntime.ToArray))!.MakeGenericMethod(sourceElement, destinationElement), items, converterConstant, context);
         }
 
-        // Immutable collections: ImmutableList<T> -> ImmutableList.CreateRange(items) and similar.
         var createRange = FindCreateRange(destinationType, destinationElement);
         if (createRange != null)
         {
             return items => Expression.Call(createRange, ToList(items));
         }
 
-        // Interfaces: IEnumerable<T>, IList<T>, IReadOnlyList<T>, ISet<T>, IReadOnlySet<T> and so on.
         if (destinationType.IsInterface || destinationType.IsAbstract)
         {
             if (destinationType.IsAssignableFrom(listType))
@@ -202,8 +187,6 @@ internal static class CollectionPlanner
             return Unsupported(destinationType);
         }
 
-        // Concrete types with a parameterless constructor and an Add method: List<T>, HashSet<T>, SortedSet<T>,
-        // ObservableCollection<T>, Collection<T>, LinkedList<T> and so on.
         if (!destinationType.IsValueType &&
             destinationType.GetConstructor(Type.EmptyTypes) != null &&
             typeof(ICollection<>).MakeGenericType(destinationElement).IsAssignableFrom(destinationType))
@@ -217,7 +200,7 @@ internal static class CollectionPlanner
             return items => Expression.Call(fillNew, items, converterConstant, context);
         }
 
-        // Types built from a list: Queue<T>, Stack<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T> and so on.
+        // Queue<T>, Stack<T>, ReadOnlyCollection<T> and friends take a list in their constructor.
         foreach (var ctor in destinationType.GetConstructors().Where(c => c.GetParameters().Length == 1))
         {
             var parameterType = ctor.GetParameters()[0].ParameterType;
@@ -309,9 +292,6 @@ internal static class CollectionPlanner
             Expression.Condition(Expression.Equal(items, Expression.Constant(null, itemsType)), whenNull, whenSource));
     }
 
-    /// <summary>
-    /// Finds <c>ImmutableX.CreateRange&lt;T&gt;(IEnumerable&lt;T&gt;)</c> for an immutable collection type.
-    /// </summary>
     private static MethodInfo? FindCreateRange(Type destinationType, Type elementType, params Type[] genericArguments)
     {
         if (destinationType.Namespace != "System.Collections.Immutable")
@@ -401,7 +381,7 @@ internal static class CollectionRuntime
             return false;
         }
 
-        // Convert first, so the source can safely be the same collection as the destination.
+        // Convert first in case source and destination are the same collection.
         var converted = ToList(items, convert, context);
         collection.Clear();
         foreach (var item in converted)

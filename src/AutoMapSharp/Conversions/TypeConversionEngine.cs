@@ -21,7 +21,6 @@ public static class TypeConversionEngine
             throw new ArgumentNullException(nameof(destinationType));
         }
 
-        // 1. Handle Null Source
         if (sourceValue == null)
         {
             if (!destinationType.IsValueType || Nullable.GetUnderlyingType(destinationType) != null)
@@ -30,14 +29,12 @@ public static class TypeConversionEngine
                 return true;
             }
 
-            // Non-nullable value type gets default instance
             convertedValue = Activator.CreateInstance(destinationType);
             return true;
         }
 
         var sourceType = sourceValue.GetType();
 
-        // 2. Direct Assignability
         if (destinationType.IsAssignableFrom(sourceType))
         {
             convertedValue = sourceValue;
@@ -47,7 +44,6 @@ public static class TypeConversionEngine
         var underlyingDest = Nullable.GetUnderlyingType(destinationType) ?? destinationType;
         var underlyingSource = Nullable.GetUnderlyingType(sourceType) ?? sourceType;
 
-        // 3. Enum Conversions
         if (underlyingDest.IsEnum)
         {
             if (sourceValue is string stringVal)
@@ -99,7 +95,6 @@ public static class TypeConversionEngine
             }
         }
 
-        // 4. Guid Conversions
         if (underlyingDest == typeof(Guid))
         {
             if (sourceValue is string guidString && Guid.TryParse(guidString, out var parsedGuid))
@@ -115,7 +110,6 @@ public static class TypeConversionEngine
             return true;
         }
 
-        // 5. DateTime and DateTimeOffset Conversions
         if (underlyingDest == typeof(DateTimeOffset) && sourceValue is DateTime dt)
         {
             convertedValue = new DateTimeOffset(dt);
@@ -191,7 +185,6 @@ public static class TypeConversionEngine
         }
 #endif
 
-        // 6. Primitive and Standard TypeConverter Conversions
         try
         {
             convertedValue = Convert.ChangeType(sourceValue, underlyingDest, CultureInfo.InvariantCulture);
@@ -199,7 +192,6 @@ public static class TypeConversionEngine
         }
         catch
         {
-            // Fall back to TypeDescriptor
             var converter = TypeDescriptor.GetConverter(underlyingDest);
             if (converter.CanConvertFrom(underlyingSource))
             {

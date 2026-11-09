@@ -119,10 +119,8 @@ internal static class SourceMemberMatcher
         var members = GetSourceMembers(sourceType, map);
         var replacements = (IReadOnlyList<(string, string)>?)map?.MemberNameReplacements ?? Array.Empty<(string, string)>();
 
-        // 1. Same name, ignoring case, after replacements.
         var direct = members.FirstOrDefault(m => string.Equals(Replace(m.Name, replacements), destinationMemberName, StringComparison.OrdinalIgnoreCase));
 
-        // 2. Same words after naming conventions, prefixes, suffixes and replacements, for example first_name -> FirstName.
         if (direct == null)
         {
             var sourceConvention = map?.SourceNamingConvention ?? PascalCaseNamingConvention.Instance;
@@ -142,7 +140,6 @@ internal static class SourceMemberMatcher
             return new SourceAccess(new[] { direct }, MemberType(direct));
         }
 
-        // 3. Extension methods from IncludeSourceExtensionMethods, by name or with a recognized prefix.
         if (map != null && map.SourceExtensionMethodTypes.Count > 0)
         {
             var extension = FindExtensionMethod(sourceType, destinationMemberName, map);
@@ -152,7 +149,6 @@ internal static class SourceMemberMatcher
             }
         }
 
-        // 4. Flattening, for example CustomerAddressCity -> Customer.Address.City, or SpecialNotes -> GetSpecialNotes().
         var path = FlatteningResolver.ResolvePath(sourceType, destinationMemberName, (IEnumerable<string>?)map?.RecognizedPrefixes ?? DefaultPrefixes);
         if (path != null && path.Count > 0 && path.All(step => Allowed(step.Member, map)))
         {

@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
-# Builds, tests and packs every package, then pushes them to nuget.org.
-#
-# Usage:
-#   ./scripts/publish-nuget.sh             # pack, test and push
-#   ./scripts/publish-nuget.sh --dry-run   # pack and test only, nothing is pushed
-#
-# The API key is read from NUGET_API_KEY, or from nuget-publish.env in the repository root.
-# That file is ignored by git. Copy nuget-publish.env.example to create it.
-#
-# Prefer the "Publish to NuGet" GitHub workflow for real releases. It builds from a clean checkout,
-# so Source Link points at a commit that exists on GitHub.
+# Usage: ./scripts/publish-nuget.sh [--dry-run]
+# Reads the API key from NUGET_API_KEY or nuget-publish.env (not committed).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

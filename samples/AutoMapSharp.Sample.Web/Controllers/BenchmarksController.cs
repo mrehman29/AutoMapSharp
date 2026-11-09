@@ -32,9 +32,9 @@ public class BenchmarksController : Controller
             },
             NextSteps = new List<string>
             {
-                "Task 9.4 (done): BenchmarkDotNet baseline against hand-written code, Mapster and AutoMapper 16.3.0.",
-                "Task 11.6 (done): the same benchmarks on the compiled engine. Every scenario is within 1.5 times of AutoMapper 16.3.0, and two are faster.",
-                "Phase 15 (done): a source generator for eligible maps. They start about 45% faster and run under Native AOT."
+                "Benchmarked with BenchmarkDotNet against hand-written code, Mapster and AutoMapper 16.3.0.",
+                "On the compiled engine every scenario is within 1.5 times of AutoMapper 16.3.0, and two are faster.",
+                "Maps from the source generator start about 45% faster and run under Native AOT."
             }
         };
 

@@ -162,7 +162,7 @@ public static class ValidationDemo
 }
 
 /// <summary>
-/// Mappings for the Parity tier 2 pages (remediation Phase 14).
+/// Mappings for the second set of Parity pages.
 /// </summary>
 public class ParityTier2WebModule : MappingModule
 {

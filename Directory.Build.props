@@ -10,7 +10,6 @@
     <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1900;NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
   </PropertyGroup>
 
-  <!-- NuGet package metadata shared by every published package. -->
   <PropertyGroup>
     <Authors>Muhammad Rehman</Authors>
     <Company>AutoMapSharp</Company>
@@ -25,20 +24,15 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>First public preview. See https://github.com/mrehman29/AutoMapSharp/blob/main/CHANGELOG.md for what is included, and https://github.com/mrehman29/AutoMapSharp/blob/main/MIGRATION_GUIDE.md if you are moving from AutoMapper.</PackageReleaseNotes>
 
-    <!-- Source Link: lets debuggers step into the exact source of a published package. -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
-  <!-- Reproducible paths in packages built on CI servers. -->
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' Or '$(CI)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
-  <!--
-    Each package ships its own README, written for the nuget.org page, plus the shared icon.
-    A project opts in by setting IsPackable (or PackAsTool) and keeping a README.md next to its project file.
-  -->
+  <!-- Every packable project needs a README.md next to its csproj. -->
   <ItemGroup Condition="'$(IsPackable)' == 'true' Or '$(PackAsTool)' == 'true'">
     <None Include="$(MSBuildProjectDirectory)/README.md" Pack="true" PackagePath="/" Visible="false" />
     <None Include="$(MSBuildThisFileDirectory)assets/icon.png" Pack="true" PackagePath="/" Visible="false" />

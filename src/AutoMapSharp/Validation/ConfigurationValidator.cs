@@ -45,7 +45,6 @@ internal sealed class ConfigurationValidator
         var problems = new List<string>();
         var nested = new List<(Type Source, Type Destination, string Context)>();
 
-        // A type converter owns the whole destination. Dictionary keys are only known at run time.
         if (map != null && (map.CustomConverter != null || map.CustomConverterType != null) ||
             DictionaryMapping.IsStringObjectDictionary(sourceType) || DictionaryMapping.IsStringObjectDictionary(destinationType))
         {

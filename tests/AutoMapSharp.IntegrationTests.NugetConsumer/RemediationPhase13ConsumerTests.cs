@@ -7,7 +7,7 @@ using Xunit;
 namespace AutoMapSharp.IntegrationTests.NugetConsumer;
 
 /// <summary>
-/// Verifies the remediation Phase 13 AutoMapper parity features through the packed NuGet package.
+/// Checks AutoMapper parity features through the packed NuGet package.
 /// </summary>
 public class RemediationPhase13ConsumerTests
 {

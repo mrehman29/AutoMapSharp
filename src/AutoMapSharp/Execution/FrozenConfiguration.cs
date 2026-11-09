@@ -13,17 +13,6 @@ namespace AutoMapSharp.Execution;
 /// <summary>
 /// The frozen configuration of an engine. Built once from the modules and never changed afterwards.
 /// </summary>
-/// <remarks>
-/// For every map defined in a module, this creates an effective copy that:
-/// <list type="bullet">
-/// <item>applies the module-level settings, whenever they were set in the module constructor,</item>
-/// <item>merges the configuration of <c>IncludeBase</c> and <c>IncludeAllDerived</c> base maps, base first,</item>
-/// <item>adds implicit unflattening paths for reverse maps.</item>
-/// </list>
-/// Open generic maps, such as <c>DefineMap(typeof(Page&lt;&gt;), typeof(PageDto&lt;&gt;))</c>, are closed on first use.
-/// The descriptors created by the modules are never modified, so building several engines from the same modules,
-/// or building one on several threads, is safe.
-/// </remarks>
 internal sealed class FrozenConfiguration
 {
     private readonly Dictionary<(Type Source, Type Destination), TypeMappingDescriptor> _defined = new();
@@ -66,7 +55,6 @@ internal sealed class FrozenConfiguration
             }
         }
 
-        // IncludeAllDerived gives every derived pair the base map's configuration, like an implicit IncludeBase.
         foreach (var baseMap in _definedInOrder.Where(d => d.IncludeAllDerivedTypes))
         {
             foreach (var derived in _definedInOrder)
@@ -118,10 +106,6 @@ internal sealed class FrozenConfiguration
     }
 
     public bool Contains(Type source, Type destination) => Find(source, destination) != null;
-
-    // ------------------------------------------------------------------
-    // Open generics
-    // ------------------------------------------------------------------
 
     private TypeMappingDescriptor? CloseTemplate(Type source, Type destination)
     {
@@ -178,10 +162,6 @@ internal sealed class FrozenConfiguration
         return converter.MakeGenericType(args);
     }
 
-    // ------------------------------------------------------------------
-    // Effective maps
-    // ------------------------------------------------------------------
-
     private TypeMappingDescriptor GetEffective((Type Source, Type Destination) key, HashSet<(Type, Type)> visiting)
     {
         if (_effective.TryGetValue(key, out var done))
@@ -226,7 +206,7 @@ internal sealed class FrozenConfiguration
             EqualityComparison = own.EqualityComparison
         };
 
-        // 1. Inherit from base maps first, in declaration order, so the map's own configuration wins.
+        // Base maps first, so the map's own configuration wins.
         var key = (own.SourceType, own.DestinationType);
         var bases = own.BaseTypes.ToList();
         if (_implicitBases.TryGetValue(key, out var implicitBases))
@@ -254,7 +234,6 @@ internal sealed class FrozenConfiguration
             effective.PreserveReferences |= baseMap.PreserveReferences;
         }
 
-        // 2. The map's own configuration.
         foreach (var rule in own.Rules) effective.Rules[rule.Key] = rule.Value;
         foreach (var rule in own.CtorRules) effective.CtorRules[rule.Key] = rule.Value;
 
@@ -269,7 +248,7 @@ internal sealed class FrozenConfiguration
         effective.DerivedTypes.AddRange(own.DerivedTypes);
         foreach (var name in own.UnvalidatedSourceMemberNames) effective.UnvalidatedSourceMemberNames.Add(name);
 
-        // 3. Module-level conventions, read now so their position in the module constructor does not matter.
+        // Read module conventions now so their position in the constructor doesn't matter.
         AddDistinct(effective.Prefixes, module?.ModulePrefixes ?? new[] { "Get" });
         AddDistinct(effective.Prefixes, own.Prefixes);
         AddDistinct(effective.Suffixes, module?.ModuleSuffixes ?? Array.Empty<string>());
@@ -291,7 +270,6 @@ internal sealed class FrozenConfiguration
 
         effective.ValueTransformers.CopyFrom(own.ValueTransformers);
 
-        // 4. [SkipMap] and [SourceMember] on destination members, unless the map configures the member itself.
         foreach (var member in SourceMemberMatcher.GetDestinationMembers(effective.DestinationType, effective))
         {
             if (effective.Rules.ContainsKey(member.Name)) continue;
@@ -306,7 +284,6 @@ internal sealed class FrozenConfiguration
             }
         }
 
-        // 5. Reverse maps unflatten by convention, for example OrderDto.CustomerName -> Order.Customer.Name.
         if (effective.IsReverseMap)
         {
             AddImplicitUnflattening(effective);

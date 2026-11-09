@@ -20,8 +20,7 @@ namespace AutoMapSharp.Projections;
 /// </summary>
 public static class ProjectionExpressionBuilder
 {
-    // One cache per engine, so two engines with different configuration never share projections.
-    // The cache holds only the expression shape. Parameter values are bound per call and never cached.
+    // One cache per engine. Only the expression shape is cached, never parameter values.
     private static readonly ConditionalWeakTable<IMapEngine, ConcurrentDictionary<string, LambdaExpression>> _projectionCaches = new();
 
     /// <summary>
@@ -41,7 +40,6 @@ public static class ProjectionExpressionBuilder
         var paramDict = ExtractParameters(parameters);
         var expandList = membersToExpand ?? Array.Empty<string>();
         var cacheKey = BuildCacheKey(sourceType, destinationType, expandList);
-        // Scoped views of one engine share its configuration, so they share one projection cache too.
         var owner = engine is MapEngine mapEngine ? mapEngine.Root : engine;
         var cache = _projectionCaches.GetValue(owner, _ => new ConcurrentDictionary<string, LambdaExpression>(StringComparer.Ordinal));
 
@@ -126,7 +124,7 @@ public static class ProjectionExpressionBuilder
                     return BuildObject(sourceType, destinationType, source, map, path, depth);
                 }
 
-                // Inheritance: a chain of type checks, most derived first, which EF Core translates for TPH models.
+                // Most derived first; EF Core translates the type checks for TPH models.
                 Expression result = destinationType.IsAbstract || destinationType.IsInterface
                     ? Expression.Constant(null, destinationType)
                     : BuildObject(sourceType, destinationType, source, map, path, depth);
@@ -239,7 +237,6 @@ public static class ProjectionExpressionBuilder
                 return rule?.HasFallbackValue == true ? Expression.Constant(rule.FallbackValue, memberType) : null;
             }
 
-            // Fallback becomes a COALESCE in SQL.
             if (rule?.HasFallbackValue == true && (!raw.Type.IsValueType || Nullable.GetUnderlyingType(raw.Type) != null))
             {
                 var underlying = Nullable.GetUnderlyingType(raw.Type) ?? raw.Type;
@@ -328,7 +325,6 @@ public static class ProjectionExpressionBuilder
                 return Expression.MemberInit(create, bindings);
             }
 
-            // Records and immutable types: constructor parameters take matching bindings, the rest are member-initialized.
             var ctor = destinationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                 .OrderByDescending(c => c.GetParameters().Length)
                 .FirstOrDefault()

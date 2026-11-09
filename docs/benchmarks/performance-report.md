@@ -2,7 +2,7 @@
 
 > **Status:** The numbers previously published on this page did not come from a real benchmark run of this code, and they have been withdrawn. Every number below comes from a real BenchmarkDotNet run, and the raw output is committed next to this page.
 
-## Generated code (remediation Phase 15)
+## Generated code
 
 The benchmark project references the source generator, so its flat and nested maps run generated code. The `MapSource` map stays compiled. Raw output is in [`results/phase15-generated/`](results/phase15-generated/).
 
@@ -21,7 +21,7 @@ In steady state, generated code runs at the same speed as compiled plans, within
 
 The cold-start figures come from three runs of a small console app on the same machine, timing the first `Map` call after the engine is built.
 
-## Current: compiled engine (remediation Phase 11)
+## Current: compiled engine
 
 | Setting | Value |
 |---|---|
@@ -64,7 +64,7 @@ CI runs `scripts/check-benchmarks.sh`, which fails when AutoMapSharp is more tha
 
 ## Baseline: original engine against AutoMapper 16.3.0 and Mapster 10.0.14
 
-This is the "before" measurement for remediation Phase 11, taken with the old reflection-based engine.
+This is the "before" measurement, taken with the old reflection-based engine.
 
 | Setting | Value |
 |---|---|

@@ -31,7 +31,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
     {
         var invocation = (InvocationExpressionSyntax)context.Node;
 
-        // Check if this invocation is DefineMap<TSource, TDestination>
         var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
         if (methodSymbol == null || methodSymbol.Name != "DefineMap" || methodSymbol.TypeArguments.Length != 2)
         {
@@ -45,17 +44,14 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        // Walk up to find the top-most invocation in this fluent chain
         var topInvocation = invocation;
         while (topInvocation.Parent is MemberAccessExpressionSyntax mae && mae.Parent is InvocationExpressionSyntax parentInv)
         {
             topInvocation = parentInv;
         }
 
-        // Collect all chained calls in this fluent mapping chain
         var chainedCalls = CollectChainedCalls(topInvocation, invocation);
 
-        // If ConvertUsing is used, the whole type mapping is handled custom
         if (chainedCalls.Any(c => c.MethodName == "ConvertUsing"))
         {
             return;
@@ -64,7 +60,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
         bool hasMaxDepth = chainedCalls.Any(c => c.MethodName == "MaxDepth");
         bool hasPreserveReferences = chainedCalls.Any(c => c.MethodName == "PreserveReferences");
 
-        // 1. Circular Reference Check (AMS003)
         if (!hasMaxDepth && !hasPreserveReferences)
         {
             if (HasSelfReference(sourceType) || HasSelfReference(destinationType))
@@ -78,7 +73,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        // Collect explicitly configured properties from .ForProperty(...) calls
         var configuredProperties = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var call in chainedCalls.Where(c => c.MethodName is "ForProperty" or "ForCtorParam" or "ForPath"))
         {
@@ -96,7 +90,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
 
         var conventions = ReadModuleConventions(invocation, context.SemanticModel);
 
-        // Get all writable public instance properties on destination
         var destProps = GetWritableProperties(destinationType);
         var sourceProps = GetReadableProperties(sourceType);
 
@@ -108,18 +101,16 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
                 continue; // Property is explicitly handled, in the chain or with an attribute
             }
 
-            // Look for a matching source member with the same rules as the runtime engine.
+            // Same matching rules as the runtime engine.
             var matchingSourceType = FindMatchingSourceMemberType(sourceType, sourceProps, destProp.Name, conventions);
 
             if (matchingSourceType == null)
             {
-                // Also check if it could be a flattened property (e.g. CustomerName -> Customer.Name)
                 if (CanFlatten(sourceProps, destProp.Name))
                 {
                     continue;
                 }
 
-                // Unmapped property -> AMS001
                 var properties = ImmutableDictionary.CreateRange(new[]
                 {
                     new KeyValuePair<string, string?>("PropertyName", destProp.Name)
@@ -137,7 +128,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             }
             else
             {
-                // Member exists on both sides, check type compatibility
                 if (!AreTypesCompatible(matchingSourceType, destProp.Type))
                 {
                     var diag = Diagnostic.Create(
@@ -176,10 +166,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
                       i.TypeArguments[0].SpecialType == SpecialType.System_String &&
                       i.TypeArguments[1].SpecialType == SpecialType.System_Object);
 
-    /// <summary>
-    /// Reads RecognizePrefixes, RecognizeSuffixes, ClearPrefixes and a snake_case SourceNamingConvention from the
-    /// class that contains the DefineMap call. Only string literal arguments can be read.
-    /// </summary>
     private static ModuleConventions ReadModuleConventions(SyntaxNode node, SemanticModel model)
     {
         var conventions = new ModuleConventions();
@@ -245,13 +231,11 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             return name;
         }
 
-        // 1. Same name, ignoring case, after replacements.
         foreach (var member in sourceMembers)
         {
             if (string.Equals(Replace(member.Name), destPropName, StringComparison.OrdinalIgnoreCase)) return member.Type;
         }
 
-        // 2. Same words after the module's prefixes, suffixes, replacements and naming convention, as the runtime does.
         var destinationWords = MemberNameMatching.SplitPascal(
             MemberNameMatching.StripPrefixesAndSuffixes(destPropName, conventions.DestinationPrefixes, conventions.DestinationSuffixes));
         foreach (var member in sourceMembers)
@@ -261,7 +245,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             if (MemberNameMatching.WordsMatch(words, destinationWords)) return member.Type;
         }
 
-        // 3. Extension methods from IncludeSourceExtensionMethods, by name or with a recognized prefix.
         foreach (var extensionType in conventions.ExtensionTypes)
         {
             foreach (var method in extensionType.GetMembers().OfType<IMethodSymbol>())
@@ -280,7 +263,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        // 4. A parameterless method named with a recognized prefix, for example GetSpecialNotes() for SpecialNotes.
         for (var current = sourceType; current != null && current.SpecialType != SpecialType.System_Object; current = current.BaseType)
         {
             foreach (var method in current.GetMembers().OfType<IMethodSymbol>())
@@ -370,7 +352,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             return true;
         }
 
-        // Unwrap Nullable<T>
         var unwrappedSource = (sourceType as INamedTypeSymbol)?.IsGenericType == true &&
                               sourceType.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T
             ? ((INamedTypeSymbol)sourceType).TypeArguments[0]
@@ -386,13 +367,11 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             return true;
         }
 
-        // String conversions
         if (unwrappedDest.SpecialType == SpecialType.System_String)
         {
             return true; // Any type can call ToString()
         }
 
-        // Standard numeric types
         bool isSourceNumeric = IsNumericType(unwrappedSource);
         bool isDestNumeric = IsNumericType(unwrappedDest);
         if (isSourceNumeric && isDestNumeric)
@@ -400,14 +379,12 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             return true;
         }
 
-        // DateTime and DateTimeOffset
         if ((unwrappedSource.Name == "DateTime" || unwrappedSource.Name == "DateTimeOffset") &&
             (unwrappedDest.Name == "DateTime" || unwrappedDest.Name == "DateTimeOffset"))
         {
             return true;
         }
 
-        // String to Guid / DateTime / Enum
         if (unwrappedSource.SpecialType == SpecialType.System_String)
         {
             if (unwrappedDest.TypeKind == TypeKind.Enum ||
@@ -434,15 +411,13 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        // Enum <-> numeric, and enum <-> enum, which the engine maps by name with a numeric fallback.
+        // Enum to enum maps by name, with a numeric fallback.
         if (unwrappedSource.TypeKind == TypeKind.Enum && isDestNumeric) return true;
         if (unwrappedDest.TypeKind == TypeKind.Enum && isSourceNumeric) return true;
         if (unwrappedSource.TypeKind == TypeKind.Enum && unwrappedDest.TypeKind == TypeKind.Enum) return true;
 
-        // A user-defined struct on either side is mapped member by member, like a class.
         if (IsUserComplexType(unwrappedSource) && IsUserComplexType(unwrappedDest)) return true;
 
-        // Named complex types or collections: compatible via sub-map or element mapping
         if (unwrappedSource is INamedTypeSymbol && unwrappedDest is INamedTypeSymbol)
         {
             if (unwrappedSource.TypeKind == TypeKind.Class && unwrappedDest.TypeKind == TypeKind.Class)
@@ -455,7 +430,6 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        // Incompatible primitive/value types (e.g. DateTime to int, Guid to double)
         return false;
     }
 
@@ -549,12 +523,10 @@ public class MappingConfigurationAnalyzer : DiagnosticAnalyzer
                          current.ArgumentList.Arguments[0].Expression is LiteralExpressionSyntax literal &&
                          literal.IsKind(SyntaxKind.StringLiteralExpression))
                 {
-                    // A constructor parameter configured by name sets the member with the same name, as the runtime does.
                     destProp = literal.Token.ValueText;
                 }
                 else if (methodName == "ForPath" && current.ArgumentList.Arguments.Count > 0)
                 {
-                    // ForPath(d => d.Customer.Name) sets the top-level member Customer.
                     destProp = ExtractRootMemberName(current.ArgumentList.Arguments[0].Expression);
                 }
 

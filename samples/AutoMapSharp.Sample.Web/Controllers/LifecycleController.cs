@@ -15,7 +15,6 @@ public class LifecycleController : Controller
         _engine = engine;
     }
 
-    // Task 5.4: Mapping Lifecycle Callbacks (BeforeMap & AfterMap)
     public IActionResult Hooks()
     {
         var entity = MockDatabase.GetSampleAuditedEntity();

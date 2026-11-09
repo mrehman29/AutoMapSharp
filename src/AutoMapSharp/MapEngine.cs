@@ -200,8 +200,7 @@ public sealed class MapEngine : IMapEngine
 
     internal MapperHolder<TSource, TDestination> GetHolder<TSource, TDestination>()
     {
-        // Most applications use one engine, so remember the last holder per type pair and skip the dictionary.
-        // Scoped views share their root's holders, so the cache is keyed by the root engine.
+        // Most apps have one engine, so cache the last holder per type pair and skip the dictionary.
         var cached = HolderCache<TSource, TDestination>.Last;
         if (cached != null && ReferenceEquals(cached.Engine, _root))
         {
@@ -219,8 +218,7 @@ public sealed class MapEngine : IMapEngine
         {
             var map = Configuration.Find(key.Source, key.Destination);
 
-            // Generated maps create their holder with a closed generic type known at compile time, so no
-            // MakeGenericType is needed. That keeps generated pairs working under Native AOT.
+            // Generated maps pass a closed generic type, so no MakeGenericType call (keeps Native AOT happy).
             return Generated.GeneratedMapRegistry.Find(key.Source, key.Destination)?.CreateHolder(_root, map)
                    ?? (MapperHolder)Activator.CreateInstance(typeof(MapperHolder<,>).MakeGenericType(key.Source, key.Destination), _root, map)!;
         });

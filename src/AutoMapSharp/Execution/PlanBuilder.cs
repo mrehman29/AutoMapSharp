@@ -12,12 +12,6 @@ namespace AutoMapSharp.Execution;
 /// <summary>
 /// Builds the expression tree that maps one source type to one destination type.
 /// </summary>
-/// <remarks>
-/// The plan has the shape <c>(source, destination, useDestination, context) =&gt; destination</c>.
-/// Every decision that depends only on types, such as which source member feeds a destination member,
-/// which conversion applies, and which constructor to call, is made here once. The compiled plan only
-/// reads, converts and assigns.
-/// </remarks>
 internal sealed class PlanBuilder
 {
     private static readonly MethodInfo RegisterMethod = typeof(ResolutionContext).GetMethod(
@@ -62,7 +56,6 @@ internal sealed class PlanBuilder
 
     private Expression BuildBody()
     {
-        // String-keyed dictionaries and ExpandoObject, in either direction.
         if (DictionaryMapping.IsStringObjectDictionary(_sourceType) && !BuiltInConversions.IsSimple(_destinationType) &&
             !CollectionPlanner.IsEnumerable(_destinationType))
         {
@@ -91,17 +84,12 @@ internal sealed class PlanBuilder
         return BuildObject();
     }
 
-    // ------------------------------------------------------------------
-    // Object plans
-    // ------------------------------------------------------------------
-
     private Expression BuildObject()
     {
         var destination = Expression.Variable(_destinationType, "d");
         _stage = Expression.Variable(typeof(int), "stage");
         var body = new List<Expression>();
 
-        // 1. Use the given destination, or create one.
         SetStage("constructor");
         var (construct, constructorMembers) = BuildConstruction();
         Expression useExisting = _destinationType.IsValueType
@@ -110,14 +98,13 @@ internal sealed class PlanBuilder
         body.Add(Expression.Assign(_stage, Expression.Constant(0)));
         body.Add(Expression.Assign(destination, Expression.Condition(useExisting, _destinationIn, construct)));
 
-        // 2. Register the new object before mapping members, so circular references resolve to it.
+        // Register before mapping members so circular references resolve to this instance.
         if (_map?.PreserveReferences == true)
         {
             body.Add(Expression.Call(_context, RegisterMethod,
                 Expression.Convert(_source, typeof(object)), Expression.Constant(_destinationType, typeof(Type)), Expression.Convert(destination, typeof(object))));
         }
 
-        // 3. BeforeMap callbacks, base map first, then a per-call BeforeMap passed to Map().
         if (_map != null)
         {
             foreach (var action in _map.BeforeMapActions)
@@ -130,7 +117,6 @@ internal sealed class PlanBuilder
         body.Add(SetStageExpression("BeforeMap"));
         body.Add(OperationCallback(nameof(ResolutionContext.OnBeforeMap), destination));
 
-        // 4. Members, in declaration order, so a resolver can read members mapped before it.
         foreach (var member in SourceMemberMatcher.GetDestinationMembers(_destinationType, _map))
         {
             if (constructorMembers.Contains(member.Name))
@@ -146,7 +132,6 @@ internal sealed class PlanBuilder
             }
         }
 
-        // 5. Nested members configured with ForPath, including reverse-map unflattening.
         if (_map != null)
         {
             foreach (var path in _map.PathRules)
@@ -159,7 +144,6 @@ internal sealed class PlanBuilder
                 }
             }
 
-            // 6. AfterMap callbacks, base map first.
             foreach (var action in _map.AfterMapActions)
             {
                 body.Add(SetStageExpression("AfterMap"));
@@ -172,7 +156,6 @@ internal sealed class PlanBuilder
 
         body.Add(destination);
 
-        // One try block for the whole plan. The stage variable names the member that failed.
         var exception = Expression.Variable(typeof(Exception), "ex");
         var guarded = Expression.TryCatch(
             Expression.Block(_destinationType, body),
@@ -224,7 +207,6 @@ internal sealed class PlanBuilder
         var canRead = member is FieldInfo || (member is PropertyInfo p && p.GetGetMethod(true) != null);
         var target = Expression.MakeMemberAccess(destination, member);
 
-        // The destination's current value is mapped into, unless DoNotUseDestinationValue is set.
         Expression? existing = !memberType.IsValueType && canRead && rule?.UseDestinationValue != false ? target : null;
 
         var value = BuildValue(rule, member.Name, memberType, destination, existing, useConventions: true);
@@ -237,7 +219,6 @@ internal sealed class PlanBuilder
         var keepExisting = rule?.UseDestinationValue == true && existing != null;
         if (rule?.ValueCondition != null || keepExisting)
         {
-            // Resolve into a temporary first, so a value condition can see it and a null value can keep the existing one.
             var temp = Expression.Variable(memberType, "value");
             Expression assign = Expression.Assign(target, temp);
             if (keepExisting)
@@ -341,10 +322,6 @@ internal sealed class PlanBuilder
             ConvertIfNeeded(destination, parameters[1].ParameterType));
     }
 
-    // ------------------------------------------------------------------
-    // Construction
-    // ------------------------------------------------------------------
-
     private (Expression Construct, HashSet<string> ConstructorMembers) BuildConstruction()
     {
         var none = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -368,8 +345,7 @@ internal sealed class PlanBuilder
 
         if (_destinationType.IsValueType)
         {
-            // A struct with settable members starts from its default value. A struct without any, such as a
-            // readonly struct, needs its constructor.
+            // Readonly structs have no setters, so they need their constructor.
             if (SourceMemberMatcher.GetDestinationProperties(_destinationType).Length > 0 || withParameters.Count == 0)
             {
                 return (Expression.New(_destinationType), none);
@@ -444,14 +420,6 @@ internal sealed class PlanBuilder
         return Expression.Default(parameter.ParameterType);
     }
 
-    // ------------------------------------------------------------------
-    // Values
-    // ------------------------------------------------------------------
-
-    /// <summary>
-    /// Builds the value for one destination member or constructor parameter, already converted to <paramref name="memberType"/>,
-    /// or returns null when the member has no source and should be left alone.
-    /// </summary>
     private Expression? BuildValue(PropertyRule? rule, string memberName, Type memberType, Expression destination, Expression? existing, bool useConventions)
     {
         if (rule?.HasConstantValue == true)
@@ -579,9 +547,6 @@ internal sealed class PlanBuilder
         return value;
     }
 
-    /// <summary>
-    /// For an element map with EqualityComparison, returns the comparison and a function that maps onto an existing item.
-    /// </summary>
     private (Delegate Comparison, Delegate MapOnto)? MergeLookup(Type sourceElement, Type destinationElement)
     {
         var elementMap = _engine.Configuration.Find(sourceElement, destinationElement);
@@ -609,11 +574,6 @@ internal sealed class PlanBuilder
         return Expression.Lambda(typeof(Func<,,>).MakeGenericType(sourceElement, typeof(ResolutionContext), destinationElement), body, item, context);
     }
 
-    /// <summary>
-    /// Converts <paramref name="value"/> to <paramref name="targetType"/>. The strategy is chosen from the static types:
-    /// collection mapping, assignment, an explicitly defined map, nullable unwrapping, a built-in conversion,
-    /// a nested object map, and finally a run-time conversion.
-    /// </summary>
     private Expression ConvertValue(Expression value, Type targetType, Expression? existing, Expression context, bool skipExplicitMap = false)
     {
         var valueType = value.Type;
@@ -682,10 +642,6 @@ internal sealed class PlanBuilder
         return Expression.Call(RuntimeConvertMethod.MakeGenericMethod(targetType), Expression.Convert(value, typeof(object)));
     }
 
-    /// <summary>
-    /// For a value that can be null, yields the default of <paramref name="targetType"/> when it is null and
-    /// <paramref name="convert"/> otherwise.
-    /// </summary>
     private static Expression GuardNull(Expression value, Type targetType, Func<Expression, Expression> convert)
     {
         if (value.Type.IsValueType)
@@ -711,10 +667,6 @@ internal sealed class PlanBuilder
             : Expression.Constant(false);
         return Expression.Call(Expression.Constant(holder), mapMethod, value, destination, useDestination, context);
     }
-
-    // ------------------------------------------------------------------
-    // Helpers
-    // ------------------------------------------------------------------
 
     private static bool CanBeNull(Type type) => !type.IsValueType || Nullable.GetUnderlyingType(type) != null;
 

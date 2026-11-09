@@ -6,7 +6,7 @@ using Xunit;
 namespace AutoMapSharp.Tests;
 
 /// <summary>
-/// Dependency injection registration, remediation Phase 12.
+/// Dependency injection registration.
 /// </summary>
 public class DependencyInjectionTests
 {

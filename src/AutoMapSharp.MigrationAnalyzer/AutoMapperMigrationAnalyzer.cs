@@ -145,7 +145,6 @@ public class AutoMapperMigrationAnalyzer : DiagnosticAnalyzer
         var identifier = (IdentifierNameSyntax)context.Node;
         if (identifier.Identifier.Text == "IMapper")
         {
-            // Avoid flagging inside using declarations or namespace declarations
             if (identifier.FirstAncestorOrSelf<UsingDirectiveSyntax>() != null) return;
             if (!IsAutoMapperApi(context, identifier)) return;
 

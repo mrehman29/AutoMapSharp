@@ -10,7 +10,7 @@ using Xunit;
 namespace AutoMapSharp.IntegrationTests.NugetConsumer;
 
 /// <summary>
-/// Verifies the remediation Phase 14 features through the packed NuGet packages, including AutoMapSharp.Collections
+/// Checks more parity features through the packed NuGet packages, including AutoMapSharp.Collections
 /// and projections translated by EF Core on SQLite.
 /// </summary>
 public class RemediationPhase14ConsumerTests

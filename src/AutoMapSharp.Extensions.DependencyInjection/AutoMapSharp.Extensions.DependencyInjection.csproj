@@ -10,7 +10,6 @@
     <PackageTags>mapper;object-mapper;mapping;automapper;automapper-alternative;dependency-injection;aspnetcore</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!-- XML docs give package users IntelliSense. Public members without comments are allowed for now. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>

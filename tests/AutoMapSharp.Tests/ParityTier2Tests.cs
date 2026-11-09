@@ -12,7 +12,7 @@ using Xunit;
 namespace AutoMapSharp.Tests;
 
 /// <summary>
-/// AutoMapper parity features from remediation Phase 14.
+/// More AutoMapper parity features.
 /// </summary>
 public class ParityTier2Tests
 {

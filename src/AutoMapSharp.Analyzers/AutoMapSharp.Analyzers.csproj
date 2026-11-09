@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsRoslynComponent>true</IsRoslynComponent>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    <!-- Shipped inside the AutoMapSharp package (analyzers/dotnet/cs), not as its own package. -->
+    <!-- Ships inside the AutoMapSharp package. -->
     <IsPackable>false</IsPackable>
     <RootNamespace>AutoMapSharp.Analyzers</RootNamespace>
     <Description>Compile-time Roslyn diagnostic analyzers and code fixes for AutoMapSharp.</Description>
@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Member name matching shared with the analyzer, so both agree on what is mapped. -->
     <Compile Include="..\Shared\MemberNameMatching.cs" Link="Shared\MemberNameMatching.cs" />
   </ItemGroup>
 

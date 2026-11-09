@@ -108,7 +108,7 @@ internal static class BuiltInConversions
         }
 #endif
 
-        // Primitives, decimal, DateTime and string parsing follow System.Convert, the same rules as Convert.ChangeType.
+        // Same rules as Convert.ChangeType.
         var convertMethod = FindConvertMethod(from, to);
         if (convertMethod != null)
         {
@@ -117,14 +117,12 @@ internal static class BuiltInConversions
                 : Expression.Call(convertMethod, value);
         }
 
-        // User-defined implicit or explicit conversion operators.
         var op = FindConversionOperator(from, to);
         if (op != null)
         {
             return Expression.Convert(value, to, op);
         }
 
-        // TypeConverter, for example string -> Uri.
         if (IsSimple(to))
         {
             var converter = TypeDescriptor.GetConverter(to);
@@ -195,10 +193,6 @@ internal static class BuiltInConversions
         return null;
     }
 
-    /// <summary>
-    /// System.Convert has methods for these pairs, but they always throw InvalidCastException, for example
-    /// Convert.ToInt32(DateTime). Treating them as unsupported lets validation report them.
-    /// </summary>
     private static bool AlwaysThrows(TypeCode from, TypeCode to)
     {
         if (from == to || from == TypeCode.String || to == TypeCode.String) return false;

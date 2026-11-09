@@ -41,9 +41,8 @@ public static class AutoMapperMigrator
         var tree = CSharpSyntaxTree.ParseText(originalCsharpCode);
         var root = tree.GetRoot();
 
-        // The rewriter matches names without a compilation, so it cannot tell AutoMapper's Ignore()
-        // from EF Core's Ignore(). Only rewrite files that import AutoMapper. Files that mix AutoMapper
-        // with other APIs that share these names still need a manual review after migration.
+        // Names are matched without a compilation, so only touch files that import AutoMapper
+        // (otherwise EF Core's Ignore() would be renamed too).
         if (!root.DescendantNodes().OfType<UsingDirectiveSyntax>().Any(u =>
                 u.Name?.ToString() == "AutoMapper" ||
                 (u.Name?.ToString().StartsWith("AutoMapper.", StringComparison.Ordinal) ?? false)))
@@ -87,7 +86,6 @@ public static class AutoMapperMigrator
             }
             if (text == "AutoMapper.QueryableExtensions")
             {
-                // ProjectOnto is an extension method in the AutoMapSharp namespace.
                 RecordChange("AMSMIG001", "Replaced 'using AutoMapper.QueryableExtensions;' with 'using AutoMapSharp;'", node);
                 return node.WithName(SyntaxFactory.ParseName("AutoMapSharp").WithTriviaFrom(node.Name!));
             }
@@ -96,7 +94,6 @@ public static class AutoMapperMigrator
 
         public override SyntaxNode? VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            // Record the base class change first so changes stay in source order.
             var isProfile = new List<bool>();
             foreach (var baseType in node.BaseList?.Types ?? default)
             {
@@ -109,8 +106,7 @@ public static class AutoMapperMigrator
                 }
             }
 
-            // Visit the original node, so every change inside the class is reported at its real line.
-            // Replacing the base type first would detach the class from the source and report line 1.
+            // Visit before swapping the base type, otherwise line numbers inside the class are lost.
             var visited = (ClassDeclarationSyntax)base.VisitClassDeclaration(node)!;
             if (visited.BaseList == null || !isProfile.Contains(true))
             {
@@ -128,14 +124,13 @@ public static class AutoMapperMigrator
         {
             var id = node.Identifier.Text;
 
-            // Type names.
             if (id == "IMapper" && node.FirstAncestorOrSelf<UsingDirectiveSyntax>() == null)
             {
                 RecordChange("AMSMIG008", "Replaced 'IMapper' with 'IMapEngine'", node);
                 return SyntaxFactory.IdentifierName("IMapEngine").WithTriviaFrom(node);
             }
 
-            // Method names are only renamed where they are called, so a property named Ignore or Condition is left alone.
+            // Only rename invocations, so a property called Ignore or Condition is left alone.
             if (!IsInvokedName(node))
             {
                 return base.VisitIdentifierName(node);
@@ -177,7 +172,6 @@ public static class AutoMapperMigrator
                 return Rename(node, "ProjectOnto");
             }
 
-            // opt.MapFrom<TResolver>() takes a resolver type, which is MapWith<TResolver>() in AutoMapSharp.
             if (id == "MapFrom" && IsInvokedName(node) && node.TypeArgumentList.Arguments.Count == 1 &&
                 node.Parent is MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax { ArgumentList.Arguments.Count: 0 } })
             {
@@ -196,7 +190,6 @@ public static class AutoMapperMigrator
 
         public override SyntaxNode? VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
         {
-            // ProjectTo<T>(mapper.ConfigurationProvider) becomes ProjectOnto<T>(mapper): AutoMapSharp takes the engine.
             if (node.Name.Identifier.Text == "ConfigurationProvider" && node.Parent is ArgumentSyntax)
             {
                 RecordChange("AMSMIG007", "Replaced 'mapper.ConfigurationProvider' with the engine itself", node);
@@ -206,7 +199,6 @@ public static class AutoMapperMigrator
             return base.VisitMemberAccessExpression(node);
         }
 
-        // Visits the type arguments of the original node first, so changes inside them keep their real line.
         private SyntaxNode Rename(GenericNameSyntax node, string newName)
         {
             var visited = (GenericNameSyntax)base.VisitGenericName(node)!;

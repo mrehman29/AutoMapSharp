@@ -15,13 +15,11 @@ public class FluentController : Controller
         _engine = engine;
     }
 
-    // Task 3.1: Fluent Mapping Definition Overview
     public IActionResult Overview()
     {
         return View();
     }
 
-    // Task 3.2: Property Skipping & Constant Values (Skip, UseValue)
     public IActionResult SkipAndConstants()
     {
         var entity = MockDatabase.GetSampleUserProfileEntity();
@@ -31,7 +29,6 @@ public class FluentController : Controller
         return View(viewModel);
     }
 
-    // Task 3.3: Custom Source Property Redirection (MapSource)
     public IActionResult MapSource()
     {
         var entity = MockDatabase.GetSampleUserProfileEntity();
@@ -41,7 +38,6 @@ public class FluentController : Controller
         return View(viewModel);
     }
 
-    // Task 3.4: Conditionals & Fallbacks (If, Fallback)
     [HttpGet]
     public IActionResult Conditionals()
     {
@@ -65,7 +61,6 @@ public class FluentController : Controller
         return View(result);
     }
 
-    // Task 3.5: Bidirectional Mapping (ReverseMap)
     public IActionResult ReverseMap(string direction = "forward")
     {
         ViewBag.Direction = direction;
@@ -95,7 +90,6 @@ public class FluentController : Controller
         return View();
     }
 
-    // Task 3.6: Global & Type-Level Value Transformers
     public IActionResult ValueTransformers()
     {
         var dirtyEntity = MockDatabase.GetSampleDirtyTextEntity();
