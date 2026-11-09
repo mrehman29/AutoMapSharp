@@ -16,14 +16,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!--
+      No SetTargetFramework here: both projects only target netstandard2.0. Setting it makes MSBuild treat this
+      reference as a second build configuration, so the project is compiled twice in parallel into the same obj
+      folder, which fails on Windows with "file is being used by another process" (CS2012).
+    -->
     <ProjectReference Include="..\AutoMapSharp.Generators\AutoMapSharp.Generators.csproj"
                       OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false"
-                      SetTargetFramework="TargetFramework=netstandard2.0" />
+                      ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\AutoMapSharp.Analyzers\AutoMapSharp.Analyzers.csproj"
                       OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false"
-                      SetTargetFramework="TargetFramework=netstandard2.0" />
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
