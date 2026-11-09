@@ -28,7 +28,7 @@ rm -rf ~/.nuget/packages/automapsharp* || true
 rm -rf /tmp/nuget_packages/automapsharp* || true
 
 echo "=== 4. Restoring NugetConsumer with Local Packages ==="
-dotnet restore "${ROOT_DIR}/tests/AutoMapSharp.IntegrationTests.NugetConsumer/AutoMapSharp.IntegrationTests.NugetConsumer.csproj" --source "${ROOT_DIR}/artifacts/packages" --source "https://api.nuget.org/v3/index.json"
+dotnet restore "${ROOT_DIR}/tests/AutoMapSharp.IntegrationTests.NugetConsumer/AutoMapSharp.IntegrationTests.NugetConsumer.csproj"
 
 echo "=== 5. Running NugetConsumer Tests ==="
 dotnet test "${ROOT_DIR}/tests/AutoMapSharp.IntegrationTests.NugetConsumer/AutoMapSharp.IntegrationTests.NugetConsumer.csproj" -m:1 --no-restore
@@ -38,7 +38,7 @@ AUTOMAPSHARP_DISABLE_GENERATED=1 dotnet test "${ROOT_DIR}/tests/AutoMapSharp.Int
   --filter "FullyQualifiedName!~SourceGenerator_EmitsMapsThatTheEngineUses"
 
 echo "=== 6. Restoring and Building Sample Web App with Local Packages ==="
-dotnet restore "${ROOT_DIR}/samples/AutoMapSharp.Sample.Web/AutoMapSharp.Sample.Web.csproj" --source "${ROOT_DIR}/artifacts/packages" --source "https://api.nuget.org/v3/index.json"
+dotnet restore "${ROOT_DIR}/samples/AutoMapSharp.Sample.Web/AutoMapSharp.Sample.Web.csproj"
 dotnet build "${ROOT_DIR}/samples/AutoMapSharp.Sample.Web/AutoMapSharp.Sample.Web.csproj" -m:1 --no-restore
 
 echo "=== SUCCESS: All Tests Passed and Sample Web Application Built Cleanly! ==="

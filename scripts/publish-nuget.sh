@@ -15,7 +15,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PACKAGES_DIR="${ROOT_DIR}/artifacts/packages"
-SOURCE="https://api.nuget.org/v3/index.json"
+SOURCE="nuget.org"
 
 DRY_RUN=false
 if [[ "${1:-}" == "--dry-run" ]]; then
