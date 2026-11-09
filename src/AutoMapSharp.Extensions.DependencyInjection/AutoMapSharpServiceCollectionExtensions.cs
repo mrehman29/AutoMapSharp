@@ -143,8 +143,7 @@ public static class AutoMapSharpServiceCollectionExtensions
         {
             foreach (var type in GetLoadableTypes(assembly))
             {
-                // Private and protected nested classes are local helpers, for example a module that a test or
-                // controller uses to build its own engine. Public and internal types are scanned.
+                // Private nested types are local helpers, such as a module a controller uses for its own engine.
                 if (type == typeof(AttributeMappingModule) || type.IsAbstract || type.IsInterface || type.IsGenericTypeDefinition ||
                     type.IsNestedPrivate || type.IsNestedFamily || type.IsNestedFamANDAssem)
                 {

@@ -8,14 +8,10 @@ using Xunit;
 namespace AutoMapSharp.Tests;
 
 /// <summary>
-/// Behavior of the compiled execution-plan engine introduced in remediation Phase 11.
+/// Behavior of the compiled execution-plan engine.
 /// </summary>
 public class ExecutionEngineTests
 {
-    // ------------------------------------------------------------------
-    // ForPath
-    // ------------------------------------------------------------------
-
     public class Address { public string City { get; set; } = ""; public string Street { get; set; } = ""; }
     public class Customer { public string Name { get; set; } = ""; public string Email { get; set; } = ""; public Address? Address { get; set; } }
     public class Order { public int Id { get; set; } public Customer? Customer { get; set; } }
@@ -95,10 +91,6 @@ public class ExecutionEngineTests
         Assert.Contains("ForProperty", ex.Message);
     }
 
-    // ------------------------------------------------------------------
-    // ReverseMap unflattening by convention
-    // ------------------------------------------------------------------
-
     public class OrderSummary
     {
         public int Id { get; set; }
@@ -145,10 +137,6 @@ public class ExecutionEngineTests
         Assert.Equal("Ann", summary.CustomerName);
         Assert.Equal("Oslo", summary.CustomerAddressCity);
     }
-
-    // ------------------------------------------------------------------
-    // Conversions
-    // ------------------------------------------------------------------
 
     public enum Status { Draft, Published }
 
@@ -220,10 +208,6 @@ public class ExecutionEngineTests
         Assert.IsType<FormatException>(ex.InnerException);
     }
 
-    // ------------------------------------------------------------------
-    // Collections and polymorphism
-    // ------------------------------------------------------------------
-
     public abstract class Shape { public string Name { get; set; } = ""; }
     public class Circle : Shape { public double Radius { get; set; } }
     public class Square : Shape { public double Side { get; set; } }
@@ -271,10 +255,6 @@ public class ExecutionEngineTests
         Assert.Equal(3, ((SquareDto)shapes[1]).Side);
         Assert.Equal(10, Assert.IsType<CircleDto>(dto.Named["big"]).Radius);
     }
-
-    // ------------------------------------------------------------------
-    // Graphs, structs, existing objects
-    // ------------------------------------------------------------------
 
     public class TreeNode { public string Name { get; set; } = ""; public TreeNode? Child { get; set; } }
     public class TreeNodeDto { public string Name { get; set; } = ""; public TreeNodeDto? Child { get; set; } }
@@ -351,10 +331,6 @@ public class ExecutionEngineTests
         Assert.Same(address, target.Address);
         Assert.Equal("Oslo", address.City);
     }
-
-    // ------------------------------------------------------------------
-    // Engine lifecycle
-    // ------------------------------------------------------------------
 
     public class CallbackModule : MappingModule
     {

@@ -10,7 +10,6 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>automapsharp-migrate</ToolCommandName>
     <PackageId>dotnet-automapsharp-migrate</PackageId>
-    <!-- Only ship English Roslyn resources with the tool. -->
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 

@@ -16,7 +16,6 @@ public class CollectionsController : Controller
         _engine = engine;
     }
 
-    // Task 4.1: Standard Collection Mapping (Arrays & Lists)
     public IActionResult Standard()
     {
         var order = MockDatabase.GetSampleMultiItemOrder();
@@ -26,7 +25,6 @@ public class CollectionsController : Controller
         return View(viewModel);
     }
 
-    // Task 4.2: Dictionaries & Sets
     public IActionResult DictionariesAndSets()
     {
         var order = MockDatabase.GetSampleMultiItemOrder();
@@ -36,7 +34,6 @@ public class CollectionsController : Controller
         return View(viewModel);
     }
 
-    // Task 4.3: Null Collection Handling (Default Empty vs AllowNull)
     public IActionResult NullCollections()
     {
         var order = MockDatabase.GetSampleNullCollectionOrder();
@@ -56,7 +53,6 @@ public class CollectionsController : Controller
         return View();
     }
 
-    // Task 4.4: In-Place Existing Collection Update
     [HttpGet]
     public IActionResult InPlaceUpdate()
     {

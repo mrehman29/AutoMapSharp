@@ -38,14 +38,12 @@ public class UnmappedPropertyCodeFixProvider : CodeFixProvider
             var invocation = node.FirstAncestorOrSelf<InvocationExpressionSyntax>();
             if (invocation == null) continue;
 
-            // Find top of fluent chain
             var topInvocation = invocation;
             while (topInvocation.Parent is MemberAccessExpressionSyntax mae && mae.Parent is InvocationExpressionSyntax parentInv)
             {
                 topInvocation = parentInv;
             }
 
-            // Fix 1: Ignore property with .Skip()
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: $"Ignore property '{propertyName}' using .Skip()",
@@ -53,7 +51,6 @@ public class UnmappedPropertyCodeFixProvider : CodeFixProvider
                     equivalenceKey: $"Skip_{propertyName}"),
                 diagnostic);
 
-            // Fix 2: Map property with .MapSource()
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: $"Map property '{propertyName}' using .MapSource()",
@@ -71,7 +68,6 @@ public class UnmappedPropertyCodeFixProvider : CodeFixProvider
         string optionLambda,
         CancellationToken cancellationToken)
     {
-        // Construct: topInvocation.ForProperty(dest => dest.Prop, ...)
         var codeToAppend = $"\n            .ForProperty(dest => dest.{propertyName}, {optionLambda})";
         var parsedChain = SyntaxFactory.ParseExpression(topInvocation.ToString() + codeToAppend)
             .WithAdditionalAnnotations(Formatter.Annotation);

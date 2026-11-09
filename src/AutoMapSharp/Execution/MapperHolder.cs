@@ -35,10 +35,6 @@ internal abstract class MapperHolder
 /// Owns the compiled plan for <typeparamref name="TSource"/> to <typeparamref name="TDestination"/> and runs the steps
 /// around it: polymorphic dispatch, type converters, reference preservation, maximum depth and error wrapping.
 /// </summary>
-/// <remarks>
-/// Plans call the holders of nested type pairs directly, so a nested map costs one method call and no dictionary lookup.
-/// A holder is created before its plan is compiled, which lets recursive types refer to their own holder.
-/// </remarks>
 internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
 {
     internal static readonly MethodInfo MapMethod = typeof(MapperHolder<TSource, TDestination>).GetMethod(nameof(Map))!;
@@ -73,7 +69,6 @@ internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
             return useDestination ? destination : default!;
         }
 
-        // Polymorphism: a more specific map for the runtime type, an Include, or a concrete map for an abstract destination.
         if (_canDispatch)
         {
             var runtimeType = source.GetType();
@@ -132,9 +127,6 @@ internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
 
     public override void Compile() => _ = _plan.Value;
 
-    /// <summary>
-    /// Uses the code emitted by the source generator when it matches the runtime configuration, otherwise compiles an expression tree.
-    /// </summary>
     private Func<TSource, TDestination, bool, ResolutionContext, TDestination> BuildPlan(MapEngine engine, TypeMappingDescriptor? map)
     {
         var runtimeKind = PlanCompiler.Interpreted ? Generated.MapPlanKind.Interpreted : Generated.MapPlanKind.Compiled;
@@ -185,9 +177,6 @@ internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
         return Map((TSource)source!, typedDestination, useDestination && destination != null, context);
     }
 
-    /// <summary>
-    /// Finds the map to use instead of this one for a source object of <paramref name="runtimeType"/>, or null to use this one.
-    /// </summary>
     private MapperHolder? ResolveDispatch(Type runtimeType)
     {
         var config = _engine.Configuration;
@@ -210,7 +199,6 @@ internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
                 return _engine.GetHolder(runtimeType, typeof(TDestination));
             }
 
-            // IncludeAllDerived: the defined map whose source type is closest to the runtime type.
             if (_map?.IncludeAllDerivedTypes == true)
             {
                 var closest = config.Maps
@@ -228,13 +216,11 @@ internal sealed class MapperHolder<TSource, TDestination> : MapperHolder
             }
         }
 
-        // As<TOther>(): map to the more specific destination type instead.
         if (_map?.AsType is { } asType)
         {
             return _engine.GetHolder(typeof(TSource), asType);
         }
 
-        // An abstract destination, or a pair with no map of its own: look for a configured map that fits.
         if (_map == null || typeof(TDestination).IsAbstract || typeof(TDestination).IsInterface)
         {
             var candidate = config.Maps.FirstOrDefault(m =>
@@ -332,7 +318,6 @@ internal sealed class InstanceFactory
             return _construct();
         }
 
-        // Not registered and no parameterless constructor: inject constructor parameters from the service provider.
         if (context.ServiceProvider is { } services)
         {
             foreach (var ctor in _constructors)

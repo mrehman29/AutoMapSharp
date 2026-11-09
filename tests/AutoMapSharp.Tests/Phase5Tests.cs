@@ -10,10 +10,6 @@ namespace AutoMapSharp.Tests;
 
 public class Phase5Tests
 {
-    // ==========================================
-    // 5.1: Custom Property Resolvers
-    // ==========================================
-
     public class OrderSource
     {
         public decimal Subtotal { get; set; }
@@ -90,10 +86,6 @@ public class Phase5Tests
         Assert.Equal(108.25m, result.TotalWithTax);
     }
 
-    // ==========================================
-    // 5.2: Type-Level Converters
-    // ==========================================
-
     public class JsonStringPayload
     {
         public string RawJson { get; set; } = "{\"name\":\"SuperWidget\",\"count\":42}";
@@ -147,10 +139,6 @@ public class Phase5Tests
         var invalidNum = engine.Map<string, int>("not-a-number");
         Assert.Equal(-1, invalidNum);
     }
-
-    // ==========================================
-    // 5.3: Subclass & Polymorphic Mapping (Include & IncludeBase)
-    // ==========================================
 
     public abstract class Payment
     {
@@ -233,10 +221,6 @@ public class Phase5Tests
         Assert.Equal("0x71C...8976", cryptoDto.WalletAddress);
     }
 
-    // ==========================================
-    // 5.4: Lifecycle Callbacks (BeforeMap, AfterMap)
-    // ==========================================
-
     public class AuditSource
     {
         public string RawValue { get; set; } = "HelloWorld";
@@ -279,10 +263,6 @@ public class Phase5Tests
         Assert.Equal("Started:Finished", result.TraceLog);
         Assert.Equal(new DateTime(2026, 11, 4, 12, 0, 0, DateTimeKind.Utc), result.MappedAtUtc);
     }
-
-    // ==========================================
-    // 5.5: Configuration Validation (AssertConfigurationIsValid)
-    // ==========================================
 
     public class IncompleteSource
     {

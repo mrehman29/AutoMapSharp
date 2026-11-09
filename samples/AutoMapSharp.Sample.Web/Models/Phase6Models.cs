@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace AutoMapSharp.Sample.Web.Models;
 
-// ==========================================
-// EF Core Database Entities
-// ==========================================
-
 public class DbCustomer
 {
     public int Id { get; set; }
@@ -55,10 +51,6 @@ public class DbOrder
     public List<DbOrderItem> Items { get; set; } = new();
     public List<DbAuditLog> AuditLogs { get; set; } = new();
 }
-
-// ==========================================
-// Projection ViewModels & DTOs
-// ==========================================
 
 public class OrderItemProjectionDto
 {

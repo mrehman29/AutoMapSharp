@@ -10,17 +10,12 @@
     <PackageTags>mapper;object-mapper;mapping;automapper;automapper-alternative;dto;projection;efcore;source-generator;aot</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!-- XML docs give package users IntelliSense. Public members without comments are allowed for now. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <!--
-      No SetTargetFramework here: both projects only target netstandard2.0. Setting it makes MSBuild treat this
-      reference as a second build configuration, so the project is compiled twice in parallel into the same obj
-      folder, which fails on Windows with "file is being used by another process" (CS2012).
-    -->
+    <!-- Don't add SetTargetFramework: it builds these projects twice in parallel and breaks Windows builds. -->
     <ProjectReference Include="..\AutoMapSharp.Generators\AutoMapSharp.Generators.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false" />
@@ -45,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Member name matching shared with the analyzer, so both agree on what is mapped. -->
     <Compile Include="..\Shared\MemberNameMatching.cs" Link="Shared\MemberNameMatching.cs" />
   </ItemGroup>
 

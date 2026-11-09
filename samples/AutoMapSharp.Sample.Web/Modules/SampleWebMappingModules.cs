@@ -123,13 +123,11 @@ public class Phase5WebModule : MappingModule
 {
     public Phase5WebModule()
     {
-        // 5.1: Custom Property Resolver
         DefineMap<WebOrderTaxSource, WebOrderTaxViewModel>()
             .ForProperty(d => d.CalculatedTax, opt => opt.MapWith<WebTaxResolver>())
             .ForProperty(d => d.TaxRatePercent, opt => opt.MapSource(s => s.ShippingState == "CA" ? 8.25m : 5.0m))
             .ForProperty(d => d.TotalAmount, opt => opt.MapSource(s => Math.Round(s.Subtotal + (s.Subtotal * (s.ShippingState == "CA" ? 0.0825m : 0.05m)), 2)));
 
-        // 5.2: Custom Type Converter
         DefineMap<WebRawJsonSource, WebParsedJsonViewModel>()
             .ConvertUsing((src, ctx) =>
             {
@@ -143,7 +141,6 @@ public class Phase5WebModule : MappingModule
                 };
             });
 
-        // 5.3: Polymorphic & Subclass Mapping
         DefineMap<WebPayment, WebPaymentViewModel>()
             .Include<WebCreditCardPayment, WebCreditCardPaymentViewModel>()
             .Include<WebCryptoPayment, WebCryptoPaymentViewModel>()
@@ -158,7 +155,6 @@ public class Phase5WebModule : MappingModule
         DefineMap<WebBankTransferPayment, WebBankTransferPaymentViewModel>()
             .IncludeBase<WebPayment, WebPaymentViewModel>();
 
-        // 5.4: Lifecycle Callbacks
         DefineMap<WebAuditedEntity, WebAuditedViewModel>()
             .ForProperty(d => d.MaskedSecurityCode, opt => opt.Skip())
             .ForProperty(d => d.AuditTrail, opt => opt.Skip())

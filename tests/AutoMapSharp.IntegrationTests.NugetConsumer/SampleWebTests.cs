@@ -660,7 +660,7 @@ public class SampleWebTests
         Assert.NotEqual(firstId, secondId);
     }
 
-    // ---- Parity pages (remediation Phase 13) ----
+    // Parity pages
 
     private ParityController Parity() => new(_engine);
 

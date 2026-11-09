@@ -20,7 +20,6 @@ public class ProjectionsController : Controller
         _engine = engine;
     }
 
-    // Task 6.1: Basic Database Projection (ProjectOnto)
     public IActionResult Index()
     {
         var query = _dbContext.Orders.ProjectOnto<OrderProjectionDto>(_engine);
@@ -30,7 +29,6 @@ public class ProjectionsController : Controller
         return View(orders);
     }
 
-    // Task 6.2: SQL Query Inspector (In-Memory vs ProjectOnto)
     public IActionResult SqlInspector()
     {
         // 1. Heavy in-memory query
@@ -54,7 +52,6 @@ public class ProjectionsController : Controller
         return View();
     }
 
-    // Task 6.3: Parameterized Database Projections
     public IActionResult Filtered(decimal? minTotal)
     {
         decimal threshold = minTotal ?? 1500m;
@@ -94,7 +91,6 @@ public class ProjectionsController : Controller
         return View(model);
     }
 
-    // Task 6.4: Explicit Expansion for Navigation Properties
     public IActionResult ExplicitExpansion(bool expandItems = false, bool expandAudit = false)
     {
         var membersToExpand = new List<string>();

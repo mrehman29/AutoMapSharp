@@ -242,12 +242,11 @@ public abstract class MappingModule
             Module = this,
             IsReverseMap = true,
             AllowNullCollections = forwardDescriptor.AllowNullCollections,
-            // Like AutoMapper, reverse maps are not member-validated by default. Call ValidateMembers to opt in.
+            // Same as AutoMapper: reverse maps aren't member-validated unless ValidateMembers is called.
             MemberListToValidate = MemberList.None
         };
 
-        // Invert simple member redirections. A forward rule "Dest.X <- src.A.B" becomes the reverse rule
-        // "Source.A.B <- dest.X". A single member becomes a property rule, a longer chain becomes a path rule.
+        // Invert simple redirections: "Dest.X <- src.A.B" becomes "Source.A.B <- dest.X".
         foreach (var rule in forwardDescriptor.Rules.Values)
         {
             if (rule.SourceExpression == null || rule.DestinationMember is not PropertyInfo forwardDestination)

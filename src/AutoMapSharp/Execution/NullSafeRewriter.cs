@@ -7,11 +7,6 @@ namespace AutoMapSharp.Execution;
 /// Makes member chains in a <c>MapSource</c> expression null-safe, so <c>s => s.Customer.Address.City</c>
 /// yields null when <c>Customer</c> or <c>Address</c> is null instead of throwing.
 /// </summary>
-/// <remarks>
-/// Only member reads and instance method calls on intermediate objects are guarded. Nested lambdas, such as the
-/// predicate in <c>s.Items.Count(i =&gt; i.Active)</c>, are left untouched, and exceptions thrown by user code
-/// still propagate.
-/// </remarks>
 internal sealed class NullSafeRewriter : ExpressionVisitor
 {
     public static Expression Rewrite(LambdaExpression lambda) => new NullSafeRewriter().Visit(lambda.Body)!;

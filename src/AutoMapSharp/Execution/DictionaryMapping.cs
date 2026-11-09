@@ -139,10 +139,6 @@ internal static class DictionaryMapping
         return false;
     }
 
-    /// <summary>
-    /// Converts a dictionary value to a member type: assigned when it already fits, converted when the member is a
-    /// simple type, and mapped by its runtime type otherwise, which covers nested dictionaries and collections.
-    /// </summary>
     private static T ConvertValue<T>(MapEngine engine, object? value, ResolutionContext context)
     {
         if (value is null) return default!;

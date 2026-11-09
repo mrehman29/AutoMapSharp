@@ -15,7 +15,6 @@ public class ComplexTypesController : Controller
         _engine = engine;
     }
 
-    // Task 4.5: Nested Complex Objects & Sub-Mapper Chaining
     public IActionResult DeepChaining()
     {
         var hierarchy = MockDatabase.GetSampleHierarchy();
@@ -25,7 +24,6 @@ public class ComplexTypesController : Controller
         return View(viewModel);
     }
 
-    // Task 4.6: Constructor-Based Instantiation (ConstructUsing)
     public IActionResult ConstructUsing()
     {
         var source = MockDatabase.GetSampleProductSource();
@@ -35,7 +33,6 @@ public class ComplexTypesController : Controller
         return View(immutableProduct);
     }
 
-    // Task 4.7: Circular References & Recursion Protection (PreserveReferences, MaxDepth)
     public IActionResult CircularReferences()
     {
         var root = MockDatabase.GetSampleCircularEmployeeTree();

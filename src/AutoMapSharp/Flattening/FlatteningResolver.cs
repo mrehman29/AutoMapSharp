@@ -71,7 +71,6 @@ public static class FlatteningResolver
 
         var members = GetCandidateMembers(currentType, prefixes);
 
-        // Find matching prefix members in descending length order (greedy match)
         var candidates = new List<(string Name, MemberInfo Member, Type ReturnType)>();
 
         foreach (var m in members)
@@ -82,7 +81,7 @@ public static class FlatteningResolver
             }
         }
 
-        // Sort descending by name length for greedy match
+        // Longest name first (greedy match).
         candidates.Sort((a, b) => b.Name.Length.CompareTo(a.Name.Length));
 
         foreach (var candidate in candidates)
@@ -93,7 +92,6 @@ public static class FlatteningResolver
 
             if (string.IsNullOrEmpty(nextRemaining))
             {
-                // Full match found
                 return true;
             }
 
@@ -102,7 +100,6 @@ public static class FlatteningResolver
                 return true;
             }
 
-            // Backtrack
             currentPath.RemoveAt(currentPath.Count - 1);
         }
 
@@ -115,7 +112,6 @@ public static class FlatteningResolver
     {
         var result = new List<(string Name, MemberInfo Member, Type ReturnType)>();
 
-        // Properties
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (var prop in properties)
         {
@@ -125,7 +121,6 @@ public static class FlatteningResolver
             }
         }
 
-        // Parameterless Methods (e.g. GetCustomer())
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
         foreach (var method in methods)
         {

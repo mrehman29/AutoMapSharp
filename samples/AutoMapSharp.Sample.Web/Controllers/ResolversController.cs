@@ -15,7 +15,6 @@ public class ResolversController : Controller
         _engine = engine;
     }
 
-    // Task 5.1: Custom Property Resolvers with DI
     public IActionResult Index()
     {
         var source = MockDatabase.GetSampleOrderTaxSource();
@@ -25,7 +24,6 @@ public class ResolversController : Controller
         return View(viewModel);
     }
 
-    // Task 5.2: Type-Level Custom Converters (ConvertUsing)
     public IActionResult TypeConverters()
     {
         var rawSource = MockDatabase.GetSampleRawJsonSource();

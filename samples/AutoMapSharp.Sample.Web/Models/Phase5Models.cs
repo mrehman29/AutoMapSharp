@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace AutoMapSharp.Sample.Web.Models;
 
-// ==========================================
-// 5.1: Custom Property Resolvers
-// ==========================================
-
 public interface ITaxRateService
 {
     decimal GetStateTaxRate(string state);
@@ -59,10 +55,6 @@ public class WebTaxResolver : IPropertyResolver<WebOrderTaxSource, WebOrderTaxVi
     }
 }
 
-// ==========================================
-// 5.2: Type-Level Converters
-// ==========================================
-
 public class WebRawJsonSource
 {
     public string DocumentId { get; set; } = string.Empty;
@@ -77,10 +69,6 @@ public class WebParsedJsonViewModel
     public string Region { get; set; } = string.Empty;
     public bool HighAvailability { get; set; }
 }
-
-// ==========================================
-// 5.3: Polymorphic & Subclass Mapping
-// ==========================================
 
 public abstract class WebPayment
 {
@@ -141,10 +129,6 @@ public class WebBankTransferPaymentViewModel : WebPaymentViewModel
     public string BankName { get; set; } = string.Empty;
     public string RoutingNumberMasked { get; set; } = string.Empty;
 }
-
-// ==========================================
-// 5.4: Lifecycle Callbacks
-// ==========================================
 
 public class WebAuditedEntity
 {

@@ -5,7 +5,7 @@ using Xunit;
 namespace AutoMapSharp.Tests;
 
 /// <summary>
-/// The source generator (remediation Phase 15). This project references the generator, so eligible maps in every test
+/// The source generator. This project references the generator, so eligible maps in every test
 /// class run through generated code. CI also runs the whole suite with AUTOMAPSHARP_DISABLE_GENERATED=1 to compare.
 /// </summary>
 public class SourceGeneratorTests

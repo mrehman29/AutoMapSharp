@@ -6,7 +6,6 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsPackable>false</IsPackable>
     <RootNamespace>AutoMapSharp.Generators</RootNamespace>
-    <!-- Same as the other analyzer projects: release tracking files are not used. -->
     <NoWarn>$(NoWarn);RS2008</NoWarn>
   </PropertyGroup>
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# Runs a short benchmark of each scenario and fails when AutoMapSharp is more than MAX_RATIO times slower
-# than hand-written code in the same run. The ratio is compared rather than absolute times, so the check
-# gives the same answer on a laptop and on a CI runner.
+# Fails when AutoMapSharp is more than MAX_RATIO times slower than hand-written code in the same run.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

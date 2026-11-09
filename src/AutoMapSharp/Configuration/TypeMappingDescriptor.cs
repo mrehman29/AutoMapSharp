@@ -153,7 +153,6 @@ public sealed class TypeMappingDescriptor
     public MemberList MemberListToValidate { get; internal set; } = MemberList.Destination;
     public IReadOnlyCollection<string> UnvalidatedSourceMembers => UnvalidatedSourceMemberNames;
 
-    // Conventions. On a descriptor returned by the engine these include the module-level settings.
     public IReadOnlyList<string> RecognizedPrefixes => Prefixes;
     public IReadOnlyList<string> RecognizedSuffixes => Suffixes;
     public IReadOnlyList<string> RecognizedDestinationPrefixes => DestinationPrefixList;

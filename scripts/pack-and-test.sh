@@ -14,7 +14,6 @@ dotnet build "${ROOT_DIR}/src/AutoMapSharp.Collections/AutoMapSharp.Collections.
 dotnet build "${ROOT_DIR}/src/AutoMapSharp.Cli/AutoMapSharp.Cli.csproj" -c Release -m:1 --no-restore
 
 echo "=== 2. Packing NuGet Packages to artifacts/packages ==="
-# Start clean so only packages from this build can be published.
 rm -rf "${ROOT_DIR}/artifacts/packages"
 mkdir -p "${ROOT_DIR}/artifacts/packages"
 dotnet pack "${ROOT_DIR}/src/AutoMapSharp/AutoMapSharp.csproj" -c Release -o "${ROOT_DIR}/artifacts/packages" -m:1 --no-restore --no-build

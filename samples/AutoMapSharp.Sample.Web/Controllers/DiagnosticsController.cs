@@ -14,7 +14,6 @@ public class DiagnosticsController : Controller
         _engine = engine;
     }
 
-    // Task 5.5: Configuration Validation (AssertConfigurationIsValid & ValidateConfiguration)
     public IActionResult HealthCheck()
     {
         var validation = _engine.ValidateConfiguration();

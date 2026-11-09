@@ -10,7 +10,7 @@ using Xunit;
 namespace AutoMapSharp.IntegrationTests.NugetConsumer;
 
 /// <summary>
-/// Verifies the remediation Phase 11 compiled engine through the packed NuGet package.
+/// Checks the compiled engine through the packed NuGet package.
 /// </summary>
 public class RemediationPhase11ConsumerTests
 {

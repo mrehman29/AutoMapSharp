@@ -14,19 +14,6 @@ namespace AutoMapSharp.Generators;
 /// <summary>
 /// Incremental Roslyn source generator that emits typed mapping code for maps whose behavior it can reproduce exactly.
 /// </summary>
-/// <remarks>
-/// <para>
-/// For each <c>DefineMap&lt;TSource, TDestination&gt;()</c> call in a module, the generator checks that every option in
-/// the configuration chain is one it supports, resolves every destination member with the same matching order the
-/// engine uses, and mirrors the engine's choice of conversion. Anything else is left to the engine's compiled plan,
-/// and an info diagnostic (AMS100) says why.
-/// </para>
-/// <para>
-/// Each generated map also records the assumptions it was built on. The engine checks them against the frozen runtime
-/// configuration before using the generated code, so a difference, for example a setting the generator could not see,
-/// makes the engine fall back to its compiled plan instead of behaving differently.
-/// </para>
-/// </remarks>
 [Generator]
 public sealed class AutoMapSharpGenerator : IIncrementalGenerator
 {
@@ -180,10 +167,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             type is ITypeParameterSymbol || type is INamedTypeSymbol named && named.TypeArguments.Any(ContainsTypeParameters) ||
             type is IArrayTypeSymbol array && ContainsTypeParameters(array.ElementType);
 
-        // ------------------------------------------------------------------
-        // One map
-        // ------------------------------------------------------------------
-
         private sealed class MapState
         {
             public List<string> Members { get; } = new();
@@ -328,20 +311,12 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             map.Body.Append("                d.").Append(Escape(member.Name)).Append(" = ").Append(value).AppendLine(";");
         }
 
-        // ------------------------------------------------------------------
-        // Configuration chain and module settings
-        // ------------------------------------------------------------------
-
         private static readonly HashSet<string> AllowedCalls = new()
         {
             "DefineMap", "ForProperty", "MaxDepth", "PreserveReferences", "AllowNullCollections", "ValidateMembers", "ForSourceMember",
-            // Dispatch and inherited configuration are checked against the runtime configuration before generated code is used.
             "Include", "IncludeBase", "IncludeAllDerived"
         };
 
-        /// <summary>
-        /// Reads the calls chained on DefineMap up to ReverseMap, and returns "skip" or "value" per configured member.
-        /// </summary>
         private static Dictionary<string, string> ReadChain(InvocationExpressionSyntax defineMap)
         {
             var rules = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -464,13 +439,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             return conventions;
         }
 
-        // ------------------------------------------------------------------
-        // Members
-        // ------------------------------------------------------------------
-
-        /// <summary>
-        /// The members the engine writes: public properties with a setter of any visibility, and writable public fields.
-        /// </summary>
         private static IEnumerable<ISymbol> DestinationMembers(INamedTypeSymbol type)
         {
             var names = new HashSet<string>();
@@ -507,9 +475,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             return properties.Concat(fields).ToList();
         }
 
-        /// <summary>
-        /// Mirrors the engine's matching order: same name, naming convention with prefixes and suffixes, then flattening.
-        /// </summary>
         private static List<ISymbol> FindSource(ITypeSymbol source, string destinationName, Conventions conventions)
         {
             var members = SourceMembers(source);
@@ -596,9 +561,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             return false;
         }
 
-        /// <summary>
-        /// A read of a member path. A null intermediate object gives the default value, as in the engine.
-        /// </summary>
         private string Read(string instance, List<ISymbol> path, int index, MapState map)
         {
             var access = instance + "." + Escape(path[index].Name) + (path[index] is IMethodSymbol ? "()" : string.Empty);
@@ -618,10 +580,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
             return "(" + access + " is { } " + variable + " ? " + Read(variable, path, index + 1, map) + " : default(" + finalType + "))";
         }
 
-        // ------------------------------------------------------------------
-        // Conversions, mirroring the engine's PlanBuilder.ConvertValue
-        // ------------------------------------------------------------------
-
         private string Convert(string value, ITypeSymbol from, ITypeSymbol to, string? existing, string context, MapState map)
         {
             var fromName = from.ToDisplayString(TypeFormat);
@@ -633,8 +591,7 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
                 return ConvertCollection(value, from, to, existing, context, map);
             }
 
-            // Same type: assigned. The engine would map it instead only when this engine defines a map for the pair,
-            // which the runtime check detects.
+            // The runtime check catches the case where the engine defines a map for the same type.
             if (SymbolEqualityComparer.Default.Equals(from, to))
             {
                 if (!IsSimple(to)) map.DirectPairs.Add(pair);
@@ -747,9 +704,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
                    (existing ?? "null") + ", " + converter + ")";
         }
 
-        /// <summary>
-        /// Mirrors BuiltInConversions.TryBuild in the engine. Returns null when the engine would not use a built-in conversion.
-        /// </summary>
         private string? BuiltIn(string value, ITypeSymbol from, ITypeSymbol to)
         {
             var toName = to.ToDisplayString(TypeFormat);
@@ -875,10 +829,6 @@ public sealed class AutoMapSharpGenerator : IIncrementalGenerator
                 .Any(m => m.MethodKind == MethodKind.Conversion &&
                           SymbolEqualityComparer.Default.Equals(m.ReturnType, to) &&
                           m.Parameters.Length == 1 && SymbolEqualityComparer.Default.Equals(m.Parameters[0].Type, from));
-
-        // ------------------------------------------------------------------
-        // Type helpers
-        // ------------------------------------------------------------------
 
         private static ITypeSymbol MemberType(ISymbol member) => member switch
         {

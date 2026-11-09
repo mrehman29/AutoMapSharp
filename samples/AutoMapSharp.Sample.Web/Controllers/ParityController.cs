@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AutoMapSharp.Sample.Web.Controllers;
 
 /// <summary>
-/// One page per AutoMapper parity feature from remediation Phase 13, plus the parity matrix.
+/// One page per AutoMapper parity feature, plus the parity matrix.
 /// </summary>
 public class ParityController : Controller
 {
