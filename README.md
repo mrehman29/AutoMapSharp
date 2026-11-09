@@ -166,6 +166,7 @@ automapsharp-migrate ./src --dry-run
 * [Release & Target Framework Matrix](docs/deployment/release-matrix.md)
 * [Publishing to NuGet](docs/deployment/publishing-to-nuget.md)
 * [Changelog](CHANGELOG.md)
+* [Release notes for 1.0.0-preview.1](docs/release-notes/v1.0.0-preview.1.md)
 
 ---
 
