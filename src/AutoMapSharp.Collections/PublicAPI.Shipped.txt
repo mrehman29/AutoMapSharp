@@ -1,0 +1,3 @@
+#nullable enable
+AutoMapSharp.Collections.CollectionMappingExtensions
+static AutoMapSharp.Collections.CollectionMappingExtensions.EqualityComparison<TSource, TDestination>(this AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>! definition, System.Linq.Expressions.Expression<System.Func<TSource, TDestination, bool>!>! comparison) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!

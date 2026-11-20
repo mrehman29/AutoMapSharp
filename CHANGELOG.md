@@ -2,6 +2,12 @@
 
 All notable changes to AutoMapSharp are listed here. The project follows [Semantic Versioning](https://semver.org/).
 
+## 1.0.0 (unreleased)
+
+- **Public API baseline.** The public API of `AutoMapSharp`, `AutoMapSharp.Collections` and `AutoMapSharp.Extensions.DependencyInjection` is recorded in `PublicAPI.Shipped.txt` and checked on every build by `Microsoft.CodeAnalysis.PublicApiAnalyzers`, so an accidental breaking change fails the build.
+- **Diagnostics frozen.** AMS001 to AMS003 and AMSMIG001 to AMSMIG008 are recorded in `AnalyzerReleases.Shipped.md` (Roslyn analyzer release tracking), and each diagnostic now links to its documentation.
+- **XML documentation.** Every public type and member is documented, and a missing comment now fails the build.
+
 ## 1.0.0-preview.1
 
 The first public preview of AutoMapSharp, a free and MIT-licensed object mapper for .NET.

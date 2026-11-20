@@ -1,0 +1,347 @@
+#nullable enable
+AutoMapSharp.AttributeMappingModule
+AutoMapSharp.AttributeMappingModule.AttributeMappingModule(params System.Reflection.Assembly![]! assemblies) -> void
+AutoMapSharp.Configuration.CtorParamRule
+AutoMapSharp.Configuration.CtorParamRule.ConstantValue.get -> object?
+AutoMapSharp.Configuration.CtorParamRule.HasConstantValue.get -> bool
+AutoMapSharp.Configuration.CtorParamRule.ParameterName.get -> string!
+AutoMapSharp.Configuration.CtorParamRule.SourceExpression.get -> System.Linq.Expressions.LambdaExpression?
+AutoMapSharp.Configuration.ICtorParamOptions<TSource>
+AutoMapSharp.Configuration.ICtorParamOptions<TSource>.MapSource<TSourceMember>(System.Linq.Expressions.Expression<System.Func<TSource, TSourceMember>!>! sourceMember) -> AutoMapSharp.Configuration.ICtorParamOptions<TSource>!
+AutoMapSharp.Configuration.ICtorParamOptions<TSource>.UseValue(object? value) -> AutoMapSharp.Configuration.ICtorParamOptions<TSource>!
+AutoMapSharp.Configuration.IMappingDefinition
+AutoMapSharp.Configuration.IMappingDefinition.ConvertUsing(System.Type! converterType) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.ForProperty(string! destinationMember, System.Action<AutoMapSharp.Configuration.IMemberOptions!>! options) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.Include(System.Type! derivedSource, System.Type! derivedDestination) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.IncludeBase(System.Type! baseSource, System.Type! baseDestination) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.MaxDepth(int depth) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.PreserveReferences(bool preserve = true) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.ReverseMap() -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition.ValidateMembers(AutoMapSharp.Configuration.MemberList memberList) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.AfterMap(System.Action<TSource, TDestination, AutoMapSharp.ResolutionContext!>! callback) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.AfterMap(System.Action<TSource, TDestination>! callback) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.AfterMap<TAction>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.AllowNullCollections(bool allow = true) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.As<TOther>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.BeforeMap(System.Action<TSource, TDestination, AutoMapSharp.ResolutionContext!>! callback) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.BeforeMap(System.Action<TSource, TDestination>! callback) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.BeforeMap<TAction>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConstructUsing(System.Func<TSource, AutoMapSharp.ResolutionContext!, TDestination>! constructor) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConstructUsing(System.Func<TSource, TDestination>! constructor) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConvertUsing(System.Func<TSource, AutoMapSharp.ResolutionContext!, TDestination>! converter) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConvertUsing(System.Func<TSource, TDestination>! converter) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConvertUsing(System.Type! converterType) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ConvertUsing<TConverter>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ForCtorParam(string! parameterName, System.Action<AutoMapSharp.Configuration.ICtorParamOptions<TSource>!>! options) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ForPath<TMember>(System.Linq.Expressions.Expression<System.Func<TDestination, TMember>!>! destinationPath, System.Action<AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!>! pathOptions) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ForProperty<TMember>(System.Linq.Expressions.Expression<System.Func<TDestination, TMember>!>! destinationMember, System.Action<AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!>! memberOptions) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ForSourceMember<TMember>(System.Linq.Expressions.Expression<System.Func<TSource, TMember>!>! sourceMember, System.Action<AutoMapSharp.Configuration.ISourceMemberOptions!>! options) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.Include<TDerivedSource, TDerivedDestination>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.IncludeAllDerived() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.IncludeBase<TBaseSource, TBaseDestination>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.MaxDepth(int depth) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.PreserveReferences(bool preserve = true) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ReverseMap() -> AutoMapSharp.Configuration.IMappingDefinition<TDestination, TSource>!
+AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>.ValidateMembers(AutoMapSharp.Configuration.MemberList memberList) -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.Configuration.IMemberOptions
+AutoMapSharp.Configuration.IMemberOptions.MapSource(string! sourceMemberName) -> AutoMapSharp.Configuration.IMemberOptions!
+AutoMapSharp.Configuration.IMemberOptions.Skip() -> AutoMapSharp.Configuration.IMemberOptions!
+AutoMapSharp.Configuration.IMemberOptions.UseValue(object? value) -> AutoMapSharp.Configuration.IMemberOptions!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.Fallback(TMember fallbackValue) -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, TDestination, bool>! condition) -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, bool>! condition) -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.MapSource<TSourceMember>(System.Linq.Expressions.Expression<System.Func<TSource, TSourceMember>!>! sourceMember) -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.Skip() -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>.UseValue(TMember value) -> AutoMapSharp.Configuration.IPathMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.AddTransform(System.Func<TMember, TMember>! transformer) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.ConvertUsing<TValueConverter, TSourceMember>(System.Linq.Expressions.Expression<System.Func<TSource, TSourceMember>!>! sourceMember) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.ConvertUsing<TValueConverter>() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.DoNotUseDestinationValue() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.ExplicitExpansion() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.Fallback(TMember fallbackValue) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, TDestination, TMember, TMember, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, TDestination, TMember, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, TDestination, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.If(System.Func<TSource, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.MapSource<TSourceMember>(System.Linq.Expressions.Expression<System.Func<TSource, TSourceMember>!>! sourceMember) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.MapWith(System.Type! resolverType) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.MapWith<TResolver>() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.PreCondition(System.Func<TSource, TDestination, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.PreCondition(System.Func<TSource, bool>! condition) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.Skip() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.UseDestinationValue() -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>.UseValue(TMember value) -> AutoMapSharp.Configuration.IPropertyMappingOptions<TSource, TDestination, TMember>!
+AutoMapSharp.Configuration.ISourceMemberOptions
+AutoMapSharp.Configuration.ISourceMemberOptions.DoNotValidate() -> void
+AutoMapSharp.Configuration.MemberList
+AutoMapSharp.Configuration.MemberList.Destination = 0 -> AutoMapSharp.Configuration.MemberList
+AutoMapSharp.Configuration.MemberList.None = 2 -> AutoMapSharp.Configuration.MemberList
+AutoMapSharp.Configuration.MemberList.Source = 1 -> AutoMapSharp.Configuration.MemberList
+AutoMapSharp.Configuration.PathRule
+AutoMapSharp.Configuration.PathRule.IsImplicit.get -> bool
+AutoMapSharp.Configuration.PathRule.Path.get -> System.Collections.Generic.IReadOnlyList<System.Reflection.PropertyInfo!>!
+AutoMapSharp.Configuration.PathRule.Rule.get -> AutoMapSharp.Configuration.PropertyRule!
+AutoMapSharp.Configuration.PropertyRule
+AutoMapSharp.Configuration.PropertyRule.Condition.get -> System.Delegate?
+AutoMapSharp.Configuration.PropertyRule.ConstantValue.get -> object?
+AutoMapSharp.Configuration.PropertyRule.CustomResolverType.get -> System.Type?
+AutoMapSharp.Configuration.PropertyRule.DestinationMember.get -> System.Reflection.MemberInfo!
+AutoMapSharp.Configuration.PropertyRule.ExplicitExpansion.get -> bool
+AutoMapSharp.Configuration.PropertyRule.FallbackValue.get -> object?
+AutoMapSharp.Configuration.PropertyRule.HasConstantValue.get -> bool
+AutoMapSharp.Configuration.PropertyRule.HasFallbackValue.get -> bool
+AutoMapSharp.Configuration.PropertyRule.IsIgnored.get -> bool
+AutoMapSharp.Configuration.PropertyRule.PropertyRule(System.Reflection.MemberInfo! destinationMember) -> void
+AutoMapSharp.Configuration.PropertyRule.SourceExpression.get -> System.Linq.Expressions.LambdaExpression?
+AutoMapSharp.Configuration.PropertyRule.SourceMemberName.get -> string?
+AutoMapSharp.Configuration.PropertyRule.Transformers.get -> System.Collections.Generic.IReadOnlyList<System.Delegate!>!
+AutoMapSharp.Configuration.PropertyRule.UseDestinationValue.get -> bool?
+AutoMapSharp.Configuration.PropertyRule.ValueCondition.get -> System.Delegate?
+AutoMapSharp.Configuration.PropertyRule.ValueConverterType.get -> System.Type?
+AutoMapSharp.Configuration.TypeMappingDescriptor
+AutoMapSharp.Configuration.TypeMappingDescriptor.AfterMapActions.get -> System.Collections.Generic.IReadOnlyList<System.Delegate!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.AllowNullCollections.get -> bool?
+AutoMapSharp.Configuration.TypeMappingDescriptor.AsType.get -> System.Type?
+AutoMapSharp.Configuration.TypeMappingDescriptor.BeforeMapActions.get -> System.Collections.Generic.IReadOnlyList<System.Delegate!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.ConstructorExpression.get -> System.Delegate?
+AutoMapSharp.Configuration.TypeMappingDescriptor.CtorParamRules.get -> System.Collections.Generic.IReadOnlyDictionary<string!, AutoMapSharp.Configuration.CtorParamRule!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.CustomConverter.get -> System.Delegate?
+AutoMapSharp.Configuration.TypeMappingDescriptor.CustomConverterType.get -> System.Type?
+AutoMapSharp.Configuration.TypeMappingDescriptor.DestinationNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.Configuration.TypeMappingDescriptor.DestinationType.get -> System.Type!
+AutoMapSharp.Configuration.TypeMappingDescriptor.EqualityComparison.get -> System.Delegate?
+AutoMapSharp.Configuration.TypeMappingDescriptor.IncludeAllDerivedTypes.get -> bool
+AutoMapSharp.Configuration.TypeMappingDescriptor.IncludedBaseType.get -> (System.Type! BaseSource, System.Type! BaseDestination)?
+AutoMapSharp.Configuration.TypeMappingDescriptor.IncludedBaseTypes.get -> System.Collections.Generic.IReadOnlyList<(System.Type! BaseSource, System.Type! BaseDestination)>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.IncludedDerivedTypes.get -> System.Collections.Generic.IReadOnlyList<(System.Type! DerivedSource, System.Type! DerivedDestination)>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.IsReverseMap.get -> bool
+AutoMapSharp.Configuration.TypeMappingDescriptor.MaxDepth.get -> int?
+AutoMapSharp.Configuration.TypeMappingDescriptor.MemberListToValidate.get -> AutoMapSharp.Configuration.MemberList
+AutoMapSharp.Configuration.TypeMappingDescriptor.MemberNameReplacements.get -> System.Collections.Generic.IReadOnlyList<(string! Original, string! Replacement)>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.PathRules.get -> System.Collections.Generic.IReadOnlyList<AutoMapSharp.Configuration.PathRule!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.PreserveReferences.get -> bool
+AutoMapSharp.Configuration.TypeMappingDescriptor.PropertyRules.get -> System.Collections.Generic.IReadOnlyDictionary<string!, AutoMapSharp.Configuration.PropertyRule!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.RecognizedDestinationPrefixes.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.RecognizedDestinationSuffixes.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.RecognizedPrefixes.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.RecognizedSuffixes.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.ShouldMapField.get -> System.Func<System.Reflection.FieldInfo!, bool>?
+AutoMapSharp.Configuration.TypeMappingDescriptor.ShouldMapMethod.get -> System.Func<System.Reflection.MethodInfo!, bool>?
+AutoMapSharp.Configuration.TypeMappingDescriptor.ShouldMapProperty.get -> System.Func<System.Reflection.PropertyInfo!, bool>?
+AutoMapSharp.Configuration.TypeMappingDescriptor.SourceExtensionMethodTypes.get -> System.Collections.Generic.IReadOnlyList<System.Type!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.SourceNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.Configuration.TypeMappingDescriptor.SourceType.get -> System.Type!
+AutoMapSharp.Configuration.TypeMappingDescriptor.TypeMappingDescriptor(System.Type! sourceType, System.Type! destinationType) -> void
+AutoMapSharp.Configuration.TypeMappingDescriptor.UnvalidatedSourceMembers.get -> System.Collections.Generic.IReadOnlyCollection<string!>!
+AutoMapSharp.Configuration.TypeMappingDescriptor.ValueTransformers.get -> AutoMapSharp.Configuration.ValueTransformerCollection!
+AutoMapSharp.Configuration.ValueTransformerCollection
+AutoMapSharp.Configuration.ValueTransformerCollection.Add<TValue>(System.Func<TValue, TValue>! transformer) -> void
+AutoMapSharp.Configuration.ValueTransformerCollection.Apply(System.Type! targetType, object? value) -> object?
+AutoMapSharp.Configuration.ValueTransformerCollection.GetTransformers(System.Type! type) -> System.Collections.Generic.IReadOnlyList<System.Delegate!>!
+AutoMapSharp.Configuration.ValueTransformerCollection.ValueTransformerCollection() -> void
+AutoMapSharp.Conventions.CamelCaseNamingConvention
+AutoMapSharp.Conventions.CamelCaseNamingConvention.CamelCaseNamingConvention() -> void
+AutoMapSharp.Conventions.CamelCaseNamingConvention.Format(System.Collections.Generic.IEnumerable<string!>! words) -> string!
+AutoMapSharp.Conventions.CamelCaseNamingConvention.SplitWords(string! memberName) -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Conventions.INamingConvention
+AutoMapSharp.Conventions.INamingConvention.Format(System.Collections.Generic.IEnumerable<string!>! words) -> string!
+AutoMapSharp.Conventions.INamingConvention.SplitWords(string! memberName) -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Conventions.PascalCaseNamingConvention
+AutoMapSharp.Conventions.PascalCaseNamingConvention.Format(System.Collections.Generic.IEnumerable<string!>! words) -> string!
+AutoMapSharp.Conventions.PascalCaseNamingConvention.PascalCaseNamingConvention() -> void
+AutoMapSharp.Conventions.PascalCaseNamingConvention.SplitWords(string! memberName) -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Conventions.SnakeCaseNamingConvention
+AutoMapSharp.Conventions.SnakeCaseNamingConvention.Format(System.Collections.Generic.IEnumerable<string!>! words) -> string!
+AutoMapSharp.Conventions.SnakeCaseNamingConvention.SnakeCaseNamingConvention() -> void
+AutoMapSharp.Conventions.SnakeCaseNamingConvention.SplitWords(string! memberName) -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Conversions.TypeConversionEngine
+AutoMapSharp.Exceptions.AutoMapSharpConfigurationException
+AutoMapSharp.Exceptions.AutoMapSharpConfigurationException.AutoMapSharpConfigurationException(string! message) -> void
+AutoMapSharp.Exceptions.AutoMapSharpConfigurationException.AutoMapSharpConfigurationException(string! message, System.Exception! innerException) -> void
+AutoMapSharp.Exceptions.AutoMapSharpException
+AutoMapSharp.Exceptions.AutoMapSharpException.AutoMapSharpException(string! message) -> void
+AutoMapSharp.Exceptions.AutoMapSharpException.AutoMapSharpException(string! message, System.Exception! innerException) -> void
+AutoMapSharp.Exceptions.AutoMapSharpMappingException
+AutoMapSharp.Exceptions.AutoMapSharpMappingException.AutoMapSharpMappingException(string! message, System.Type? sourceType = null, System.Type? destinationType = null, System.Exception? innerException = null) -> void
+AutoMapSharp.Exceptions.AutoMapSharpMappingException.DestinationType.get -> System.Type?
+AutoMapSharp.Exceptions.AutoMapSharpMappingException.SourceType.get -> System.Type?
+AutoMapSharp.Flattening.FlatteningResolver
+AutoMapSharp.Flattening.PathStep
+AutoMapSharp.Flattening.PathStep.GetValue(object! target) -> object?
+AutoMapSharp.Flattening.PathStep.Member.get -> System.Reflection.MemberInfo!
+AutoMapSharp.Flattening.PathStep.PathStep(System.Reflection.MemberInfo! member, System.Type! returnType) -> void
+AutoMapSharp.Flattening.PathStep.ReturnType.get -> System.Type!
+AutoMapSharp.Generated.GeneratedMap<TSource, TDestination>
+AutoMapSharp.Generated.GeneratedMap<TSource, TDestination>.GeneratedMap(System.Func<TSource, TDestination, bool, AutoMapSharp.ResolutionContext!, AutoMapSharp.Generated.GeneratedMapState!, TDestination>! map, string![]! members, System.Type![]! directPairs, System.Type![]! elementPairs, System.Type![]! convertedPairs) -> void
+AutoMapSharp.Generated.GeneratedMapBase
+AutoMapSharp.Generated.GeneratedMapBase.GeneratedMapBase() -> void
+AutoMapSharp.Generated.GeneratedMapHelpers
+AutoMapSharp.Generated.GeneratedMapRegistry
+AutoMapSharp.Generated.GeneratedMapState
+AutoMapSharp.Generated.GeneratedMapState.AllowNullCollections.get -> bool
+AutoMapSharp.Generated.GeneratedMapState.Constant<T>(string! member) -> T
+AutoMapSharp.Generated.GeneratedMapState.PreserveReferences.get -> bool
+AutoMapSharp.Generated.MapPlanInfo
+AutoMapSharp.Generated.MapPlanInfo.Kind.get -> AutoMapSharp.Generated.MapPlanKind
+AutoMapSharp.Generated.MapPlanInfo.Reason.get -> string?
+AutoMapSharp.Generated.MapPlanKind
+AutoMapSharp.Generated.MapPlanKind.Compiled = 1 -> AutoMapSharp.Generated.MapPlanKind
+AutoMapSharp.Generated.MapPlanKind.Generated = 0 -> AutoMapSharp.Generated.MapPlanKind
+AutoMapSharp.Generated.MapPlanKind.Interpreted = 2 -> AutoMapSharp.Generated.MapPlanKind
+AutoMapSharp.IMapEngine
+AutoMapSharp.IMapEngine.AssertConfigurationIsValid() -> void
+AutoMapSharp.IMapEngine.BuildExecutionPlan(System.Type! sourceType, System.Type! destinationType) -> System.Linq.Expressions.LambdaExpression!
+AutoMapSharp.IMapEngine.FindDescriptor(System.Type! sourceType, System.Type! destinationType) -> AutoMapSharp.Configuration.TypeMappingDescriptor?
+AutoMapSharp.IMapEngine.Map(object! source, System.Type! sourceType, System.Type! destinationType) -> object!
+AutoMapSharp.IMapEngine.Map(object! source, object! destination, System.Type! sourceType, System.Type! destinationType) -> object!
+AutoMapSharp.IMapEngine.Map<TDestination>(object! source) -> TDestination
+AutoMapSharp.IMapEngine.Map<TDestination>(object! source, System.Action<AutoMapSharp.IMappingOperationOptions!>! options) -> TDestination
+AutoMapSharp.IMapEngine.Map<TSource, TDestination>(TSource source) -> TDestination
+AutoMapSharp.IMapEngine.Map<TSource, TDestination>(TSource source, System.Action<AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!>! options) -> TDestination
+AutoMapSharp.IMapEngine.Map<TSource, TDestination>(TSource source, TDestination destination) -> TDestination
+AutoMapSharp.IMapEngine.Map<TSource, TDestination>(TSource source, TDestination destination, System.Action<AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!>! options) -> TDestination
+AutoMapSharp.IMapEngine.ValidateConfiguration() -> AutoMapSharp.Validation.ConfigurationValidationResult!
+AutoMapSharp.IMappingAction<TSource, TDestination>
+AutoMapSharp.IMappingAction<TSource, TDestination>.Process(TSource source, TDestination destination, AutoMapSharp.ResolutionContext! context) -> void
+AutoMapSharp.IMappingConfigurationBuilder
+AutoMapSharp.IMappingConfigurationBuilder.AddAttributeMaps(System.Reflection.Assembly! assembly) -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.AddModule(AutoMapSharp.MappingModule! module) -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.AddModule<TModule>() -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.AddModules(System.Reflection.Assembly! assembly) -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.AllowNullCollections.get -> bool
+AutoMapSharp.IMappingConfigurationBuilder.AllowNullCollections.set -> void
+AutoMapSharp.IMappingConfigurationBuilder.DefineMap<TSource, TDestination>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.IMappingConfigurationBuilder.DestinationNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.IMappingConfigurationBuilder.DestinationNamingConvention.set -> void
+AutoMapSharp.IMappingConfigurationBuilder.RecognizePrefixes(params string![]! prefixes) -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.RecognizeSuffixes(params string![]! suffixes) -> AutoMapSharp.IMappingConfigurationBuilder!
+AutoMapSharp.IMappingConfigurationBuilder.SourceNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.IMappingConfigurationBuilder.SourceNamingConvention.set -> void
+AutoMapSharp.IMappingConfigurationBuilder.ValueTransformers.get -> AutoMapSharp.Configuration.ValueTransformerCollection!
+AutoMapSharp.IMappingOperationOptions
+AutoMapSharp.IMappingOperationOptions.Items.get -> System.Collections.Generic.IDictionary<string!, object?>!
+AutoMapSharp.IMappingOperationOptions<TSource, TDestination>
+AutoMapSharp.IMappingOperationOptions<TSource, TDestination>.AfterMap(System.Action<TSource, TDestination>! callback) -> AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!
+AutoMapSharp.IMappingOperationOptions<TSource, TDestination>.BeforeMap(System.Action<TSource, TDestination>! callback) -> AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!
+AutoMapSharp.IPropertyResolver<TSource, TDestination, TDestMember>
+AutoMapSharp.IPropertyResolver<TSource, TDestination, TDestMember>.Resolve(TSource source, TDestination destination, AutoMapSharp.ResolutionContext! context) -> TDestMember
+AutoMapSharp.ITypeConverter<TSource, TDestination>
+AutoMapSharp.ITypeConverter<TSource, TDestination>.Convert(TSource source, AutoMapSharp.ResolutionContext! context) -> TDestination
+AutoMapSharp.IValueConverter<TSourceMember, TDestinationMember>
+AutoMapSharp.IValueConverter<TSourceMember, TDestinationMember>.Convert(TSourceMember sourceMember, AutoMapSharp.ResolutionContext! context) -> TDestinationMember
+AutoMapSharp.MapEngine
+AutoMapSharp.MapEngine.AssertConfigurationIsValid() -> void
+AutoMapSharp.MapEngine.BuildExecutionPlan(System.Type! sourceType, System.Type! destinationType) -> System.Linq.Expressions.LambdaExpression!
+AutoMapSharp.MapEngine.CompileMappings() -> void
+AutoMapSharp.MapEngine.DescribePlans() -> System.Collections.Generic.IReadOnlyList<(System.Type! Source, System.Type! Destination, AutoMapSharp.Generated.MapPlanInfo! Plan)>!
+AutoMapSharp.MapEngine.FindDescriptor(System.Type! sourceType, System.Type! destinationType) -> AutoMapSharp.Configuration.TypeMappingDescriptor?
+AutoMapSharp.MapEngine.GetPlanInfo(System.Type! sourceType, System.Type! destinationType) -> AutoMapSharp.Generated.MapPlanInfo!
+AutoMapSharp.MapEngine.Map(object! source, System.Type! sourceType, System.Type! destinationType) -> object!
+AutoMapSharp.MapEngine.Map(object! source, object! destination, System.Type! sourceType, System.Type! destinationType) -> object!
+AutoMapSharp.MapEngine.Map<TDestination>(object! source) -> TDestination
+AutoMapSharp.MapEngine.Map<TDestination>(object! source, System.Action<AutoMapSharp.IMappingOperationOptions!>! options) -> TDestination
+AutoMapSharp.MapEngine.Map<TSource, TDestination>(TSource source) -> TDestination
+AutoMapSharp.MapEngine.Map<TSource, TDestination>(TSource source, System.Action<AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!>! options) -> TDestination
+AutoMapSharp.MapEngine.Map<TSource, TDestination>(TSource source, TDestination destination) -> TDestination
+AutoMapSharp.MapEngine.Map<TSource, TDestination>(TSource source, TDestination destination, System.Action<AutoMapSharp.IMappingOperationOptions<TSource, TDestination>!>! options) -> TDestination
+AutoMapSharp.MapEngine.MapEngine(System.Action<AutoMapSharp.IMappingConfigurationBuilder!>! configure, System.IServiceProvider? serviceProvider = null) -> void
+AutoMapSharp.MapEngine.MapEngine(System.Collections.Generic.IEnumerable<AutoMapSharp.MappingModule!>? modules, System.IServiceProvider? serviceProvider = null) -> void
+AutoMapSharp.MapEngine.MapEngine(params AutoMapSharp.MappingModule![]! modules) -> void
+AutoMapSharp.MapEngine.ValidateConfiguration() -> AutoMapSharp.Validation.ConfigurationValidationResult!
+AutoMapSharp.MapEngine.WithServiceProvider(System.IServiceProvider? serviceProvider) -> AutoMapSharp.IMapEngine!
+AutoMapSharp.MapFromAttribute
+AutoMapSharp.MapFromAttribute.MapFromAttribute(System.Type! sourceType) -> void
+AutoMapSharp.MapFromAttribute.ReverseMap.get -> bool
+AutoMapSharp.MapFromAttribute.ReverseMap.set -> void
+AutoMapSharp.MapFromAttribute.SourceType.get -> System.Type!
+AutoMapSharp.MappingConfiguration
+AutoMapSharp.MappingConfiguration.AssertConfigurationIsValid() -> void
+AutoMapSharp.MappingConfiguration.BuildExecutionPlan(System.Type! sourceType, System.Type! destinationType) -> System.Linq.Expressions.LambdaExpression!
+AutoMapSharp.MappingConfiguration.CompileMappings() -> void
+AutoMapSharp.MappingConfiguration.CreateEngine(System.IServiceProvider? serviceProvider = null) -> AutoMapSharp.IMapEngine!
+AutoMapSharp.MappingConfiguration.MappingConfiguration(System.Action<AutoMapSharp.IMappingConfigurationBuilder!>! configure) -> void
+AutoMapSharp.MappingConfiguration.Modules.get -> System.Collections.Generic.IReadOnlyList<AutoMapSharp.MappingModule!>!
+AutoMapSharp.MappingConfiguration.ValidateConfiguration() -> AutoMapSharp.Validation.ConfigurationValidationResult!
+AutoMapSharp.MappingModule
+AutoMapSharp.MappingModule.AllowNullCollections.get -> bool
+AutoMapSharp.MappingModule.AllowNullCollections.set -> void
+AutoMapSharp.MappingModule.ClearPrefixes() -> void
+AutoMapSharp.MappingModule.DefineMap(System.Type! sourceType, System.Type! destinationType) -> AutoMapSharp.Configuration.IMappingDefinition!
+AutoMapSharp.MappingModule.DefineMap<TSource, TDestination>() -> AutoMapSharp.Configuration.IMappingDefinition<TSource, TDestination>!
+AutoMapSharp.MappingModule.DestinationNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.MappingModule.DestinationNamingConvention.set -> void
+AutoMapSharp.MappingModule.IncludeSourceExtensionMethods(System.Type! type) -> void
+AutoMapSharp.MappingModule.MappingModule() -> void
+AutoMapSharp.MappingModule.RecognizeDestinationPrefixes(params string![]! prefixes) -> void
+AutoMapSharp.MappingModule.RecognizeDestinationSuffixes(params string![]! suffixes) -> void
+AutoMapSharp.MappingModule.RecognizePrefixes(params string![]! prefixes) -> void
+AutoMapSharp.MappingModule.RecognizeSuffixes(params string![]! suffixes) -> void
+AutoMapSharp.MappingModule.ReplaceMemberName(string! original, string! replacement) -> void
+AutoMapSharp.MappingModule.ShouldMapField.get -> System.Func<System.Reflection.FieldInfo!, bool>?
+AutoMapSharp.MappingModule.ShouldMapField.set -> void
+AutoMapSharp.MappingModule.ShouldMapMethod.get -> System.Func<System.Reflection.MethodInfo!, bool>?
+AutoMapSharp.MappingModule.ShouldMapMethod.set -> void
+AutoMapSharp.MappingModule.ShouldMapProperty.get -> System.Func<System.Reflection.PropertyInfo!, bool>?
+AutoMapSharp.MappingModule.ShouldMapProperty.set -> void
+AutoMapSharp.MappingModule.SourceNamingConvention.get -> AutoMapSharp.Conventions.INamingConvention!
+AutoMapSharp.MappingModule.SourceNamingConvention.set -> void
+AutoMapSharp.MappingModule.TypeMaps.get -> System.Collections.Generic.IReadOnlyCollection<AutoMapSharp.Configuration.TypeMappingDescriptor!>!
+AutoMapSharp.MappingModule.ValueTransformers.get -> AutoMapSharp.Configuration.ValueTransformerCollection!
+AutoMapSharp.Projections.ProjectionExpressionBuilder
+AutoMapSharp.QueryableExtensions
+AutoMapSharp.ResolutionContext
+AutoMapSharp.ResolutionContext.DecrementDepth(System.Type! source, System.Type! destination) -> void
+AutoMapSharp.ResolutionContext.Engine.get -> AutoMapSharp.IMapEngine!
+AutoMapSharp.ResolutionContext.IncrementDepth(System.Type! source, System.Type! destination) -> int
+AutoMapSharp.ResolutionContext.Items.get -> System.Collections.Generic.IDictionary<string!, object?>!
+AutoMapSharp.ResolutionContext.RegisterMappedInstance(object! source, System.Type! destinationType, object! destination) -> void
+AutoMapSharp.ResolutionContext.RegisterMappedInstance(object! source, object! destination) -> void
+AutoMapSharp.ResolutionContext.ResolutionContext(AutoMapSharp.IMapEngine! engine, System.IServiceProvider? serviceProvider = null, System.Collections.Generic.IDictionary<string!, object?>? items = null) -> void
+AutoMapSharp.ResolutionContext.ServiceProvider.get -> System.IServiceProvider?
+AutoMapSharp.ResolutionContext.TryGetMappedInstance(object! source, System.Type! destinationType, out object? destination) -> bool
+AutoMapSharp.ResolutionContext.TryGetMappedInstance(object! source, out object? destination) -> bool
+AutoMapSharp.SkipMapAttribute
+AutoMapSharp.SkipMapAttribute.SkipMapAttribute() -> void
+AutoMapSharp.SourceMemberAttribute
+AutoMapSharp.SourceMemberAttribute.Name.get -> string!
+AutoMapSharp.SourceMemberAttribute.SourceMemberAttribute(string! name) -> void
+AutoMapSharp.Validation.ConfigurationError
+AutoMapSharp.Validation.ConfigurationError.ConfigurationError(System.Type! sourceType, System.Type! destinationType, System.Collections.Generic.IEnumerable<string!>! unmappedProperties) -> void
+AutoMapSharp.Validation.ConfigurationError.ConfigurationError(System.Type! sourceType, System.Type! destinationType, System.Collections.Generic.IEnumerable<string!>? unmappedProperties, System.Collections.Generic.IEnumerable<string!>? unmappedSourceMembers, System.Collections.Generic.IEnumerable<string!>? problems, string? context) -> void
+AutoMapSharp.Validation.ConfigurationError.Context.get -> string?
+AutoMapSharp.Validation.ConfigurationError.DestinationType.get -> System.Type!
+AutoMapSharp.Validation.ConfigurationError.Problems.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Validation.ConfigurationError.SourceType.get -> System.Type!
+AutoMapSharp.Validation.ConfigurationError.UnmappedProperties.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Validation.ConfigurationError.UnmappedSourceMembers.get -> System.Collections.Generic.IReadOnlyList<string!>!
+AutoMapSharp.Validation.ConfigurationValidationResult
+AutoMapSharp.Validation.ConfigurationValidationResult.ConfigurationValidationResult(System.Collections.Generic.IEnumerable<AutoMapSharp.Validation.ConfigurationError!>! errors) -> void
+AutoMapSharp.Validation.ConfigurationValidationResult.Errors.get -> System.Collections.Generic.IReadOnlyList<AutoMapSharp.Validation.ConfigurationError!>!
+AutoMapSharp.Validation.ConfigurationValidationResult.GenerateReport() -> string!
+AutoMapSharp.Validation.ConfigurationValidationResult.IsValid.get -> bool
+override AutoMapSharp.Generated.MapPlanInfo.ToString() -> string!
+override AutoMapSharp.Validation.ConfigurationError.ToString() -> string!
+static AutoMapSharp.AttributeMappingModule.HasAttributeMaps(System.Reflection.Assembly! assembly) -> bool
+static AutoMapSharp.Conversions.TypeConversionEngine.TryConvert(object? sourceValue, System.Type! destinationType, out object? convertedValue) -> bool
+static AutoMapSharp.Flattening.FlatteningResolver.ResolvePath(System.Type! sourceType, string! destinationMemberName, System.Collections.Generic.IEnumerable<string!>? prefixes = null) -> System.Collections.Generic.List<AutoMapSharp.Flattening.PathStep!>?
+static AutoMapSharp.Generated.GeneratedMapHelpers.AfterMap(AutoMapSharp.ResolutionContext! context, object? source, object? destination) -> void
+static AutoMapSharp.Generated.GeneratedMapHelpers.BeforeMap(AutoMapSharp.ResolutionContext! context, object? source, object? destination) -> void
+static AutoMapSharp.Generated.GeneratedMapHelpers.Created<TSource, TDestination>(AutoMapSharp.ResolutionContext! context, AutoMapSharp.Generated.GeneratedMapState! state, TSource source, TDestination destination) -> void
+static AutoMapSharp.Generated.GeneratedMapHelpers.Invariant.get -> System.IFormatProvider!
+static AutoMapSharp.Generated.GeneratedMapHelpers.MapEnumByName<TFrom, TTo>(TFrom value) -> TTo
+static AutoMapSharp.Generated.GeneratedMapHelpers.MapNested<TSource, TDestination>(AutoMapSharp.ResolutionContext! context, TSource value, TDestination existing, bool useExisting) -> TDestination
+static AutoMapSharp.Generated.GeneratedMapHelpers.MapToArray<TSourceItem, TDestinationItem>(AutoMapSharp.ResolutionContext! context, AutoMapSharp.Generated.GeneratedMapState! state, System.Collections.Generic.IEnumerable<TSourceItem>? items, System.Func<TSourceItem, AutoMapSharp.ResolutionContext!, TDestinationItem>! convert) -> TDestinationItem[]!
+static AutoMapSharp.Generated.GeneratedMapHelpers.MapToList<TCollection, TSourceItem, TDestinationItem>(AutoMapSharp.ResolutionContext! context, AutoMapSharp.Generated.GeneratedMapState! state, System.Collections.Generic.IEnumerable<TSourceItem>? items, TCollection! existing, System.Func<TSourceItem, AutoMapSharp.ResolutionContext!, TDestinationItem>! convert) -> TCollection!
+static AutoMapSharp.Generated.GeneratedMapHelpers.MemberError(System.Exception! inner, System.Type! sourceType, System.Type! destinationType, string! stage) -> System.Exception!
+static AutoMapSharp.Generated.GeneratedMapHelpers.ParseEnum<TEnum>(string! value) -> TEnum
+static AutoMapSharp.Generated.GeneratedMapRegistry.Preserve<T>() -> void
+static AutoMapSharp.Generated.GeneratedMapRegistry.Register<TSource, TDestination>(AutoMapSharp.Generated.GeneratedMap<TSource, TDestination>! map) -> void
+static AutoMapSharp.Projections.ProjectionExpressionBuilder.GetOrCreateProjection(System.Type! sourceType, System.Type! destinationType, AutoMapSharp.IMapEngine! engine, object? parameters = null, string![]? membersToExpand = null) -> System.Linq.Expressions.LambdaExpression!
+static AutoMapSharp.QueryableExtensions.ProjectOnto<TDest>(this System.Linq.IQueryable! source, AutoMapSharp.IMapEngine! engine, object? parameters = null, params string![]! membersToExpand) -> System.Linq.IQueryable<TDest>!
+static AutoMapSharp.QueryableExtensions.ProjectOnto<TDest>(this System.Linq.IQueryable! source, AutoMapSharp.IMapEngine! engine, object? parameters, System.Linq.Expressions.Expression<System.Func<TDest, object?>!>! memberToExpand, params System.Linq.Expressions.Expression<System.Func<TDest, object?>!>![]! moreMembersToExpand) -> System.Linq.IQueryable<TDest>!
+static readonly AutoMapSharp.Conventions.CamelCaseNamingConvention.Instance -> AutoMapSharp.Conventions.CamelCaseNamingConvention!
+static readonly AutoMapSharp.Conventions.PascalCaseNamingConvention.Instance -> AutoMapSharp.Conventions.PascalCaseNamingConvention!
+static readonly AutoMapSharp.Conventions.SnakeCaseNamingConvention.Instance -> AutoMapSharp.Conventions.SnakeCaseNamingConvention!

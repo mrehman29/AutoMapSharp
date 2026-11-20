@@ -87,6 +87,9 @@ public sealed class MappingConfiguration
 {
     private readonly List<MappingModule> _modules;
 
+    /// <summary>Creates a configuration from inline map definitions and modules.</summary>
+    /// <param name="configure">Defines maps and adds modules on the builder.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="configure"/> is null.</exception>
     public MappingConfiguration(Action<IMappingConfigurationBuilder> configure)
     {
         if (configure == null) throw new ArgumentNullException(nameof(configure));

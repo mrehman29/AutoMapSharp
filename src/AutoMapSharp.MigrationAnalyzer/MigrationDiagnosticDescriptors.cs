@@ -5,6 +5,7 @@ namespace AutoMapSharp.MigrationAnalyzer;
 public static class MigrationDiagnosticDescriptors
 {
     private const string MigrationCategory = "Migration";
+    private const string HelpLinkUri = "https://github.com/mrehman29/AutoMapSharp/blob/main/docs/migration/analyzer-setup.md#migration-diagnostic-rules-amsmig";
 
     public static readonly DiagnosticDescriptor UsingAutoMapper = new(
         id: "AMSMIG001",
@@ -13,7 +14,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "AutoMapper namespace should be replaced with AutoMapSharp for open-source migration.");
+        description: "The AutoMapper namespace should be replaced with the AutoMapSharp namespace.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor InheritsProfile = new(
         id: "AMSMIG002",
@@ -22,7 +24,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "AutoMapper Profile classes should inherit from AutoMapSharp.MappingModule.");
+        description: "AutoMapper Profile classes should inherit from AutoMapSharp.MappingModule.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor CreateMapUsage = new(
         id: "AMSMIG003",
@@ -31,7 +34,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "CreateMap should be updated to DefineMap.");
+        description: "CreateMap should be updated to DefineMap.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor ForMemberUsage = new(
         id: "AMSMIG004",
@@ -40,7 +44,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "ForMember should be updated to ForProperty.");
+        description: "ForMember should be updated to ForProperty.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor MapFromUsage = new(
         id: "AMSMIG005",
@@ -49,7 +54,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "MapFrom option should be updated to MapSource.");
+        description: "MapFrom option should be updated to MapSource.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor IgnoreUsage = new(
         id: "AMSMIG006",
@@ -58,7 +64,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Ignore option should be updated to Skip.");
+        description: "Ignore option should be updated to Skip.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor ProjectToUsage = new(
         id: "AMSMIG007",
@@ -67,7 +74,8 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "ProjectTo LINQ extension should be updated to ProjectOnto.");
+        description: "ProjectTo LINQ extension should be updated to ProjectOnto.",
+        helpLinkUri: HelpLinkUri);
 
     public static readonly DiagnosticDescriptor IMapperUsage = new(
         id: "AMSMIG008",
@@ -76,5 +84,6 @@ public static class MigrationDiagnosticDescriptors
         category: MigrationCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "IMapper interface should be updated to IMapEngine.");
+        description: "IMapper interface should be updated to IMapEngine.",
+        helpLinkUri: HelpLinkUri);
 }

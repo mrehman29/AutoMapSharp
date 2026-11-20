@@ -43,6 +43,7 @@ public sealed class MapPlanInfo
         Reason = reason;
     }
 
+    /// <summary>How the engine runs this map.</summary>
     public MapPlanKind Kind { get; }
 
     /// <summary>
@@ -50,6 +51,8 @@ public sealed class MapPlanInfo
     /// </summary>
     public string? Reason { get; }
 
+    /// <summary>Returns the plan kind, followed by the reason in parentheses when generated code was not used.</summary>
+    /// <returns>A short description of the plan, for logging and diagnostics.</returns>
     public override string ToString() => Reason == null ? Kind.ToString() : $"{Kind} ({Reason})";
 }
 
@@ -122,10 +125,16 @@ public sealed class GeneratedMapState
         _map = map;
     }
 
+    /// <summary>Whether null source collections map to null for this map. Called by generated code.</summary>
     public bool AllowNullCollections => _map?.AllowNullCollections ?? false;
 
+    /// <summary>Whether this map preserves references. Called by generated code.</summary>
     public bool PreserveReferences => _map?.PreserveReferences ?? false;
 
+    /// <summary>Returns the constant configured with <c>UseValue</c> for a destination member. Called by generated code.</summary>
+    /// <typeparam name="T">The member type.</typeparam>
+    /// <param name="member">The destination member name.</param>
+    /// <returns>The configured constant value.</returns>
     public T Constant<T>(string member) => (T)_map!.PropertyRules[member].ConstantValue!;
 }
 
@@ -270,6 +279,13 @@ public sealed class GeneratedMap<
 [EditorBrowsable(EditorBrowsableState.Never)]
 public static class GeneratedMapHelpers
 {
+    /// <summary>Records a newly created destination object so reference preservation can reuse it. Called by generated code.</summary>
+    /// <typeparam name="TSource">The source type.</typeparam>
+    /// <typeparam name="TDestination">The destination type.</typeparam>
+    /// <param name="context">The current resolution context.</param>
+    /// <param name="state">The generated map's state.</param>
+    /// <param name="source">The source object.</param>
+    /// <param name="destination">The destination object that was created.</param>
     public static void Created<TSource, TDestination>(ResolutionContext context, GeneratedMapState state, TSource source, TDestination destination)
     {
         if (state.PreserveReferences && source is not null && destination is not null)
@@ -278,16 +294,30 @@ public static class GeneratedMapHelpers
         }
     }
 
+    /// <summary>Runs the per-call BeforeMap callbacks, if any. Called by generated code.</summary>
+    /// <param name="context">The current resolution context.</param>
+    /// <param name="source">The source object.</param>
+    /// <param name="destination">The destination object.</param>
     public static void BeforeMap(ResolutionContext context, object? source, object? destination)
     {
         if (context.HasOperationCallbacks && source != null && destination != null) context.OnBeforeMap(source, destination);
     }
 
+    /// <summary>Runs the per-call AfterMap callbacks, if any. Called by generated code.</summary>
+    /// <param name="context">The current resolution context.</param>
+    /// <param name="source">The source object.</param>
+    /// <param name="destination">The destination object.</param>
     public static void AfterMap(ResolutionContext context, object? source, object? destination)
     {
         if (context.HasOperationCallbacks && source != null && destination != null) context.OnAfterMap(source, destination);
     }
 
+    /// <summary>Wraps an exception thrown inside a generated map in an <see cref="Exceptions.AutoMapSharpMappingException"/> with the same message the compiled engine uses. Called by generated code.</summary>
+    /// <param name="inner">The exception that was thrown.</param>
+    /// <param name="sourceType">The map's source type.</param>
+    /// <param name="destinationType">The map's destination type.</param>
+    /// <param name="stage">The member name, or <c>constructor</c>, <c>BeforeMap</c> or <c>AfterMap</c>.</param>
+    /// <returns>The exception to throw.</returns>
     public static Exception MemberError(Exception inner, Type sourceType, Type destinationType, string stage)
     {
         var what = stage switch
@@ -329,6 +359,14 @@ public static class GeneratedMapHelpers
         return (TCollection)(object)CollectionRuntime.ToList(source, convert, context);
     }
 
+    /// <summary>Maps a collection to an array, honoring <c>AllowNullCollections</c>. Called by generated code.</summary>
+    /// <typeparam name="TSourceItem">The source item type.</typeparam>
+    /// <typeparam name="TDestinationItem">The destination item type.</typeparam>
+    /// <param name="context">The current resolution context.</param>
+    /// <param name="state">The generated map's state.</param>
+    /// <param name="items">The source items, or null.</param>
+    /// <param name="convert">Maps one item.</param>
+    /// <returns>The mapped array, or null when the source is null and null collections are allowed.</returns>
     public static TDestinationItem[] MapToArray<TSourceItem, TDestinationItem>(
         ResolutionContext context, GeneratedMapState state, IEnumerable<TSourceItem>? items, Func<TSourceItem, ResolutionContext, TDestinationItem> convert)
     {
@@ -336,9 +374,19 @@ public static class GeneratedMapHelpers
         return source == null ? null! : CollectionRuntime.ToArray(source, convert, context);
     }
 
+    /// <summary>Parses a string into an enum value with the engine's rules. Called by generated code.</summary>
+    /// <typeparam name="TEnum">The enum type.</typeparam>
+    /// <param name="value">The text to parse.</param>
+    /// <returns>The parsed enum value.</returns>
     public static TEnum ParseEnum<TEnum>(string value) where TEnum : struct => EnumConversions.Parse<TEnum>(value);
 
+    /// <summary>Maps an enum value to the member of another enum with the same name. Called by generated code.</summary>
+    /// <typeparam name="TFrom">The source enum type.</typeparam>
+    /// <typeparam name="TTo">The destination enum type.</typeparam>
+    /// <param name="value">The source value.</param>
+    /// <returns>The destination enum value.</returns>
     public static TTo MapEnumByName<TFrom, TTo>(TFrom value) where TFrom : struct where TTo : struct => EnumConversions.MapByName<TFrom, TTo>(value);
 
+    /// <summary>The invariant culture, used by generated code for culture-independent conversions.</summary>
     public static IFormatProvider Invariant => CultureInfo.InvariantCulture;
 }

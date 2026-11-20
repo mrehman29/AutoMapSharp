@@ -13,6 +13,9 @@ namespace AutoMapSharp;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = false)]
 public sealed class MapFromAttribute : Attribute
 {
+    /// <summary>Declares a map from <paramref name="sourceType"/> to the type this attribute is applied to.</summary>
+    /// <param name="sourceType">The source type to map from.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="sourceType"/> is null.</exception>
     public MapFromAttribute(Type sourceType)
     {
         SourceType = sourceType ?? throw new ArgumentNullException(nameof(sourceType));
@@ -44,6 +47,9 @@ public sealed class SkipMapAttribute : Attribute
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public sealed class SourceMemberAttribute : Attribute
 {
+    /// <summary>Reads this member from the source member called <paramref name="name"/>.</summary>
+    /// <param name="name">The name of the source member.</param>
+    /// <exception cref="ArgumentException"><paramref name="name"/> is null or empty.</exception>
     public SourceMemberAttribute(string name)
     {
         Name = string.IsNullOrEmpty(name) ? throw new ArgumentException("A source member name is required.", nameof(name)) : name;
@@ -60,6 +66,8 @@ public sealed class SourceMemberAttribute : Attribute
 /// </summary>
 public sealed class AttributeMappingModule : MappingModule
 {
+    /// <summary>Creates a module with a map for every <see cref="MapFromAttribute"/> found on types in <paramref name="assemblies"/>.</summary>
+    /// <param name="assemblies">The assemblies to scan.</param>
     public AttributeMappingModule(params Assembly[] assemblies)
     {
         foreach (var type in assemblies.SelectMany(GetTypes).Distinct())

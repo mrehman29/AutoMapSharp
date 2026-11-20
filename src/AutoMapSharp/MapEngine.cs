@@ -80,6 +80,7 @@ public sealed class MapEngine : IMapEngine
     /// </summary>
     internal MapEngine Root => _root;
 
+    /// <inheritdoc />
     public TDestination Map<TSource, TDestination>(TSource source)
     {
         if (source is null)
@@ -90,6 +91,7 @@ public sealed class MapEngine : IMapEngine
         return GetHolder<TSource, TDestination>().Map(source, default!, false, CreateContext());
     }
 
+    /// <inheritdoc />
     public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
     {
         if (source is null)
@@ -105,6 +107,7 @@ public sealed class MapEngine : IMapEngine
         return GetHolder<TSource, TDestination>().Map(source, destination, true, CreateContext());
     }
 
+    /// <inheritdoc />
     public TDestination Map<TSource, TDestination>(TSource source, Action<IMappingOperationOptions<TSource, TDestination>> options)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
@@ -114,6 +117,7 @@ public sealed class MapEngine : IMapEngine
         return GetHolder<TSource, TDestination>().Map(source, default!, false, context);
     }
 
+    /// <inheritdoc />
     public TDestination Map<TSource, TDestination>(TSource source, TDestination destination, Action<IMappingOperationOptions<TSource, TDestination>> options)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
@@ -124,6 +128,7 @@ public sealed class MapEngine : IMapEngine
         return GetHolder<TSource, TDestination>().Map(source, destination, true, context);
     }
 
+    /// <inheritdoc />
     public TDestination Map<TDestination>(object source, Action<IMappingOperationOptions> options)
     {
         if (options == null) throw new ArgumentNullException(nameof(options));
@@ -155,6 +160,7 @@ public sealed class MapEngine : IMapEngine
         return context;
     }
 
+    /// <inheritdoc />
     public TDestination Map<TDestination>(object source)
     {
         if (source == null)
@@ -165,6 +171,7 @@ public sealed class MapEngine : IMapEngine
         return (TDestination)GetHolder(source.GetType(), typeof(TDestination)).MapObject(source, null, false, CreateContext())!;
     }
 
+    /// <inheritdoc />
     public object Map(object source, Type sourceType, Type destinationType)
     {
         if (sourceType == null) throw new ArgumentNullException(nameof(sourceType));
@@ -178,6 +185,7 @@ public sealed class MapEngine : IMapEngine
         return GetHolder(sourceType, destinationType).MapObject(source, null, false, CreateContext())!;
     }
 
+    /// <inheritdoc />
     public object Map(object source, object destination, Type sourceType, Type destinationType)
     {
         if (sourceType == null) throw new ArgumentNullException(nameof(sourceType));
@@ -298,6 +306,7 @@ public sealed class MapEngine : IMapEngine
         }
     }
 
+    /// <inheritdoc />
     public void AssertConfigurationIsValid()
     {
         var result = ValidateConfiguration();
