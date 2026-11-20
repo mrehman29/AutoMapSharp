@@ -11,7 +11,7 @@
     <Description>Helps you move a project from AutoMapper to AutoMapSharp. Add it to a project that still uses AutoMapper and your IDE flags each AutoMapper call, with a quick fix that rewrites it: Profile to MappingModule, CreateMap to DefineMap, ForMember to ForProperty, and more. Pair it with the migration guide for anything that needs a manual touch.</Description>
     <PackageTags>automapper;migration;mapper;roslyn;analyzer;codefix;automapper-alternative</PackageTags>
     <IncludeBuildOutput>true</IncludeBuildOutput>
-    <NoWarn>$(NoWarn);RS1038;RS1036;RS2008</NoWarn>
+    <NoWarn>$(NoWarn);RS1038;RS1036</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +22,11 @@
 
   <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
   </ItemGroup>
 
 </Project>

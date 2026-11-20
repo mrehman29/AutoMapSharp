@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 using AutoMapSharp.Analyzers;
+using AutoMapSharp.MigrationAnalyzer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -167,5 +169,50 @@ public class M : MappingModule
         var diagnostics = await AnalyzeAsync(code);
 
         Assert.DoesNotContain(diagnostics, d => d.Id == "AMS001");
+    }
+    [Fact]
+    [Trait("Issue", "6")]
+    public void Descriptors_HaveValidIdsCategoriesSeveritiesAndHelpLinks()
+    {
+        const string analyzerDocs = "https://github.com/mrehman29/AutoMapSharp/blob/main/docs/features/roslyn-analyzers-and-diagnostics.md";
+        const string migrationDocs = "https://github.com/mrehman29/AutoMapSharp/blob/main/docs/migration/analyzer-setup.md#migration-diagnostic-rules-amsmig";
+
+        // The frozen 1.0.0 contract. Changing a category or severity here must go through AnalyzerReleases.Unshipped.md.
+        var expected = new (DiagnosticDescriptor Descriptor, string Id, string Category, DiagnosticSeverity Severity, string HelpLink)[]
+        {
+            (DiagnosticDescriptors.UnmappedDestinationProperty, "AMS001", "Usage", DiagnosticSeverity.Warning, analyzerDocs + "#ams001-unmapped-destination-property"),
+            (DiagnosticDescriptors.IncompatiblePropertyTypes, "AMS002", "Usage", DiagnosticSeverity.Error, analyzerDocs + "#ams002-incompatible-property-types"),
+            (DiagnosticDescriptors.PotentialCircularReference, "AMS003", "Design", DiagnosticSeverity.Warning, analyzerDocs + "#ams003-potential-circular-reference"),
+            (MigrationDiagnosticDescriptors.UsingAutoMapper, "AMSMIG001", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.InheritsProfile, "AMSMIG002", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.CreateMapUsage, "AMSMIG003", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.ForMemberUsage, "AMSMIG004", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.MapFromUsage, "AMSMIG005", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.IgnoreUsage, "AMSMIG006", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.ProjectToUsage, "AMSMIG007", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+            (MigrationDiagnosticDescriptors.IMapperUsage, "AMSMIG008", "Migration", DiagnosticSeverity.Warning, migrationDocs),
+        };
+
+        Assert.Equal(expected.Length, expected.Select(e => e.Descriptor.Id).Distinct().Count());
+
+        foreach (var (descriptor, id, category, severity, helpLink) in expected)
+        {
+            Assert.Equal(id, descriptor.Id);
+            Assert.Matches(@"^AMS(MIG)?\d{3}$", descriptor.Id);
+            Assert.Equal(category, descriptor.Category);
+            Assert.Equal(severity, descriptor.DefaultSeverity);
+            Assert.True(descriptor.IsEnabledByDefault, id);
+            Assert.False(string.IsNullOrWhiteSpace(descriptor.Title.ToString()), id);
+            Assert.False(string.IsNullOrWhiteSpace(descriptor.MessageFormat.ToString()), id);
+            Assert.Equal(helpLink, descriptor.HelpLinkUri);
+            Assert.True(Uri.TryCreate(descriptor.HelpLinkUri, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttps, id);
+        }
+
+        // Every descriptor is reported by its analyzer, and the analyzers report nothing outside this list.
+        var supported = new MappingConfigurationAnalyzer().SupportedDiagnostics
+            .Concat(new AutoMapperMigrationAnalyzer().SupportedDiagnostics)
+            .Select(d => d.Id)
+            .OrderBy(x => x, StringComparer.Ordinal);
+        Assert.Equal(expected.Select(e => e.Id).OrderBy(x => x, StringComparer.Ordinal), supported);
     }
 }

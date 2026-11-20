@@ -6,6 +6,7 @@ public static class DiagnosticDescriptors
 {
     private const string UsageCategory = "Usage";
     private const string DesignCategory = "Design";
+    private const string HelpLinkBase = "https://github.com/mrehman29/AutoMapSharp/blob/main/docs/features/roslyn-analyzers-and-diagnostics.md";
 
     public static readonly DiagnosticDescriptor UnmappedDestinationProperty = new(
         id: "AMS001",
@@ -14,7 +15,8 @@ public static class DiagnosticDescriptors
         category: UsageCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "All destination properties should be explicitly mapped or skipped to avoid unexpected default values.");
+        description: "All destination properties should be explicitly mapped or skipped to avoid unexpected default values.",
+        helpLinkUri: HelpLinkBase + "#ams001-unmapped-destination-property");
 
     public static readonly DiagnosticDescriptor IncompatiblePropertyTypes = new(
         id: "AMS002",
@@ -23,7 +25,8 @@ public static class DiagnosticDescriptors
         category: UsageCategory,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
-        description: "Source and destination property types must be compatible or explicitly converted.");
+        description: "Source and destination property types must be compatible or explicitly converted.",
+        helpLinkUri: HelpLinkBase + "#ams002-incompatible-property-types");
 
     public static readonly DiagnosticDescriptor PotentialCircularReference = new(
         id: "AMS003",
@@ -32,5 +35,6 @@ public static class DiagnosticDescriptors
         category: DesignCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Self-referencing or cyclic relational object graphs require MaxDepth or PreserveReferences to avoid recursion.");
+        description: "Self-referencing or cyclic relational object graphs require MaxDepth or PreserveReferences to avoid recursion.",
+        helpLinkUri: HelpLinkBase + "#ams003-potential-circular-reference");
 }

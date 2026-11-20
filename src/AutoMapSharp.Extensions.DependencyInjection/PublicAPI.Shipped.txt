@@ -1,0 +1,11 @@
+#nullable enable
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions.AddAssembly(System.Reflection.Assembly! assembly) -> AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions!
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions.AddMaps(System.Action<AutoMapSharp.IMappingConfigurationBuilder!>! configure) -> AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions!
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions.AddModule(AutoMapSharp.MappingModule! module) -> AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions!
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions.AddModule<TModule>() -> AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions!
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions.AutoMapSharpOptions() -> void
+AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpServiceCollectionExtensions
+static AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpServiceCollectionExtensions.AddAutoMapSharp(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpOptions!>! configure, params System.Reflection.Assembly![]! assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpServiceCollectionExtensions.AddAutoMapSharp(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Reflection.Assembly![]! assemblies) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static AutoMapSharp.Extensions.DependencyInjection.AutoMapSharpServiceCollectionExtensions.AddAutoMapSharp(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, params System.Type![]! moduleOrMarkerTypes) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!

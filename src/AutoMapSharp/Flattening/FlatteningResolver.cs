@@ -9,15 +9,23 @@ namespace AutoMapSharp.Flattening;
 /// </summary>
 public sealed class PathStep
 {
+    /// <summary>The property, field or parameterless method read at this step.</summary>
     public MemberInfo Member { get; }
+    /// <summary>The type of the value this step produces.</summary>
     public Type ReturnType { get; }
 
+    /// <summary>Creates a path step.</summary>
+    /// <param name="member">The property, field or parameterless method to read.</param>
+    /// <param name="returnType">The type of the value the member produces.</param>
     public PathStep(MemberInfo member, Type returnType)
     {
         Member = member;
         ReturnType = returnType;
     }
 
+    /// <summary>Reads this step's member from <paramref name="target"/> using reflection.</summary>
+    /// <param name="target">The object to read from.</param>
+    /// <returns>The member's value, or null if the member is not a property, field or method.</returns>
     public object? GetValue(object target)
     {
         if (Member is PropertyInfo prop)

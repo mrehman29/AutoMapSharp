@@ -25,10 +25,13 @@ public interface INamingConvention
 /// </summary>
 public sealed class PascalCaseNamingConvention : INamingConvention
 {
+    /// <summary>The shared instance. The convention has no state, so this instance can be used everywhere.</summary>
     public static readonly PascalCaseNamingConvention Instance = new();
 
+    /// <inheritdoc />
     public IReadOnlyList<string> SplitWords(string memberName) => MemberNameMatching.SplitPascal(memberName);
 
+    /// <inheritdoc />
     public string Format(IEnumerable<string> words)
     {
         var result = new System.Text.StringBuilder();
@@ -50,13 +53,16 @@ public sealed class PascalCaseNamingConvention : INamingConvention
 /// </summary>
 public sealed class CamelCaseNamingConvention : INamingConvention
 {
+    /// <summary>The shared instance. The convention has no state, so this instance can be used everywhere.</summary>
     public static readonly CamelCaseNamingConvention Instance = new();
 
+    /// <inheritdoc />
     public IReadOnlyList<string> SplitWords(string memberName)
     {
         return PascalCaseNamingConvention.Instance.SplitWords(memberName);
     }
 
+    /// <inheritdoc />
     public string Format(IEnumerable<string> words)
     {
         var pascal = PascalCaseNamingConvention.Instance.Format(words);
@@ -70,13 +76,16 @@ public sealed class CamelCaseNamingConvention : INamingConvention
 /// </summary>
 public sealed class SnakeCaseNamingConvention : INamingConvention
 {
+    /// <summary>The shared instance. The convention has no state, so this instance can be used everywhere.</summary>
     public static readonly SnakeCaseNamingConvention Instance = new();
 
+    /// <inheritdoc />
     public IReadOnlyList<string> SplitWords(string memberName)
     {
         return MemberNameMatching.SplitSnake(memberName);
     }
 
+    /// <inheritdoc />
     public string Format(IEnumerable<string> words)
     {
         var list = new List<string>();
