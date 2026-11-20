@@ -170,5 +170,14 @@ automapsharp-migrate ./src --dry-run
 
 ---
 
+## Contributing & Support
+
+We welcome contributions to AutoMapSharp!
+- Read our [Contribution Guide](CONTRIBUTING.md) for local development setup, build/test commands, and PR guidelines.
+- For help or bug reports, see [Support](SUPPORT.md).
+- To report a security vulnerability, see our [Security Policy](SECURITY.md).
+
+---
+
 ## License
 AutoMapSharp is licensed under the [MIT License](LICENSE).
