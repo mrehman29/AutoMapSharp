@@ -1,6 +1,6 @@
 # AutoMapper Parity Matrix
 
-This is the single list of AutoMapper features and their status in AutoMapSharp. The sample web app's **Parity Matrix** page reads this file.
+This is the single list of AutoMapper features and their status in AutoMapSharp for the v1.0.0 General Availability (GA) release. The sample web app's **Parity Matrix** page reads this file.
 
 Status values:
 
@@ -20,8 +20,8 @@ Status values:
 | Configuration | Duplicate map detection | Engine constructor throws | Supported | Names both modules |
 | Configuration | `ShouldMapProperty`, `ShouldMapField`, `ShouldMapMethod` | Same names on `MappingModule` | Supported | [Property matching](features/property-matching-conventions.md) |
 | Configuration | Public field mapping | Public fields on both sides | Supported | [Property matching](features/property-matching-conventions.md) |
-| Configuration | `IncludeMembers` | None | Planned | Not built yet |
-| Configuration | `ForAllMaps`, `ForAllPropertyMaps` | None | Planned | Not built yet |
+| Configuration | `IncludeMembers` | None | Planned | Not built yet. Tracked in [#13](https://github.com/mrehman29/AutoMapSharp/issues/13). |
+| Configuration | `ForAllMaps`, `ForAllPropertyMaps` | None | Planned | Not built yet. Tracked in [#14](https://github.com/mrehman29/AutoMapSharp/issues/14). |
 | Configuration | Attribute maps: `[AutoMap]`, `[Ignore]`, `[SourceMember]` | `[MapFrom]`, `[SkipMap]`, `[SourceMember]` | Supported | [Attribute configuration](features/attribute-mapping.md) |
 | Configuration | `IncludeSourceExtensionMethods` | `IncludeSourceExtensionMethods` | Supported | [Source extension methods](features/source-extension-methods.md) |
 | Conventions | Source and destination naming conventions | `SourceNamingConvention`, `DestinationNamingConvention` | Supported | PascalCase, camelCase, snake_case. [Naming conventions](features/naming-conventions.md) |
@@ -33,7 +33,7 @@ Status values:
 | Conventions | Flattening and `GetX()` methods | Same | Supported | [Object flattening](features/object-flattening.md) |
 | Members | `ForMember(d => d.X, o => o.MapFrom(s => ...))` | `ForProperty(d => d.X, o => o.MapSource(s => ...))` | Supported | Null-safe member chains |
 | Members | `MapFrom<TResolver>()` with `IValueResolver` | `MapWith<TResolver>()` with `IPropertyResolver` | Supported | `Resolve` has no destination member parameter. [Resolvers](features/custom-property-resolvers.md) |
-| Members | `IMemberValueResolver` | None | Partial | Use `IPropertyResolver`, which receives the whole source, or `IValueConverter` |
+| Members | `IMemberValueResolver` | None | Partial | Use `IPropertyResolver`, which receives the whole source, or `IValueConverter`. Tracked in [#16](https://github.com/mrehman29/AutoMapSharp/issues/16). |
 | Members | `Ignore()` | `Skip()` | Supported | |
 | Members | `Condition(...)` | `If(...)` | Supported | Overloads receive the new value and the current value. [Conditions](features/conditional-mapping-and-fallbacks.md) |
 | Members | `PreCondition(...)` | `PreCondition(...)` | Supported | Skips the resolver too |
@@ -45,7 +45,7 @@ Status values:
 | Members | `ForPath(...)` | `ForPath(...)` | Supported | [ForPath & unflattening](features/forpath-and-unflattening.md) |
 | Members | `ForCtorParam(...)` | `ForCtorParam(...)` | Supported | [Constructors & records](features/constructor-mapping-and-records.md) |
 | Members | `ForSourceMember(..., o => o.DoNotValidate())` | Same | Supported | |
-| Members | `SetMappingOrder(...)` | None | Planned | Members map in declaration order today |
+| Members | `SetMappingOrder(...)` | None | Planned | Members map in declaration order today. Tracked in [#15](https://github.com/mrehman29/AutoMapSharp/issues/15). |
 | Members | `ExplicitExpansion()` | `ExplicitExpansion()` | Supported | Projections only |
 | Types | `ConvertUsing(...)` with a function or `ITypeConverter` | Same | Supported | `Convert` takes (source, context) |
 | Types | `ConstructUsing(...)`, with or without the context | Same | Supported | |
@@ -76,7 +76,7 @@ Status values:
 | DI | Resolver and converter scanning | Same | Supported | |
 | Ecosystem | `AutoMapper.Collection` | `AutoMapSharp.Collections` | Supported | [Collection merging](features/collection-merging.md) |
 | Ecosystem | `AutoMapper.Extensions.ExpressionMapping` | None | Not planned | |
-| Platform | Native AOT | Supported for generated maps | Partial | Maps the source generator emits run as a native binary, verified in CI. [Native AOT](features/native-aot-and-trimming.md) |
+| Platform | Native AOT | Supported for generated maps | Partial | Maps the source generator emits run as a native binary, verified in CI. [Native AOT](features/native-aot-and-trimming.md). Extended coverage tracked in [#17](https://github.com/mrehman29/AutoMapSharp/issues/17). |
 | Tooling | None | Source generator for eligible maps | Supported | [Source generator](features/source-generator.md) |
 | Tooling | None | Roslyn analyzers AMS001 to AMS003 | Supported | Share name matching with the engine |
 | Tooling | None | Migration analyzer and CLI | Supported | [Migration guide](../MIGRATION_GUIDE.md) |
