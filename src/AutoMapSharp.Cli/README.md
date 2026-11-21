@@ -5,7 +5,7 @@ A .NET tool that rewrites AutoMapper code to [AutoMapSharp](https://www.nuget.or
 ## Install
 
 ```bash
-dotnet tool install --global dotnet-automapsharp-migrate --prerelease
+dotnet tool install --global dotnet-automapsharp-migrate
 ```
 
 ## Usage

@@ -1,14 +1,12 @@
 # AutoMapSharp
 
-[![NuGet](https://img.shields.io/nuget/vpre/AutoMapSharp.svg)](https://www.nuget.org/packages/AutoMapSharp)
+[![NuGet](https://img.shields.io/nuget/v/AutoMapSharp.svg)](https://www.nuget.org/packages/AutoMapSharp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-netstandard2.0%20%7C%20net8.0%20%7C%20net9.0-512BD4)](https://dotnet.microsoft.com/)
 
 A high-performance, enterprise-grade, open-source object-to-object mapping library for .NET.
 
 `AutoMapSharp` is a cleanroom open-source alternative to AutoMapper, built from the ground up to provide familiar mapping idioms under the MIT license.
-
-> **Preview status:** AutoMapSharp is in preview. Every issue found in a code review is fixed and covered by a regression test, see [KNOWN_ISSUES.md](KNOWN_ISSUES.md). The [parity matrix](docs/automapper-parity-matrix.md) lists AutoMapper features and their status. A source generator emits typed code for eligible maps, and those maps run under Native AOT, which CI verifies with a real native binary.
 
 ---
 
@@ -39,8 +37,6 @@ dotnet add package AutoMapSharp.Collections
 | [AutoMapSharp.Collections](https://www.nuget.org/packages/AutoMapSharp.Collections) | Merging collections by key |
 | [AutoMapSharp.MigrationAnalyzer](https://www.nuget.org/packages/AutoMapSharp.MigrationAnalyzer) | IDE quick fixes that rewrite AutoMapper code |
 | [dotnet-automapsharp-migrate](https://www.nuget.org/packages/dotnet-automapsharp-migrate) | A .NET tool that migrates a whole folder from AutoMapper |
-
-While AutoMapSharp is in preview, add `--prerelease` to `dotnet add package`, or tick "Include prerelease" in your IDE.
 
 ### 2. Define a Mapping Module
 ```csharp
@@ -103,9 +99,9 @@ Check out our comprehensive [AutoMapper Migration Guide](MIGRATION_GUIDE.md) for
 To do most of the rewriting automatically, add the migration analyzer to your project and apply its quick fixes, or run the migration tool over your source folder:
 
 ```bash
-dotnet add package AutoMapSharp.MigrationAnalyzer --prerelease
+dotnet add package AutoMapSharp.MigrationAnalyzer
 # or
-dotnet tool install --global dotnet-automapsharp-migrate --prerelease
+dotnet tool install --global dotnet-automapsharp-migrate
 automapsharp-migrate ./src --dry-run
 ```
 

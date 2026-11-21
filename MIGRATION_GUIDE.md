@@ -2,7 +2,7 @@
 
 This guide provides everything you need to migrate an existing .NET application from **AutoMapper** to **AutoMapSharp**.
 
-AutoMapSharp is an independent, 100% cleanroom open-source object-to-object mapping library under the **permissive MIT license**. It offers familiar mapping workflows and LINQ projections. It is in preview, so check [KNOWN_ISSUES.md](KNOWN_ISSUES.md) before migrating production code.
+AutoMapSharp is an independent, 100% cleanroom open-source object-to-object mapping library under the **permissive MIT license**. It offers familiar mapping workflows and LINQ projections. AutoMapSharp 1.0.0 is a stable release that follows Semantic Versioning. Every finding from the pre-release code review is fixed and covered by a regression test; see [KNOWN_ISSUES.md](KNOWN_ISSUES.md).
 
 ---
 
@@ -107,8 +107,8 @@ Remove AutoMapper and add AutoMapSharp:
 <!-- <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" /> -->
 
 <!-- Add -->
-<PackageReference Include="AutoMapSharp" Version="1.0.0-preview.1" />
-<PackageReference Include="AutoMapSharp.Extensions.DependencyInjection" Version="1.0.0-preview.1" />
+<PackageReference Include="AutoMapSharp" Version="1.0.0" />
+<PackageReference Include="AutoMapSharp.Extensions.DependencyInjection" Version="1.0.0" />
 ```
 
 ### Step 2: Update Dependency Injection Setup
