@@ -70,9 +70,9 @@ var orders = await db.Orders.ProjectOnto<OrderDto>(engine).ToListAsync();
 
 AutoMapSharp targets .NET Standard 2.0, .NET 8 and .NET 9, so it runs on .NET Framework 4.7.2 and later as well as modern .NET.
 
-## Preview status
+## Release status
 
-This is a preview release. The API is close to final, but it may still change before 1.0.0. Every known issue and its fix is listed in [KNOWN_ISSUES.md](https://github.com/mrehman29/AutoMapSharp/blob/main/KNOWN_ISSUES.md). The [AutoMapper parity matrix](https://github.com/mrehman29/AutoMapSharp/blob/main/docs/automapper-parity-matrix.md) shows which AutoMapper features are supported today.
+AutoMapSharp 1.0.0 is the official General Availability release with frozen public APIs. Every known issue from pre-release review and its resolution is tracked in [KNOWN_ISSUES.md](https://github.com/mrehman29/AutoMapSharp/blob/main/KNOWN_ISSUES.md). The [AutoMapper parity matrix](https://github.com/mrehman29/AutoMapSharp/blob/main/docs/automapper-parity-matrix.md) details supported features.
 
 ## Learn more
 

@@ -20,11 +20,11 @@ Every package is built deterministically, includes Source Link so you can step i
 
 | Package ID | Version | What it is for | Target frameworks | Contents |
 |---|---|---|---|---|
-| [`AutoMapSharp`](https://www.nuget.org/packages/AutoMapSharp) | `1.0.0-preview.1` | The mapping engine, configuration API, projections and validation. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols (`.snupkg`), and the source generator and analyzers in `analyzers/dotnet/cs`. |
-| [`AutoMapSharp.Extensions.DependencyInjection`](https://www.nuget.org/packages/AutoMapSharp.Extensions.DependencyInjection) | `1.0.0-preview.1` | `AddAutoMapSharp` for `IServiceCollection`, with assembly scanning. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols. |
-| [`AutoMapSharp.Collections`](https://www.nuget.org/packages/AutoMapSharp.Collections) | `1.0.0-preview.1` | Merging collections by key, a replacement for AutoMapper.Collection. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols. |
-| [`AutoMapSharp.MigrationAnalyzer`](https://www.nuget.org/packages/AutoMapSharp.MigrationAnalyzer) | `1.0.0-preview.1` | IDE warnings and quick fixes that rewrite AutoMapper code. | `netstandard2.0` | Analyzer and code fix assembly, plus the migrator library. |
-| [`dotnet-automapsharp-migrate`](https://www.nuget.org/packages/dotnet-automapsharp-migrate) | `1.0.0-preview.1` | A .NET tool that applies the migration rules to a whole folder. | `net8.0`, `net9.0` | Tool with the command `automapsharp-migrate`. |
+| [`AutoMapSharp`](https://www.nuget.org/packages/AutoMapSharp) | `1.0.0` | The mapping engine, configuration API, projections and validation. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols (`.snupkg`), and the source generator and analyzers in `analyzers/dotnet/cs`. |
+| [`AutoMapSharp.Extensions.DependencyInjection`](https://www.nuget.org/packages/AutoMapSharp.Extensions.DependencyInjection) | `1.0.0` | `AddAutoMapSharp` for `IServiceCollection`, with assembly scanning. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols. |
+| [`AutoMapSharp.Collections`](https://www.nuget.org/packages/AutoMapSharp.Collections) | `1.0.0` | Merging collections by key, a replacement for AutoMapper.Collection. | `netstandard2.0`, `net8.0`, `net9.0` | Assemblies, XML docs, symbols. |
+| [`AutoMapSharp.MigrationAnalyzer`](https://www.nuget.org/packages/AutoMapSharp.MigrationAnalyzer) | `1.0.0` | IDE warnings and quick fixes that rewrite AutoMapper code. | `netstandard2.0` | Analyzer and code fix assembly, plus the migrator library. |
+| [`dotnet-automapsharp-migrate`](https://www.nuget.org/packages/dotnet-automapsharp-migrate) | `1.0.0` | A .NET tool that applies the migration rules to a whole folder. | `net8.0`, `net9.0` | Tool with the command `automapsharp-migrate`. |
 
 How packages are published is described in [Publishing to NuGet](publishing-to-nuget.md).
 

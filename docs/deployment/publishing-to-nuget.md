@@ -37,8 +37,8 @@ The source generator and the compile-time analyzers are not separate packages. T
 4. Tag the commit and push the tag. The tag must be `v` followed by the exact version:
 
    ```bash
-   git tag v1.0.0-preview.1
-   git push origin v1.0.0-preview.1
+   git tag v1.0.0
+   git push origin v1.0.0
    ```
 
 The **Publish to NuGet** workflow then checks that the tag matches the version, builds, runs the tests, packs and tests the packages, and pushes them. The packages are also attached to the workflow run as an artifact.

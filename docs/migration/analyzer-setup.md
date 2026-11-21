@@ -16,7 +16,7 @@ Or via `.csproj`:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="AutoMapSharp.MigrationAnalyzer" Version="1.0.0-*" PrivateAssets="all" />
+  <PackageReference Include="AutoMapSharp.MigrationAnalyzer" Version="1.0.0" PrivateAssets="all" />
 </ItemGroup>
 ```
 
