@@ -2,6 +2,14 @@
 
 All notable changes to AutoMapSharp are listed here. The project follows [Semantic Versioning](https://semver.org/).
 
+## 1.0.0 (unreleased)
+
+The first stable release of AutoMapSharp. This section is finalized when the release is tagged.
+
+- **Stable versioning.** Promoted from preview to 1.0.0. From this release on, AutoMapSharp follows Semantic Versioning 2.0.
+- **Public API frozen.** The public API is kept backwards compatible, both binary and source, for every 1.x release.
+- **Packages.** The mapping engine, `AutoMapSharp.Extensions.DependencyInjection`, `AutoMapSharp.Collections`, `AutoMapSharp.MigrationAnalyzer` and the `dotnet-automapsharp-migrate` tool all ship as 1.0.0.
+
 ## 1.0.0-preview.1
 
 The first public preview of AutoMapSharp, a free and MIT-licensed object mapper for .NET.

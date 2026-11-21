@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>1.0.0-preview.1</Version>
+    <Version>1.0.0</Version>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -22,7 +22,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>First public preview. See https://github.com/mrehman29/AutoMapSharp/blob/main/CHANGELOG.md for what is included, and https://github.com/mrehman29/AutoMapSharp/blob/main/MIGRATION_GUIDE.md if you are moving from AutoMapper.</PackageReleaseNotes>
+    <PackageReleaseNotes>Official 1.0.0 General Availability release. For what is included and migration instructions, see https://github.com/mrehman29/AutoMapSharp/blob/v1.0.0/CHANGELOG.md and https://github.com/mrehman29/AutoMapSharp/blob/v1.0.0/MIGRATION_GUIDE.md.</PackageReleaseNotes>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

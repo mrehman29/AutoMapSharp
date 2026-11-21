@@ -1,6 +1,7 @@
 name: Publish to NuGet
 
-# Runs when a version tag such as v1.0.0-preview.1 or 1.0.0-preview.1 is pushed, or by hand from the Actions tab.
+# Publishes when a version tag such as v1.0.0 is pushed. Publishing requires a pushed tag: a run started by hand
+# from the Actions tab stops at the first step, so the version on main is never published by accident.
 on:
   push:
     tags: [ "v*", "[0-9]*" ]
@@ -17,6 +18,13 @@ jobs:
     environment: nuget
 
     steps:
+    - name: Only publish from a version tag
+      if: "!startsWith(github.ref, 'refs/tags/')"
+      shell: bash
+      run: |
+        echo "Publishing requires a version tag. Push the tag instead of running this workflow by hand."
+        exit 1
+
     - name: Checkout source
       uses: actions/checkout@v4
       with:
